@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 背景图片 -->
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/bg_dtlog"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 滚动内容 -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <!-- 顶部标题：医生登录 -->
+            <TextView
+                android:id="@+id/tvDoctorLoginTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="医生登录"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="32dp"/>
+
+
+            <!-- 副标题 -->
+            <TextView
+                android:id="@+id/tvDoctorLoginSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Hard work pays off"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="8dp"/>
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="left">
+
+                <!-- 图片 -->
+                <ImageView
+                    android:id="@+id/imgDoctorLoginBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/shape_round_image"
+                    android:clipToOutline="true"
+                    android:src="@mipmap/img_dtlook"/>
+                <!-- 叠加文字 -->
+                <TextView
+                    android:id="@+id/tvBannerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="Doctor-patient interconnection"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+            <!-- 输入框容器 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical"
+
+                android:layout_marginTop="32dp">
+
+                <!-- 工号输入 -->
+                <EditText
+                    android:id="@+id/etDoctorId"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="工号"
+                    android:drawableStart="@drawable/baseline_account_box_24"
+                    android:drawablePadding="12dp"
+                    android:background="@drawable/shape_edittext_bg"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="16sp"/>
+
+                <!-- 密码输入 -->
+                <EditText
+                    android:id="@+id/etDoctorPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="密码"
+                    android:drawableStart="@drawable/baseline_lock_24"
+                    android:drawablePadding="12dp"
+                    android:background="@drawable/shape_edittext_bg"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:inputType="textPassword"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp"/>
+                <CheckBox
+                    android:id="@+id/cbRememberPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="记住密码"
+                    android:layout_marginTop="1dp"
+                    android:theme="@style/MyCheckBox"
+                    />
+
+            </LinearLayout>
+
+            <!-- 登录按钮 -->
+            <Button
+                android:id="@+id/btnDoctorLogin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="登录"
+                android:backgroundTint="@color/blue_deep"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="24dp"/>
+
+            <Button
+                android:id="@+id/btnDoctorRegister"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="注册"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/gray"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
