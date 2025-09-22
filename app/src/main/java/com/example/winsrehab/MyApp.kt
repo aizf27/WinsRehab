@@ -1,8 +1,8 @@
 package com.example.winsrehab
 
-import AppDatabase
 import android.app.Application
 import androidx.room.Room
+import com.example.winsrehab.data.database.AppDatabase
 
 class MyApp : Application() {
 
@@ -18,7 +18,9 @@ class MyApp : Application() {
             applicationContext,
             AppDatabase::class.java,
             "rehab.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     companion object {

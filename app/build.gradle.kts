@@ -47,6 +47,13 @@ android {
         viewBinding = true
     }
 }
+kapt {
+    arguments {
+        // schemas 文件夹可以自己改名字，放在 app 目录下即可
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+}
+
 
 dependencies {
     // Kotlin 标准库（改成 2.0.21 稳定版）

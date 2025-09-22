@@ -1,9 +1,12 @@
 package com.example.winsrehab.data.repository
 
+import android.util.Log
+import androidx.compose.ui.platform.LocalGraphicsContext
 import com.example.winsrehab.data.dao.PatientDao
 import com.example.winsrehab.data.entity.Patient
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-
+//先绑Dao
 class PatientRepository(private val patientDao: PatientDao) {
     suspend fun login(account: String, password: String): Boolean {
         return patientDao.login(account, password)!= null
@@ -14,6 +17,7 @@ class PatientRepository(private val patientDao: PatientDao) {
     suspend fun registerPatient(patient: Patient): Boolean {
         return try {
             patientDao.insertPatient(patient)
+            Log.i("PatientRepository", "Register patient success")
             true
         } catch (e: Exception) {
             false
@@ -25,10 +29,17 @@ class PatientRepository(private val patientDao: PatientDao) {
     suspend fun updatePatient(patient: Patient) {
         patientDao.updatePatient(patient)
     }
+    suspend fun getPatientByAccount(account: String): Patient? {
+        return patientDao.getPatientByAccount(account).first()
+    }
     suspend fun isInfoComplete(account: String): Boolean {
         val patient = patientDao.getPatientByAccount(account).first()
         return patient?.let {
             !it.name.isNullOrEmpty() && (it.age ?: 0) > 0
         } ?: false
     }
+    fun getPatientsByDoctor(doctorCode: String): Flow<List<Patient>> {
+        return patientDao.getPatientsByDoctorFlow(doctorCode)
+    }
+
 }

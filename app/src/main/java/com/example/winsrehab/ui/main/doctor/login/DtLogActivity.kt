@@ -29,13 +29,15 @@ class DtLogActivity : AppCompatActivity() {
 
         preferences = getSharedPreferences("doctor_prefs", MODE_PRIVATE)
         //给“医生登陆”设置下划线
+        val titleText = "<u>医生登录</u>"
+        binding.tvDoctorLoginTitle.text = Html.fromHtml(titleText, Html.FROM_HTML_MODE_LEGACY)
 
 
 
-        //恢复记住的账号密码
         val savedId = preferences.getString("doctor_id", "")
         val savedPassword = preferences.getString("doctor_password", "")
         val remember = preferences.getBoolean("remember", false)
+        //恢复记住的账号密码
         binding.etDoctorId.setText(savedId)
         if (remember) {
             binding.etDoctorPassword.setText(savedPassword)
@@ -67,6 +69,7 @@ class DtLogActivity : AppCompatActivity() {
             val intent = if (complete) Intent(this, DtHomeActivity::class.java)
             else Intent(this, DtInfoActivity::class.java)
             intent.putExtra("doctorCode", id)
+
             startActivity(intent)
             finish()
         }

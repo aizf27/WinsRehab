@@ -1,5 +1,6 @@
 package com.example.winsrehab.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.winsrehab.data.entity.Doctor
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +25,11 @@ interface DoctorDao {
 
     @Query("UPDATE doctor SET patientCount = :count WHERE id = :id")
     suspend fun updatePatientCount(id: String, count: Int)
+
+    @Query("SELECT * FROM doctor WHERE id = :doctorCode LIMIT 1")
+    fun getDoctorInfo(doctorCode: String): LiveData<Doctor?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDoctorInfo(doctor: Doctor)
+
 }

@@ -1,0 +1,259 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="1dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="基础信息"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- 姓名 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="姓名：" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入姓名"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <!-- 性别 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="性别：" />
+
+            <EditText
+                android:id="@+id/et_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="男/女"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <!-- 年龄 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="年龄：" />
+
+            <EditText
+                android:id="@+id/et_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入年龄"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- 主治医师姓名 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="主治医师：" />
+
+            <EditText
+                android:id="@+id/et_doctorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入主治医师姓名"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <!-- 主治医师工号 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="主治医师工号：" />
+
+            <EditText
+                android:id="@+id/et_doctorCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入主治医师工号"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="康复信息"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="6dp"/>
+
+        <!-- 诊断 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="诊断：" />
+
+            <EditText
+                android:id="@+id/et_diagnosis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="诊断/病情描述"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <!-- 康复阶段 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="康复阶段：" />
+
+            <EditText
+                android:id="@+id/et_stage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="软瘫期/痉挛期/恢复期"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <!-- 康复进度 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="康复进度：" />
+
+            <EditText
+                android:id="@+id/et_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="0-100"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- AI 分析结果 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="AI分析：" />
+
+            <EditText
+                android:id="@+id/et_ai_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="AI 分析结果"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <!-- 最近训练日期 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="最近训练：" />
+
+            <EditText
+                android:id="@+id/et_last_training"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="YYYY-MM-DD"
+                android:inputType="date" />
+        </LinearLayout>
+
+        <!-- 保存按钮 -->
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/green_shallow"
+            android:text="保存信息"
+            android:layout_marginTop="15dp"/>
+    </LinearLayout>
+</ScrollView>

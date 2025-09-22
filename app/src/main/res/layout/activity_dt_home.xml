@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="重点患者"
+        android:text="所有患者"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/overview_container"
@@ -144,56 +144,56 @@
                 android:textSize="12sp"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:padding="8dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_columnWeight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="8dp">-->
 
-            <ImageButton
-                android:id="@+id/btn_adjust_plan"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@null"
-                android:contentDescription="方案调整"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_plan_adjustment"
-                tools:ignore="TouchTargetSizeCheck" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="方案调整"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-
+<!--            <ImageButton-->
+<!--                android:id="@+id/btn_adjust_plan"-->
+<!--                android:layout_width="42dp"-->
+<!--                android:layout_height="42dp"-->
+<!--                android:background="@null"-->
+<!--                android:contentDescription="方案调整"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@mipmap/ic_plan_adjustment"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="方案调整"-->
+<!--                android:textSize="12sp"/>-->
+<!--        </LinearLayout>-->
 
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:padding="8dp">
 
-            <ImageButton
-                android:id="@+id/btn_search_filter"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@null"
-                android:contentDescription="筛选/搜索"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_search"
-                tools:ignore="TouchTargetSizeCheck" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="筛选/搜索"
-                android:textSize="12sp"/>
-        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_columnWeight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="8dp">-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/btn_search_filter"-->
+<!--                android:layout_width="42dp"-->
+<!--                android:layout_height="42dp"-->
+<!--                android:background="@null"-->
+<!--                android:contentDescription="筛选/搜索"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@mipmap/ic_search"-->
+<!--                tools:ignore="TouchTargetSizeCheck" />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="筛选/搜索"-->
+<!--                android:textSize="12sp"/>-->
+<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"

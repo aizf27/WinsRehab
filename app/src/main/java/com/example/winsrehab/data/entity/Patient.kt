@@ -21,4 +21,22 @@ data class Patient (
                  val hasAlert : Boolean= false,                //是否有异常预警
                  val lastTrainingDate: String? = null //最近训练日期
 
-)
+){
+        // 添加一个次要构造函数，用于创建包含姓名、性别、年龄和医生信息的患者实例
+        constructor(id: String,name: String, gender: String, age: Int, physicianName: String, physicianCode: String) : this(
+                "", // id
+                "", // account
+                "", // password
+                name,
+                age,
+                gender,
+                physicianName,
+                physicianCode,
+                null, // diagnosis
+                null, // stage
+                0,    // progress
+                null, // aiResult
+                false, // hasAlert
+                null  // lastTrainingDate
+        )
+}

@@ -29,7 +29,7 @@ class PtLogActivity: AppCompatActivity () {
         preferences=getSharedPreferences("patient_prefs", MODE_PRIVATE)
 
         //给患者登陆设置下划线
-        val titleText = "<u>医生登录</u>"
+        val titleText = "<u>患者登录</u>"
         binding.tvPtLoginTitle.text = Html.fromHtml(titleText, Html.FROM_HTML_MODE_LEGACY)
 
         //回复账号密码
@@ -68,8 +68,11 @@ class PtLogActivity: AppCompatActivity () {
             val intent=if( complete) Intent(this, PtHomeActivity::class.java)
             else Intent(this, PtInfoActivity::class.java)
 
-            intent.putExtra("account", account)
+            intent.putExtra("account", account) //传递账号用于填充基本信息
+            intent.putExtra("mode", "patient")  //用于设置基础信息可写模式
+
             Log.i("PtLogActivity", "account: $account")
+
             startActivity(intent)
             finish()
         }
@@ -116,7 +119,7 @@ class PtLogActivity: AppCompatActivity () {
         val remember = binding.cbRememberPassword.isChecked
 
         editor.putString("PtAccount", account)
-        editor.putString("PtPassword", password)
+        editor.putBoolean("remember", remember)
 
         if (remember) {editor.putString("PtPassword",password)}
         else {editor.remove("PtPassword")}

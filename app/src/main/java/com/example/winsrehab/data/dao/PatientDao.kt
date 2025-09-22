@@ -1,5 +1,6 @@
 package com.example.winsrehab.data.dao
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -7,7 +8,7 @@ import androidx.room.Update
 import com.example.winsrehab.data.entity.Doctor
 import com.example.winsrehab.data.entity.Patient
 import kotlinx.coroutines.flow.Flow
-
+@Dao
 interface PatientDao {
     @Query("SELECT * FROM patient WHERE account = :account")
     fun getPatientByAccount(account: String): Flow<Patient?>
@@ -18,11 +19,17 @@ interface PatientDao {
     @Query("SELECT EXISTS(SELECT 1 FROM patient WHERE id = :id)")
     suspend fun isExist(id: String): Boolean
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPatient(patient: Patient)
+
 
     @Update
     suspend fun updatePatient(patient: Patient)
+
+    @Query("SELECT * FROM patient WHERE physicianCode=:doctorCode")
+    fun getPatientsByDoctorFlow(doctorCode: String): Flow<List<Patient>>
+
 
 
 }
