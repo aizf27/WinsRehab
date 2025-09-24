@@ -19,7 +19,7 @@ class MyApp : Application() {
             AppDatabase::class.java,
             "rehab.db"
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration()   //升级就把旧数据删光光
             .build()
     }
 

@@ -32,7 +32,7 @@ class DtInfoActivity : AppCompatActivity() {
                 binding.tvCode.text = "工号：${doctor.id}"
                 binding.etName.setText(doctor.name)
                 binding.etAge.setText(doctor.age?.toString() ?: "")
-                binding.etPtNum.setText(if (doctor == null || doctor.patientCount == 0)
+                binding.etPtNum.setText(if ( doctor.patientCount == 0)
                     patientCount.toString()
                 else
                     doctor.patientCount.toString())
@@ -40,10 +40,10 @@ class DtInfoActivity : AppCompatActivity() {
                 binding.etDepartment.setText(doctor.department)
             } else {
                 binding.tvCode.text = "工号：$doctorCode"
-                binding.etPtNum.setText(if (doctor == null || doctor.patientCount == 0)
+                binding.etPtNum.setText(if (doctor?.patientCount == 0)
                     patientCount.toString()
                 else
-                    doctor.patientCount.toString())
+                    doctor?.patientCount.toString())
             }
         }
 
@@ -81,7 +81,7 @@ class DtInfoActivity : AppCompatActivity() {
             gender = gender,
             age = age,
             department = department,
-            patientCount = ptNum
+            patientCount = patientCount
         )
 
         viewModel.saveDoctorInfo(doctor) { success ->

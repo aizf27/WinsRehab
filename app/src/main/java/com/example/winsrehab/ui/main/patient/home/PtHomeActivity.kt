@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.winsrehab.databinding.ActivityPtHomeBinding
+import com.example.winsrehab.ui.main.patient.Video.TrainingVideoActivity
 import com.example.winsrehab.ui.main.patient.info.PtInfoActivity
 
 class PtHomeActivity: AppCompatActivity() {
@@ -19,6 +20,10 @@ class PtHomeActivity: AppCompatActivity() {
             val account = getIntent().getStringExtra("account")
             intent.putExtra("mode", "patient")
             intent.putExtra("account", account)
+            startActivity(intent)
+        })
+        binding.cardTraining.setOnClickListener({ view ->
+            val intent: Intent = Intent(this, TrainingVideoActivity::class.java)
             startActivity(intent)
         })
     }

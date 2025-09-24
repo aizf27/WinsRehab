@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "203922504161fbbce86441a2a655d2a3",
+    "identityHash": "7edb7fa5b66cda64e0bfdcbfadc8bed5",
     "entities": [
       {
         "tableName": "doctor",
@@ -204,11 +204,11 @@
       },
       {
         "tableName": "demo_video",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`demoId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `videoUrl` TEXT NOT NULL, `description` TEXT, `uploadDate` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `videoPath` TEXT NOT NULL, `description` TEXT, `category` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "demoId",
-            "columnName": "demoId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -219,8 +219,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "videoUrl",
-            "columnName": "videoUrl",
+            "fieldPath": "videoPath",
+            "columnName": "videoPath",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -231,16 +231,16 @@
             "notNull": false
           },
           {
-            "fieldPath": "uploadDate",
-            "columnName": "uploadDate",
+            "fieldPath": "category",
+            "columnName": "category",
             "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
-            "demoId"
+            "id"
           ]
         },
         "indices": [],
@@ -250,7 +250,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '203922504161fbbce86441a2a655d2a3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7edb7fa5b66cda64e0bfdcbfadc8bed5')"
     ]
   }
 }

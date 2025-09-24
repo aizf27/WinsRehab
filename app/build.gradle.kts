@@ -83,6 +83,7 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
     kapt(libs.androidx.room.compiler)
 
 

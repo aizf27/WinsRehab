@@ -12,6 +12,6 @@ interface DemoVideoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDemoVideo(video: DemoVideo)
 
-    @Query("SELECT * FROM demo_video ORDER BY uploadDate DESC")
+    @Query("SELECT * FROM demo_video ")
     fun getAllDemoVideos(): Flow<List<DemoVideo>>
 }
