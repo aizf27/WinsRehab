@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.winsrehab.databinding.ActivityPtHomeBinding
 import com.example.winsrehab.ui.main.patient.Video.TrainingVideoActivity
 import com.example.winsrehab.ui.main.patient.info.PtInfoActivity
+import com.example.winsrehab.ui.main.patient.psychology.PsychologyActivity
 
 class PtHomeActivity: AppCompatActivity() {
     private lateinit var binding: ActivityPtHomeBinding
@@ -24,6 +25,10 @@ class PtHomeActivity: AppCompatActivity() {
         })
         binding.cardTraining.setOnClickListener({ view ->
             val intent: Intent = Intent(this, TrainingVideoActivity::class.java)
+            startActivity(intent)
+        })
+        binding.cardPsychology.setOnClickListener({ view ->
+            val intent: Intent = Intent(this, PsychologyActivity::class.java)
             startActivity(intent)
         })
     }
