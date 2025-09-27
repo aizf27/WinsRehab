@@ -137,9 +137,10 @@
             <Button
                 android:id="@+id/btnDoctorLogin"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:text="登录"
                 android:backgroundTint="@color/blue_deep"
+                style="@style/MyRoundButton"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:layout_marginTop="24dp"/>
@@ -147,12 +148,13 @@
             <Button
                 android:id="@+id/btnDoctorRegister"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:text="注册"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/gray"/>
+                android:backgroundTint="@color/gray"
+                style="@style/MyRoundButton"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

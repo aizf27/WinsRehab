@@ -40,6 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/green_shallow"
+            style="@style/MyRoundButton"
+
             android:text="发送"/>
     </LinearLayout>
 

@@ -19,6 +19,7 @@ class PsychologyRepository {
     private val gson = Gson()
 
     suspend fun requestAI(messages: List<ChatMessage>, apiKey: String): String =
+        //放协程里，不然卡爆
         withContext(Dispatchers.IO){
         try {
 

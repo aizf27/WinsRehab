@@ -136,25 +136,28 @@
             </LinearLayout>
 
             <!-- 登录按钮 -->
+
             <Button
                 android:id="@+id/btnPtLogin"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="登录"
+                android:layout_height="40dp"
+                android:layout_marginTop="24dp"
                 android:backgroundTint="@color/green_shallow"
+                style="@style/MyRoundButton"
+                android:text="登录"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_marginTop="24dp"/>
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/btnPtRegister"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:text="注册"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/gray"/>
+                android:backgroundTint="@color/gray"
+                style="@style/MyRoundButton"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
