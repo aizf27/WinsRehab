@@ -14,7 +14,7 @@ class DtLogVM : ViewModel() {
         DoctorRepository(MyApp.instance.database.doctorDao())
     }
 
-    val loginResult = MutableLiveData<Int>()        // 0=不存在 1=成功 2=密码错误
+    val loginResult = MutableLiveData<Int>()        //0=不存在 1=成功 2=密码错误
     val registerResult = MutableLiveData<Boolean>()
     val infoComplete = MutableLiveData<Boolean>()
 

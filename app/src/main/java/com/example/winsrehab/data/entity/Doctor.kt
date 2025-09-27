@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "doctor")
 data class Doctor(
     @PrimaryKey val id: String,            //工号
-    val password: String,                  //密码
+    val password: String,                 //密码
     val name: String? = null,              //姓名
     val gender: String? = null,            //性别
     val age: Int? =0,                  //年龄

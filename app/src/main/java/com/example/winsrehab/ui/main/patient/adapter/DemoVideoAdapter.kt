@@ -12,6 +12,7 @@ class DemoVideoAdapter(
 ) : RecyclerView.Adapter<DemoVideoAdapter.VH>() {
 
     inner class VH(val binding: ItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
+        //有空补课
         fun bind(video: DemoVideo) {
             binding.tvTitle.text = video.title
             binding.tvDescription.text = video.description

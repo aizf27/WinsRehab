@@ -29,7 +29,7 @@ class DtHomeActivity : AppCompatActivity() {
         binding.rvKeyPatients.layoutManager = LinearLayoutManager(this)
         //绑定adapter
         binding.rvKeyPatients.adapter = adapter
-        //观察数据变化并更新UI，
+        //观察数据变化并更新UI
         viewModel.patients.observe(this) { list ->
             adapter.submitList(list)  //把最新的患者列表交给adapter，触发DiffUtil检查变化并刷新
             //更新患者总数
@@ -40,8 +40,8 @@ class DtHomeActivity : AppCompatActivity() {
 
         binding.btnInfoCenter.setOnClickListener {
             val intent = Intent(this, DtInfoActivity::class.java)
-            intent.putExtra("doctorCode", doctorCode)
-            intent.putExtra("totalCount", PtCount)
+             intent.putExtra("doctorCode", doctorCode)
+             intent.putExtra("totalCount", PtCount)
             startActivity(intent)
         }
 

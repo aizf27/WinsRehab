@@ -29,7 +29,7 @@ class SelectLogActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        // 医生和患者登陆界面跳转
+        //医生和患者登陆界面跳转
         binding.imageDtLog.setOnClickListener {
             viewModel.onDoctorLoginClicked()
         }

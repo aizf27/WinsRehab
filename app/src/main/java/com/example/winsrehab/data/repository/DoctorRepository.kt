@@ -14,10 +14,7 @@ class DoctorRepository(private val doctorDao: DoctorDao) {
         return doctorDao.getDoctorById(doctorCode).first()
     }
 
-    suspend fun saveDoctorInfo(doctor: Doctor) {
-        // 直接使用 REPLACE 策略的 insert 即可
-        doctorDao.insertDoctorInfo(doctor)
-    }
+
 
     suspend fun isExist(id: String): Boolean {
         return doctorDao.isExist(id)
@@ -32,6 +29,7 @@ class DoctorRepository(private val doctorDao: DoctorDao) {
         }
     }
 
+   //更新
     suspend fun updateDoctorInfo(doctor: Doctor) {
         doctorDao.updateDoctor(doctor)
     }

@@ -23,7 +23,7 @@ class DtLogActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDtLogBinding.inflate(layoutInflater)
+             binding = ActivityDtLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
 
@@ -33,10 +33,11 @@ class DtLogActivity : AppCompatActivity() {
         binding.tvDoctorLoginTitle.text = Html.fromHtml(titleText, Html.FROM_HTML_MODE_LEGACY)
 
 
-
+        //拿
         val savedId = preferences.getString("doctor_id", "")
         val savedPassword = preferences.getString("doctor_password", "")
         val remember = preferences.getBoolean("remember", false)
+
         //恢复记住的账号密码
         binding.etDoctorId.setText(savedId)
         if (remember) {
@@ -67,6 +68,7 @@ class DtLogActivity : AppCompatActivity() {
         viewModel.infoComplete.observe(this) { complete ->
             val id = binding.etDoctorId.text.toString()
             val intent = if (complete) Intent(this, DtHomeActivity::class.java)
+
             else Intent(this, DtInfoActivity::class.java)
             intent.putExtra("doctorCode", id)
 
@@ -78,6 +80,7 @@ class DtLogActivity : AppCompatActivity() {
         binding.btnDoctorLogin.setOnClickListener {
             val id = binding.etDoctorId.text.toString().trim()
             val password = binding.etDoctorPassword.text.toString().trim()
+
             if (id.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "请输入工号和密码", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -89,6 +92,7 @@ class DtLogActivity : AppCompatActivity() {
         binding.btnDoctorRegister.setOnClickListener {
             val id = binding.etDoctorId.text.toString().trim()
             val password = binding.etDoctorPassword.text.toString().trim()
+
             if (id.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "请输入工号和密码", Toast.LENGTH_SHORT).show()
                 //标签返回，让函数从这返回
@@ -97,7 +101,7 @@ class DtLogActivity : AppCompatActivity() {
             viewModel.registerDoctor(id, password)
         }
 
-        //EdgeToEdge
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -110,8 +114,10 @@ class DtLogActivity : AppCompatActivity() {
         val id = binding.etDoctorId.text.toString()
         val password = binding.etDoctorPassword.text.toString()
         val remember = binding.cbRememberPassword.isChecked
-        editor.putString("doctor_id", id)
-        editor.putBoolean("remember", remember)
+
+             editor.putString("doctor_id", id)
+             editor.putBoolean("remember", remember)
+
         if (remember) editor.putString("doctor_password", password)
         else editor.remove("doctor_password")
         editor.apply()

@@ -2,6 +2,7 @@ package com.example.winsrehab.ui.main.patient.info
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ class PtInfoActivity: AppCompatActivity () {
         account=getIntent().getStringExtra("account")?:return
         mode=getIntent().getStringExtra("mode")?:return
         //doctorCode = intent.getStringExtra("doctorCode")
+        Log.d("PtInfoActivity", "account: $account")
+        Log.d("PtInfoActivity", "mode: $mode")
 
 
         viewModel.patient.observe(this) { patient ->
@@ -36,6 +39,7 @@ class PtInfoActivity: AppCompatActivity () {
 
     }
     private fun fillUI(p: Patient) = with(binding) {
+
         etName.setText(p.name)
         etGender.setText(p.gender)
         etAge.setText(p.age.toString())

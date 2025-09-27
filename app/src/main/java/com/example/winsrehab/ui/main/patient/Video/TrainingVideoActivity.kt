@@ -22,7 +22,7 @@ class TrainingVideoActivity: AppCompatActivity() {
         binding = ActivityTrainingVideoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 初始化 ViewModel
+        //初始化 ViewModel
         viewModel = ViewModelProvider(this)[TrainingVideoViewModel::class.java]
 
         adapter = DemoVideoAdapter(emptyList()) { video ->
@@ -36,7 +36,8 @@ class TrainingVideoActivity: AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
-        // 分类 Spinner
+        //？？补课
+        //分类 Spinner
         val categories = arrayOf("全部", "肩部", "腿部", "全身")
         binding.spinnerCategory.adapter = ArrayAdapter(
             this, R.layout.simple_spinner_item, categories
@@ -51,7 +52,7 @@ class TrainingVideoActivity: AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        // 观察数据变化
+        //观察数据变化
         viewModel.videos.observe(this) { adapter.submitList(it) }
     }
 

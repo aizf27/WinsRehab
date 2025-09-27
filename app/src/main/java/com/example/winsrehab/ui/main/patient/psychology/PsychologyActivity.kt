@@ -18,15 +18,18 @@ class PsychologyActivity: AppCompatActivity () {
         super.onCreate(savedInstanceState)
         binding = ActivityPsychologyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //绑adapter
         binding.rvChat.layoutManager = LinearLayoutManager(this)
         binding.rvChat.adapter = adapter
 
+        //观察rv数据
         viewModle.chatList.observe(this) {
             adapter.chatList.clear()
             adapter.chatList.addAll(it)
-            adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
         }
+
+
         binding.btnSend.setOnClickListener {
             val message = binding.etMessage.text.toString()
             if (message.isNotEmpty()) {

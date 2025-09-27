@@ -19,13 +19,14 @@ class ChatAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val type_bai = 1
     }
 
-    // 创建视图,绑item
+    //创建视图,绑item
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
+
             type_user -> UserViewHolder(inflater, parent)
             type_bai -> BaiViewHolder(inflater, parent)
             else -> throw IllegalArgumentException("Invalid view type")
@@ -57,7 +58,7 @@ class ChatAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is BaiViewHolder->holder.tvMessage.text=context
         }
     }
-    // 获取数据个数
+    //获取数据个数
     override fun getItemCount(): Int = chatList.size
 
 

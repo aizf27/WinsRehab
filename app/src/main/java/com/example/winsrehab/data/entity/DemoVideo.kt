@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class DemoVideo(
     @PrimaryKey val id: Int,
     val title: String,
-    val videoPath: String,    // 本地路径
+    val videoPath: String,    //本地路径
     val description: String? = null,
     val category: String
 )

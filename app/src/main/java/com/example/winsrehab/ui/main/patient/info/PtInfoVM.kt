@@ -41,7 +41,7 @@ class PtInfoVM: ViewModel() {
 
             )
             repository.insertPatient(newPatient)
-            patient.postValue(newPatient)
+                patient.postValue(newPatient)
         }
     }
 
@@ -52,6 +52,7 @@ class PtInfoVM: ViewModel() {
         viewModelScope.launch {
             val old = repository.getPatientByAccount(account) ?: return@launch
             val updated = old.copy(
+
                 diagnosis = diagnosis,
                 stage = stage,
                 progress = progress,

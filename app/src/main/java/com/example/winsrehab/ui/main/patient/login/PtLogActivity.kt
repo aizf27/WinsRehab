@@ -80,8 +80,9 @@ class PtLogActivity: AppCompatActivity () {
         binding.btnPtLogin.setOnClickListener {
             val account=binding.etPtAccount.text.toString()
             val password=binding.etPtPassword.text.toString()
-            Log.i("PtLogActivity", "account: $account")
-            Log.i("PtLogActivity", "password: $password")
+                Log.i("PtLogActivity", "account: $account")
+                Log.i("PtLogActivity", "password: $password")
+
             if (account.isEmpty() || password.isEmpty()){
                 Toast.makeText(this, "手机号或密码不能为空", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -103,7 +104,7 @@ class PtLogActivity: AppCompatActivity () {
         viewModel.registerPatient(account, password)
 
     }
-        //EdgeToEdge
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -116,7 +117,7 @@ class PtLogActivity: AppCompatActivity () {
         val account=binding.etPtAccount.text.toString()
         val password=binding.etPtPassword.text.toString()
         //获取是否记住密码
-        val remember = binding.cbRememberPassword.isChecked
+             val remember = binding.cbRememberPassword.isChecked
 
         editor.putString("PtAccount", account)
         editor.putBoolean("remember", remember)

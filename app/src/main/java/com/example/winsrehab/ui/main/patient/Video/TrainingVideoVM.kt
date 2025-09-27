@@ -10,7 +10,7 @@ class TrainingVideoViewModel : ViewModel() {
 
     private val categoryLive = MutableLiveData<String>("全部")
 
-    // 本地静态视频列表
+    //本地静态视频列表
     private val allVideos = listOf(
         DemoVideo(
             id = 1,
@@ -42,7 +42,7 @@ class TrainingVideoViewModel : ViewModel() {
         )
     )
 
-    // 根据分类筛选
+    //根据分类筛选
     val videos: LiveData<List<DemoVideo>> = categoryLive.map { cat ->
         if (cat == "全部") allVideos else allVideos.filter { it.category == cat }
     }

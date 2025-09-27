@@ -61,7 +61,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     /**
-     * 将 assets 文件复制到 cacheDir
+     *将 assets 文件复制到 cacheDir
      */
     private fun copyAssetToCache(assetName: String, outFile: File) {
         // 确保父目录存在

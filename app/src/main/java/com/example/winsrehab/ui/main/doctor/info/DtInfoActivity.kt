@@ -22,8 +22,8 @@ class DtInfoActivity : AppCompatActivity() {
         binding = ActivityDtInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        doctorCode = intent.getStringExtra("doctorCode") ?: ""
-        patientCount = intent.getIntExtra("totalCount", 0)
+            doctorCode = intent.getStringExtra("doctorCode") ?: ""
+            patientCount = intent.getIntExtra("totalCount", 0)
         Log.d("DtInfoActivity", "doctorCode: $doctorCode")
         Log.d("DtInfoActivity", "patientCount: $patientCount")
 
@@ -32,7 +32,8 @@ class DtInfoActivity : AppCompatActivity() {
                 binding.tvCode.text = "工号：${doctor.id}"
                 binding.etName.setText(doctor.name)
                 binding.etAge.setText(doctor.age?.toString() ?: "")
-                binding.etPtNum.setText(if ( doctor.patientCount == 0)
+                binding.etPtNum.setText(
+                    if ( doctor.patientCount == 0)
                     patientCount.toString()
                 else
                     doctor.patientCount.toString())
@@ -40,10 +41,11 @@ class DtInfoActivity : AppCompatActivity() {
                 binding.etDepartment.setText(doctor.department)
             } else {
                 binding.tvCode.text = "工号：$doctorCode"
-                binding.etPtNum.setText(if (doctor?.patientCount == 0)
+                binding.etPtNum.setText(
+                    if (doctor?.patientCount == 0)
                     patientCount.toString()
                 else
-                    doctor?.patientCount.toString())
+                    doctor?.patientCount.toString() )
             }
         }
 
@@ -75,7 +77,7 @@ class DtInfoActivity : AppCompatActivity() {
         val oldPassword = viewModel.doctor.value?.password ?: ""
         // 创建医生对象
         val doctor = Doctor(
-            id = doctorCode,
+            id = doctorCode,//别搞错
             password = oldPassword,
             name = name,
             gender = gender,
@@ -89,7 +91,7 @@ class DtInfoActivity : AppCompatActivity() {
                 Toast.makeText(this, "信息保存成功", Toast.LENGTH_SHORT).show()
                 startActivity(
                     Intent(this, DtHomeActivity::class.java)
-                        .putExtra("doctorCode", doctorCode)
+                                .putExtra("doctorCode", doctorCode)
 
                 )
                 finish()

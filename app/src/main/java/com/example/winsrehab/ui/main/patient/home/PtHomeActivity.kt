@@ -14,7 +14,7 @@ class PtHomeActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPtHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //个人信息
         binding.btnViewInfo.setOnClickListener({ view ->
             val intent: Intent = Intent(this, PtInfoActivity::class.java)
             //把 account 传过去
@@ -23,10 +23,12 @@ class PtHomeActivity: AppCompatActivity() {
             intent.putExtra("account", account)
             startActivity(intent)
         })
+        //跳到示范视频页
         binding.cardTraining.setOnClickListener({ view ->
             val intent: Intent = Intent(this, TrainingVideoActivity::class.java)
             startActivity(intent)
         })
+        //跳到心理助手页
         binding.cardPsychology.setOnClickListener({ view ->
             val intent: Intent = Intent(this, PsychologyActivity::class.java)
             startActivity(intent)
