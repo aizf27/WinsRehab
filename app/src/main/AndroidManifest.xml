@@ -11,8 +11,6 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.WinsRehab">
-
-
         <!--把MainActivity改成普通Activit（不作为启动入口） -->
         <activity
             android:name=".MainActivity"
@@ -26,7 +24,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--患者登陆页-->
         <activity android:name=".ui.main.patient.login.PtLogActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
             <!--医生主页-->
         <activity android:name=".ui.main.doctor.home.DtHomeActivity"

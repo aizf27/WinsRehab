@@ -26,7 +26,7 @@ class PsychologyActivity: AppCompatActivity () {
         viewModle.chatList.observe(this) {
             adapter.chatList.clear()
             adapter.chatList.addAll(it)
-                adapter.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
         }
 
 

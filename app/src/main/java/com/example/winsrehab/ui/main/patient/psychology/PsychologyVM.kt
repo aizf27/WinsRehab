@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class PsychologyVM: ViewModel () {
     private val repository = PsychologyRepository()
+
     private val _chatList = MutableLiveData<MutableList<ChatMessage>>(mutableListOf())
     val chatList: LiveData<MutableList<ChatMessage>> get() = _chatList
 
@@ -22,7 +23,7 @@ class PsychologyVM: ViewModel () {
     fun addAIMessage(message: String) {
         val chatMessage = ChatMessage(message, ChatMessage.MessageType.AI)
         _chatList.value?.add(chatMessage)
-        _chatList.value = _chatList.value
+        _chatList.value = _chatList.value   //触发LiveData更新
     }
 
     fun buildRequestMessages(): List<ChatMessage> = _chatList.value?.toList() ?: emptyList()

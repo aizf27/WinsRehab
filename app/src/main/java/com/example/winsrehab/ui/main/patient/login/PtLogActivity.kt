@@ -80,8 +80,9 @@ class PtLogActivity: AppCompatActivity () {
         binding.btnPtLogin.setOnClickListener {
             val account=binding.etPtAccount.text.toString()
             val password=binding.etPtPassword.text.toString()
-                Log.i("PtLogActivity", "account: $account")
-                Log.i("PtLogActivity", "password: $password")
+
+            Log.i("PtLogActivity", "account: $account")
+            Log.i("PtLogActivity", "password: $password")
 
             if (account.isEmpty() || password.isEmpty()){
                 Toast.makeText(this, "手机号或密码不能为空", Toast.LENGTH_SHORT).show()

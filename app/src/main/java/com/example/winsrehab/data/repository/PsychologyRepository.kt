@@ -51,7 +51,6 @@ class PsychologyRepository {
             //开始处理response
             val response=client.newCall(request).execute()
 
-
             val responseBody = response.body
             val reStr = responseBody?.string()
             responseBody?.close()

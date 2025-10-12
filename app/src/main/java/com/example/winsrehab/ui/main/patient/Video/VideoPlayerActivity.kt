@@ -18,7 +18,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //？？补课补课
         val videoPath = intent.getStringExtra("url") ?: return
         val videoTitle = intent.getStringExtra("title") ?: "视频播放"
         title = videoTitle
@@ -39,13 +39,13 @@ class VideoPlayerActivity : AppCompatActivity() {
                         copyAssetToCache(assetFileName, outFile)
                     }
 
-                    // 播放缓存文件
+                    //播放缓存文件
                     binding.videoView.setVideoPath(outFile.absolutePath)
                     binding.videoView.requestFocus()
                     binding.videoView.start()
                 }
                 videoPath.startsWith("http") -> {
-                    // 网络视频
+                    //网络视频
                     binding.videoView.setVideoURI(Uri.parse(videoPath))
                     binding.videoView.requestFocus()
                     binding.videoView.start()
