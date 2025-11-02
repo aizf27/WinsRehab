@@ -1,7 +1,6 @@
 package com.example.winsrehab.ui.main.selectLog
 
 import android.app.Application
-
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
