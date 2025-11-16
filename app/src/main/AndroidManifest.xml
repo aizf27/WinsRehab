@@ -21,43 +21,53 @@
         <activity
             android:name=".ui.main.doctor.login.DtLogActivity"
             android:exported="false"
+            android:launchMode="singleTask"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--患者登陆页-->
         <activity android:name=".ui.main.patient.login.PtLogActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
             <!--医生主页-->
         <activity android:name=".ui.main.doctor.home.DtHomeActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--患者主页-->
         <activity android:name=".ui.main.patient.home.PtHomeActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 <!--        医生信息页-->
         <activity android:name=".ui.main.doctor.info.DtInfoActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--患者信息页-->
         <activity android:name=".ui.main.patient.info.PtInfoActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 <!--        心理助手界面-->
         <activity android:name=".ui.main.patient.psychology.PsychologyActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--视频列表界面-->
         <activity android:name=".ui.main.patient.Video.TrainingVideoActivity"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--视频播放界面-->
         <activity android:name=".ui.main.patient.Video.VideoPlayerActivity"
             android:exported="false"
+            android:launchMode="standard"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--把SelectLogActivity设为启动Activity -->
         <activity
             android:name=".ui.main.selectLog.SelectLogActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>

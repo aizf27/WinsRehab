@@ -35,25 +35,26 @@
             android:gravity="center_horizontal">
 
             <!-- 顶部标题：医生登录 -->
+
+
+            <!-- 副标题 -->
             <TextView
                 android:id="@+id/tvDoctorLoginTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="医生登录"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:layout_marginTop="32dp"
+                android:text="@string/title_dotlog"
                 android:textColor="@color/black"
-                android:layout_marginTop="32dp"/>
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-
-            <!-- 副标题 -->
             <TextView
                 android:id="@+id/tvDoctorLoginSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="Hard work pays off"
+                android:text="@string/dotlog_Inspirational_words"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -80,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:text="Doctor-patient interconnection"
+                    android:text="@string/dotlog_theme"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />

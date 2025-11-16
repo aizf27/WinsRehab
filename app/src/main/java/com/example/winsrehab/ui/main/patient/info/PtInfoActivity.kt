@@ -74,6 +74,7 @@ class PtInfoActivity: AppCompatActivity () {
         Toast.makeText(this, "信息保存成功", Toast.LENGTH_SHORT).show()
         if (mode == "patient"){
             val intent: Intent = Intent(this@PtInfoActivity, PtHomeActivity::class.java)
+           // intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             intent.putExtra("account", account)
             startActivity(intent)
             finish()

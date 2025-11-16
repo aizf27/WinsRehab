@@ -115,8 +115,8 @@ class DtLogActivity : AppCompatActivity() {
         val password = binding.etDoctorPassword.text.toString()
         val remember = binding.cbRememberPassword.isChecked
 
-             editor.putString("doctor_id", id)
-             editor.putBoolean("remember", remember)
+        editor.putString("doctor_id", id)
+        editor.putBoolean("remember", remember)
 
         if (remember) editor.putString("doctor_password", password)
         else editor.remove("doctor_password")
