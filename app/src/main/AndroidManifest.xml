@@ -33,10 +33,10 @@
             android:exported="false"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <!--患者主页-->
-        <activity android:name=".ui.main.patient.home.PtHomeActivity"
+        <!--患者主界面（带底部导航栏）-->
+        <activity android:name=".ui.main.patient.main.PtMainActivity"
             android:exported="false"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 <!--        医生信息页-->
         <activity android:name=".ui.main.doctor.info.DtInfoActivity"

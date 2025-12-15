@@ -246,7 +246,7 @@ class MyApp : Application() {
 患者主页提供了三个主要功能入口：个人信息、训练视频和心理助手。
 
 ```kotlin
-package com.example.winsrehab.ui.main.patient.home
+package com.example.winsrehab.ui.main.patient.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -256,7 +256,7 @@ import com.example.winsrehab.ui.main.patient.Video.TrainingVideoActivity
 import com.example.winsrehab.ui.main.patient.info.PtInfoActivity
 import com.example.winsrehab.ui.main.patient.psychology.PsychologyActivity
 
-class PtHomeActivity: AppCompatActivity() {
+class PtHomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPtHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

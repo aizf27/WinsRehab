@@ -12,8 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.winsrehab.databinding.ActivityPtLogBinding
-import com.example.winsrehab.ui.main.patient.home.PtHomeActivity
-import com.example.winsrehab.ui.main.patient.info.PtInfoActivity
+import com.example.winsrehab.ui.main.patient.main.PtMainActivity
 
 class PtLogActivity: AppCompatActivity () {
     private lateinit var binding : ActivityPtLogBinding
@@ -65,11 +64,9 @@ class PtLogActivity: AppCompatActivity () {
         viewModel.infoComplete.observe(this){complete->
             val account=binding.etPtAccount.text.toString()
 
-            val intent=if( complete) Intent(this, PtHomeActivity::class.java)
-            else Intent(this, PtInfoActivity::class.java)
-
-            intent.putExtra("account", account) //传递账号用于填充基本信息
-            intent.putExtra("mode", "patient")  //用于设置基础信息可写模式
+            // 统一跳转到新的主界面
+            val intent = Intent(this, PtMainActivity::class.java)
+            intent.putExtra("account", account) //传递账号
 
             Log.i("PtLogActivity", "account: $account")
 

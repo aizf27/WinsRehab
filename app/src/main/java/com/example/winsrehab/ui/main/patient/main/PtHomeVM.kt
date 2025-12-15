@@ -1,4 +1,4 @@
-package com.example.winsrehab.ui.main.patient.home
+package com.example.winsrehab.ui.main.patient.main
 
 import androidx.lifecycle.ViewModel
 import com.example.winsrehab.MyApp

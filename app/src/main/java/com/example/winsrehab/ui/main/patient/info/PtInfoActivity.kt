@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.databinding.ActivityPtInfoBinding
-import com.example.winsrehab.ui.main.patient.home.PtHomeActivity
+import com.example.winsrehab.ui.main.patient.main.PtHomeActivity
 
 class PtInfoActivity: AppCompatActivity () {
     private lateinit var binding : ActivityPtInfoBinding
