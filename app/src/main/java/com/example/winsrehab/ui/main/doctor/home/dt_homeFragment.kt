@@ -98,7 +98,7 @@ class dt_homeFragment : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null  // 释放ViewBinding，避免内存泄漏
+        _binding = null  //释放ViewBinding，避免内存泄漏
     }
 
 }

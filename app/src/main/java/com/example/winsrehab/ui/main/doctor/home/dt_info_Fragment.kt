@@ -66,11 +66,8 @@ class dt_info_Fragment : Fragment() {
                 binding.tvCode.text = "工号：${doctor.id}"
                 binding.etName.setText(doctor.name)
                 binding.etAge.setText(doctor.age?.toString() ?: "")
-                binding.etPtNum.setText(
-                    if (doctor.patientCount == 0)
-                        totalCount.toString()
-                    else
-                        doctor.patientCount.toString())
+                // 始终使用从主页传递过来的实际患者数，而不是数据库中存储的旧值
+                binding.etPtNum.setText(totalCount.toString())
                 binding.etGender.setText(doctor.gender)
                 binding.etDepartment.setText(doctor.department)
             } else {
@@ -107,7 +104,7 @@ class dt_info_Fragment : Fragment() {
             return
         }
         val oldPassword = viewModel.doctor.value?.password ?: ""
-        // 创建医生对象
+        //创建医生对象
         val doctor = Doctor(
             id = doctorCode,//别搞错
             password = oldPassword,
@@ -148,7 +145,7 @@ class dt_info_Fragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment dt_info_Fragment.
          */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             dt_info_Fragment().apply {
