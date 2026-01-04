@@ -23,7 +23,7 @@
                 android:id="@+id/btn_avatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@mipmap/img_mrtx"
+                android:src="@drawable/img_tx"
                 android:scaleType="centerCrop"
                 android:background="@drawable/shape_rounded_card_light"
                 android:contentDescription="用户头像"

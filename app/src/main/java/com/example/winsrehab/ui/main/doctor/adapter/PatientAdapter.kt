@@ -39,8 +39,8 @@ class PatientAdapter(
         holder.progressTraining.progress = patient.progress
          holder.tvProgressValue.text = "${patient.progress}%"
         holder.tvAiResult.text = patient.aiResult ?: ""
-        holder.imgAvatar.setImageResource(R.mipmap.img_mrtx)
-        holder.imgAiEval.setImageResource(R.mipmap.img_ai)
+        holder.imgAvatar.setImageResource(R.drawable.img_tx)
+        holder.imgAiEval.setImageResource(R.drawable.img_ai)
 
          holder.imgAlert.visibility =
             if (patient.hasAlert) View.VISIBLE else View.GONE

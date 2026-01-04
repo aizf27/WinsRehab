@@ -58,7 +58,7 @@
                             android:layout_height="24dp"
                             android:contentDescription="训练图标"
                             android:layout_gravity="center"
-                            android:src="@mipmap/ic_heart_beat" />
+                            android:src="@drawable/ic_heart_beat" />
                     </FrameLayout>
 
                     <!-- 标题 -->
@@ -124,7 +124,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:contentDescription="进度图标"
-                            android:src="@mipmap/ic_prossce" />
+                            android:src="@drawable/ic_prossce" />
                     </FrameLayout>
 
                     <!-- 标题 -->
@@ -179,7 +179,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@mipmap/img_blue_back"
+                android:background="@drawable/img_blue_back"
                 android:orientation="vertical">
 
                 <TextView
@@ -210,7 +210,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@mipmap/img_pink_back"
+                android:background="@drawable/img_pink_back"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -238,7 +238,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@mipmap/img_yellow_back"
+                android:background="@drawable/img_yellow_back"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -266,7 +266,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@mipmap/img_green_back"
+                android:background="@drawable/img_grenn_back"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"

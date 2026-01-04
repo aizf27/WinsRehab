@@ -76,7 +76,7 @@
 
                 android:contentDescription="pie chart placeholder"
                 android:scaleType="fitXY"
-                android:src="@mipmap/img_to_be_processed"/>
+                android:src="@drawable/img_to_be_processed"/>
         </LinearLayout>
     </LinearLayout>
 

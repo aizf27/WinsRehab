@@ -13,7 +13,7 @@
     <!--        android:layout_height="120dp"-->
     <!--        android:layout_marginTop="60dp"-->
     <!--        android:layout_gravity="center"-->
-    <!--        android:src="@mipmap/ic_launcher_foreground"-->
+    <!--        android:src="@drawable/ic_launcher_foreground"-->
     <!--        />-->
     <TextView
         android:id="@+id/textWelcome"
@@ -53,7 +53,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/shape_logmap"
             android:scaleType="centerInside"
-            android:src="@mipmap/img_dtlog"
+            android:src="@drawable/img_dtlog"
 
             />
 
@@ -65,7 +65,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/shape_logmap"
             android:scaleType="centerInside"
-            android:src="@mipmap/img_userlog"
+            android:src="@drawable/img_userlog"
 
             />
 

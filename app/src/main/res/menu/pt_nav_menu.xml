@@ -3,14 +3,14 @@
     <item
         android:id="@+id/pt_homeFragment"
         android:title="首页"
-        android:icon="@mipmap/icon_pt_home"/>
+        android:icon="@drawable/icon_pt_home"/>
     <item
         android:id="@+id/pt_rehabFragment"
         android:title="康复中心"
-        android:icon="@mipmap/icon_pt_rehab"/>
+        android:icon="@drawable/icon_pt_rehab"/>
     <item
         android:id="@+id/pt_infoFragment"
         android:title="个人中心"
-        android:icon="@mipmap/icon_pt_info"/>
+        android:icon="@drawable/icon_pt_info"/>
 </menu>
 

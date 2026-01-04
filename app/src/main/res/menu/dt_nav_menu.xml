@@ -3,10 +3,10 @@
     <item
         android:id="@+id/dt_homeFragment"
         android:title="患者管理"
-        android:icon="@mipmap/ic_pt_management"/>
+        android:icon="@drawable/ic_pt_management"/>
     <item
         android:id="@+id/dt_info_Fragment"
         android:title="个人中心"
-        android:icon="@mipmap/ic_info_center"/>
+        android:icon="@drawable/ic_info_center"/>
 
 </menu>
