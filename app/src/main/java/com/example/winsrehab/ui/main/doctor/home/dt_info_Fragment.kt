@@ -61,7 +61,7 @@ class dt_info_Fragment : Fragment() {
         _binding= FragmentDtInfoBinding.inflate(inflater,container,false)
         return binding.root
     }
-
+    //1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
