@@ -23,21 +23,25 @@ class PtInfoVM: ViewModel() {
 
     fun saveBasicInfo(
         account: String, name: String, gender: String, age: Int,
-        doctor: String, doctorCode: String
+        doctor: String, doctorCode: String, signature: String
     ) {
         viewModelScope.launch {
             val old = repository.getPatientByAccount(account)
             val newPatient = old?.copy(
                 name = name, gender = gender, age = age,
                 physicianName = doctor, physicianCode = doctorCode,
-                account = account
+                account = account,
+                signature = signature
             ) ?: Patient(
                 id = account,   //必须有唯一标识
+                account = account,
+                password = old?.password ?: "",
                 name = name,
                 gender = gender,
                 age = age,
                 physicianName = doctor,
                 physicianCode = doctorCode,
+                signature = signature,
 
             )
             repository.insertPatient(newPatient)

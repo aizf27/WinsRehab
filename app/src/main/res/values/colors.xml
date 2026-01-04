@@ -11,7 +11,9 @@
     <color name="gray">#D9D7D7</color>
     <color name="blue_deep">#38A9F0</color>
     <color name="blue_shallow">#0B97F3</color>
+    <color name="green_ai">#A4F4CF</color>
     <color name="green_deep">#38A08E</color>
     <color name="green_shallow">#3CC6AF</color>
     <color name="back_green">#E8F5E9</color>
+    <color name="icon_green">#00DD95</color>
 </resources>

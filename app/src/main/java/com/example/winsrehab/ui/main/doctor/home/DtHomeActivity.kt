@@ -1,52 +1,79 @@
 package com.example.winsrehab.ui.main.doctor.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
+
+import com.example.winsrehab.R
 import com.example.winsrehab.databinding.ActivityDtHomeBinding
 import com.example.winsrehab.ui.main.doctor.adapter.PatientAdapter
-import com.example.winsrehab.ui.main.doctor.info.DtInfoActivity
 
 class DtHomeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDtHomeBinding
+    lateinit var binding: ActivityDtHomeBinding
     private val viewModel: DtHomeVM by viewModels()
-    var doctorCode: String=""
-    var PtCount:Int=0
+    var doctorCode: String = ""
+    var ptCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDtHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-         doctorCode = intent.getStringExtra("doctorCode") ?: ""
+        doctorCode = intent.getStringExtra("doctorCode") ?: ""
         Log.d("DtHomeActivity", "doctorCode: $doctorCode")
 
-        val adapter= PatientAdapter()
-//        让列表纵向排列
-        binding.rvKeyPatients.layoutManager = LinearLayoutManager(this)
-        //绑定adapter
-        binding.rvKeyPatients.adapter = adapter
-        //观察数据变化并更新UI
+        //设置底部导航栏
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        //设置 NavGraph 并传递初始参数给起始 Fragment
+        val navGraph = navController.navInflater.inflate(R.navigation.dt_bot_nav)
+        val startArgs = Bundle().apply {
+            putString("doctorCode", doctorCode)
+        }
+        navController.setGraph(navGraph, startArgs)
+
+        //自定义底部导航点击，传递参数
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.dt_bot_nav, inclusive = true)
+                .setLaunchSingleTop(true)
+                .build()
+
+            when (item.itemId) {
+                R.id.dt_homeFragment -> {
+                    val bundle = Bundle().apply {
+                        putString("doctorCode", doctorCode)
+                    }
+                    navController.navigate(R.id.dt_homeFragment, bundle, navOptions)
+                    true
+                }
+                R.id.dt_info_Fragment -> {
+                    val bundle = Bundle().apply {
+                        putString("doctorCode", doctorCode)
+                        putInt("totalCount", ptCount)
+                    }
+                    Log.d("DtHomeActivity", "Navigating to dt_info_Fragment with doctorCode: $doctorCode, ptCount: $ptCount")
+                    navController.navigate(R.id.dt_info_Fragment, bundle, navOptions)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        //观察患者数据变化，更新患者总数
+        val adapter = PatientAdapter()
         viewModel.patients.observe(this) { list ->
-            adapter.submitList(list)  //把最新的患者列表交给adapter，触发DiffUtil检查变化并刷新
-            //更新患者总数
-            PtCount=adapter.itemCount
-            binding.tvTotalValue.text = PtCount.toString()
-            Log.d("DtHomeActivity", "PtCount: $PtCount")
+            adapter.submitList(list)
+            ptCount = list.size
+            Log.d("DtHomeActivity", "PtCount updated: $ptCount")
         }
 
-        binding.btnInfoCenter.setOnClickListener {
-            val intent = Intent(this, DtInfoActivity::class.java)
-             intent.putExtra("doctorCode", doctorCode)
-             intent.putExtra("totalCount", PtCount)
-            startActivity(intent)
-        }
-
+        //加载患者数据
         viewModel.loadPatients(doctorCode)
-        binding.tvTotalValue.text=adapter.itemCount.toString()
     }
 }
-

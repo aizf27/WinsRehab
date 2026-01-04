@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pt_bot_nav"
+    app:startDestination="@id/pt_homeFragment">
+
+    <!-- 首页Fragment -->
+    <fragment
+        android:id="@+id/pt_homeFragment"
+        android:name="com.example.winsrehab.ui.main.patient.main.pt_homeFragment"
+        android:label="首页"
+        tools:layout="@layout/fragment_pt_home">
+        <argument
+            android:name="account"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 康复中心Fragment -->
+    <fragment
+        android:id="@+id/pt_rehabFragment"
+        android:name="com.example.winsrehab.ui.main.patient.main.pt_rehabFragment"
+        android:label="康复中心"
+        tools:layout="@layout/fragment_pt_rehab">
+        <argument
+            android:name="account"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 个人中心Fragment -->
+    <fragment
+        android:id="@+id/pt_infoFragment"
+        android:name="com.example.winsrehab.ui.main.patient.main.pt_infoFragment"
+        android:label="个人中心"
+        tools:layout="@layout/fragment_pt_info">
+        <argument
+            android:name="account"
+            app:argType="string"
+            android:defaultValue=""
+            app:nullable="true" />
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="patient" />
+    </fragment>
+
+</navigation>
+

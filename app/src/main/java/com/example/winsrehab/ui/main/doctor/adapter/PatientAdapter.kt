@@ -1,6 +1,5 @@
 package com.example.winsrehab.ui.main.doctor.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Patient
-import com.example.winsrehab.ui.main.patient.info.PtInfoActivity
 
 class PatientAdapter(
     private val onItemClick: (Patient) -> Unit = {}   // 点击回调，可选
@@ -49,14 +47,6 @@ class PatientAdapter(
 
         holder.itemView.setOnClickListener {
             onItemClick(patient)
-
-            //直接跳转患者信息页
-            val context = holder.itemView.context
-            val intent = Intent(context, PtInfoActivity::class.java).apply {
-                putExtra("account", patient.account)
-                putExtra("mode", "doctor")
-            }
-            context.startActivity(intent)
         }
     }
         override fun getItemCount(): Int = currentList.size

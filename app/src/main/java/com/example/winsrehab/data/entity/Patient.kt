@@ -17,6 +17,7 @@ data class Patient (
                  val diagnosis: String? = null,    //诊断/病情描述
                  val stage: String? = null ,             //康复阶段（如：软瘫期/痉挛期/恢复期）
                  val progress :Int= 0,                      //康复进度（0-100）
+                 val signature: String? = null,          //个性签名
                  val aiResult: String? = null,           //AI 分析结果
                  val hasAlert : Boolean= false,                //是否有异常预警
                  val lastTrainingDate: String? = null //最近训练日期
@@ -35,6 +36,7 @@ data class Patient (
                 null, // diagnosis
                 null, // stage
                 0,    // progress
+                null, // signature
                 null, // aiResult
                 false, // hasAlert
                 null  // lastTrainingDate

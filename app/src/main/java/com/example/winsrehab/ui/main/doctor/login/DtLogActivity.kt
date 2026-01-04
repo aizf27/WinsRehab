@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -12,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.winsrehab.databinding.ActivityDtLogBinding
 import com.example.winsrehab.ui.main.doctor.home.DtHomeActivity
-import com.example.winsrehab.ui.main.doctor.info.DtInfoActivity
+
 
 class DtLogActivity : AppCompatActivity() {
 
@@ -65,13 +66,11 @@ class DtLogActivity : AppCompatActivity() {
         }
 
         //信息完整状态观察
-        viewModel.infoComplete.observe(this) { complete ->
+        viewModel.infoComplete.observe(this) {
             val id = binding.etDoctorId.text.toString()
-            val intent = if (complete) Intent(this, DtHomeActivity::class.java)
-
-            else Intent(this, DtInfoActivity::class.java)
+            Log.d("DtLogActivity", "Starting DtHomeActivity with doctorCode: $id")
+            val intent = Intent(this, DtHomeActivity::class.java)
             intent.putExtra("doctorCode", id)
-
             startActivity(intent)
             finish()
         }

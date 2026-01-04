@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dt_bot_nav"
+    app:startDestination="@id/dt_homeFragment">
+
+    <fragment
+        android:id="@+id/dt_homeFragment"
+        android:name="com.example.winsrehab.ui.main.doctor.home.dt_homeFragment"
+        android:label="fragment_dt_home"
+        tools:layout="@layout/fragment_dt_home" >
+        <action
+            android:id="@+id/action_dt_homeFragment_to_dt_info_Fragment"
+            app:destination="@id/dt_info_Fragment" />
+        <action
+            android:id="@+id/action_dt_homeFragment_to_pt_infoFragment"
+            app:destination="@id/pt_infoFragment" />
+        <argument
+            android:name="doctorCode"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
+    <fragment
+        android:id="@+id/dt_info_Fragment"
+        android:name="com.example.winsrehab.ui.main.doctor.home.dt_info_Fragment"
+        android:label="dt_info_Fragment" >
+        <argument
+            android:name="doctorCode"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument android:name="totalCount"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/pt_infoFragment"
+        android:name="com.example.winsrehab.ui.main.patient.main.pt_infoFragment"
+        android:label="患者信息">
+        <argument
+            android:name="account"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="doctor" />
+    </fragment>
+</navigation>

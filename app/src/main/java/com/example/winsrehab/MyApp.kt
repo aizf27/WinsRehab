@@ -3,6 +3,7 @@ package com.example.winsrehab
 import android.app.Application
 import androidx.room.Room
 import com.example.winsrehab.data.database.AppDatabase
+import com.example.winsrehab.data.database.DatabaseMigrations
 
 class MyApp : Application() {
 
@@ -19,7 +20,9 @@ class MyApp : Application() {
             AppDatabase::class.java,
             "rehab.db"
         )
-            .fallbackToDestructiveMigration()   //升级就把旧数据删光光
+            .addMigrations(
+                DatabaseMigrations.MIGRATION_3_4
+            )
             .build()
     }
 

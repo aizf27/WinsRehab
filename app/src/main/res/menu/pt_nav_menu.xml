@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pt_homeFragment"
+        android:title="首页"
+        android:icon="@mipmap/icon_pt_home"/>
+    <item
+        android:id="@+id/pt_rehabFragment"
+        android:title="康复中心"
+        android:icon="@mipmap/icon_pt_rehab"/>
+    <item
+        android:id="@+id/pt_infoFragment"
+        android:title="个人中心"
+        android:icon="@mipmap/icon_pt_info"/>
+</menu>
+

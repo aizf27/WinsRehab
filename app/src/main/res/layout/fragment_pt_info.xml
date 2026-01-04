@@ -9,6 +9,35 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="1dp">
+
+        <!-- 头像占位ImageButton -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageButton
+                android:id="@+id/btn_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/img_mrtx"
+                android:scaleType="centerCrop"
+                android:background="@drawable/shape_rounded_card_light"
+                android:contentDescription="用户头像"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击更换头像（待实现）"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,6 +67,28 @@
                 android:layout_height="wrap_content"
                 android:hint="请输入姓名"
                 android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <!-- 个性签名 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="个性签名：" />
+
+            <EditText
+                android:id="@+id/et_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="一句话介绍自己"
+                android:inputType="textCapSentences|textMultiLine" />
         </LinearLayout>
 
         <!-- 性别 -->
@@ -258,3 +309,4 @@
             android:layout_marginTop="15dp"/>
     </LinearLayout>
 </ScrollView>
+

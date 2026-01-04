@@ -30,9 +30,17 @@ class DoctorRepository(private val doctorDao: DoctorDao) {
     }
 
    //更新
-    suspend fun updateDoctorInfo(doctor: Doctor) {
-        doctorDao.updateDoctor(doctor)
-    }
+   suspend fun updateDoctorInfo(doctor: Doctor) {
+       // 先查询是否存在该医生信息
+       val existingDoctor = doctorDao.getDoctorInfo(doctor.id)
+       if (existingDoctor == null) {
+           // 如果不存在，执行插入操作
+           doctorDao.insertDoctor(doctor)
+       } else {
+           // 如果存在，执行更新操作
+           doctorDao.updateDoctor(doctor)
+       }
+   }
 
     suspend fun updatePatientCount(id: String, count: Int) {
         doctorDao.updatePatientCount(id, count)

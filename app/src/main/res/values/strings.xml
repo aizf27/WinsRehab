@@ -3,4 +3,6 @@
     <string name="title_dotlog">医生登录</string>
     <string name="dotlog_Inspirational_words">Hard work pays off</string>
     <string name="dotlog_theme">Doctor-patient interconnection</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
