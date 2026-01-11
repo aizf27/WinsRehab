@@ -1,382 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F9FAFB"> <!-- 对应 bg-gray-50 -->
 
-    <!-- 顶部栏（仿QQ样式） -->
+    <!-- 1. 顶部标题栏 (Header) -->
+    <!-- 对应 React: <header className="bg-white shadow-sm"> -->
     <LinearLayout
-        android:id="@+id/top_bar"
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:background="@color/white"
         android:elevation="2dp"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 头像 -->
-        <ImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/img_tx"
-            android:scaleType="centerCrop"
-            android:background="@drawable/shape_rounded_card_light"
-            android:padding="2dp" />
-
-        <!-- 昵称和个性签名 -->
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/tv_nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="27dp"
-                android:text="患者昵称"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_signature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="个性签名..."
-                android:textSize="12sp"
-                android:textColor="#666666"
-                android:layout_marginTop="2dp"
-                android:maxLines="1"
-                android:ellipsize="end" />
-        </LinearLayout>
+            android:text="个人信息"
+            android:textColor="#15803D"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <!-- text-green-700 = #15803D -->
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/infoScroll"
-        android:layout_width="0dp"
+    <!-- 2. 滚动内容区域 -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="1dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <!-- 你的所有内容保持不变 -->
-            <!-- 头像占位ImageButton -->
-            <LinearLayout
+            <!-- 个人资料卡片 -->
+            <!-- 对应 React: bg-gradient-to-r from-green-500 to-green-600 -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
 
-                <ImageButton
-                    android:id="@+id/btn_avatar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@drawable/shape_rounded_card_light"
-                    android:contentDescription="用户头像"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_tx" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="点击更换头像(待实现)"
-                    android:textColor="#666666"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:background="@drawable/bg_gradient_green"
+                    android:padding="24dp">
 
+                    <!-- 头像区域 -->
+                    <FrameLayout
+                        android:id="@+id/avatarContainer"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/shape_circle_white_alpha"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <!-- 请替换为你的 ic_user 图标 -->
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_user"
+                            app:tint="@color/white"/>
+                    </FrameLayout>
+
+                    <!-- 文字信息 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/avatarContainer"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvPatientName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="张先生"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvPatientId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.9"
+                            android:text="患者 ID: 202401001"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvRehabCenter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.9"
+                            android:text="康复中心：XX医院康复科"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= 基本信息板块 ================= -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="12dp"
-                android:text="基础信息"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                style="@style/SectionTitle"
+                android:text="基本信息" />
 
-            <!-- 姓名 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="姓名:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_name"
+            <androidx.cardview.widget.CardView
+                style="@style/InfoCardStyle">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="请输入姓名"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <!-- 个性签名 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    <include layout="@layout/item_info_row" android:id="@+id/row_phone" />
+                    <View style="@style/Divider" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="个性签名:"
-                    android:textSize="18sp" />
+                    <include layout="@layout/item_info_row" android:id="@+id/row_email" />
+                    <View style="@style/Divider" />
 
-                <EditText
-                    android:id="@+id/et_signature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="一句话介绍自己"
-                    android:inputType="textCapSentences|textMultiLine" />
-            </LinearLayout>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_dob" />
+                    <View style="@style/Divider" />
 
-            <!-- 性别 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    <include layout="@layout/item_info_row" android:id="@+id/row_address" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="性别:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="男/女"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <!-- 年龄 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年龄:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="请输入年龄"
-                    android:inputType="number" />
-            </LinearLayout>
-
-            <!-- 主治医师姓名 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="主治医师:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_doctorName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="请输入主治医师姓名"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
-            <!-- 主治医师工号 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="主治医师工号:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_doctorCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="请输入主治医师工号"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
+            <!-- ================= 康复信息板块 ================= -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="6dp"
-                android:text="康复信息"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                style="@style/SectionTitle"
+                android:text="康复信息" />
 
-            <!-- 诊断 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="诊断:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_diagnosis"
+            <androidx.cardview.widget.CardView
+                style="@style/InfoCardStyle">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="诊断/病情描述"
-                    android:inputType="textMultiLine" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <!-- 康复阶段 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    <include layout="@layout/item_info_row" android:id="@+id/row_record" />
+                    <View style="@style/Divider" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="康复阶段:"
-                    android:textSize="18sp" />
+                    <include layout="@layout/item_info_row" android:id="@+id/row_training" />
+                    <View style="@style/Divider" />
 
-                <EditText
-                    android:id="@+id/et_stage"
+                    <include layout="@layout/item_info_row" android:id="@+id/row_doctor" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ================= 设置板块 ================= -->
+            <TextView
+                style="@style/SectionTitle"
+                android:text="设置" />
+
+            <androidx.cardview.widget.CardView
+                style="@style/InfoCardStyle">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="软瘫期/痉挛期/恢复期"
-                    android:inputType="text" />
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <!-- 康复进度 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    <include layout="@layout/item_info_row" android:id="@+id/row_system" />
+                    <View style="@style/Divider" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="康复进度:"
-                    android:textSize="18sp" />
+                    <!-- 切换账户 (红色特殊样式) -->
+                    <LinearLayout
+                        android:id="@+id/btnLogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:gravity="center_vertical"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true">
 
-                <EditText
-                    android:id="@+id/et_progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="0-100"
-                    android:inputType="number" />
-            </LinearLayout>
+                        <!-- LogOut Icon -->
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_logout"
+                            app:tint="#DC2626" />
 
-            <!-- AI 分析结果 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="切换账户"
+                            android:textColor="#DC2626"
+                            android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="AI分析:"
-                    android:textSize="18sp" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="#9CA3AF" />
+                    </LinearLayout>
 
-                <EditText
-                    android:id="@+id/et_ai_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="AI 分析结果"
-                    android:inputType="textMultiLine" />
-            </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            <!-- 最近训练日期 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="最近训练:"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/et_last_training"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="YYYY-MM-DD"
-                    android:inputType="date" />
-            </LinearLayout>
-
-            <!-- 保存按钮 -->
-            <Button
-                android:id="@+id/btn_save"
-                style="@style/MyRoundButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/green_shallow"
-                android:text="保存信息" />
         </LinearLayout>
-
-    </ScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

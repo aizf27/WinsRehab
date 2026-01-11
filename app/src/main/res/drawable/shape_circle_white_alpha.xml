@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- shape="oval" 表示这是一个椭圆/圆形 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- 填充颜色 -->
+    <!-- #33FFFFFF 分解如下：-->
+    <!-- 33: 代表 20% 的透明度 (Alpha) -->
+    <!-- FFFFFF: 代表白色 -->
+    <solid android:color="#33FFFFFF" />
+
+</shape>

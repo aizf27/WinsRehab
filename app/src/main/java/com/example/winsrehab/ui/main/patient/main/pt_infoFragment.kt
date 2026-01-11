@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.databinding.FragmentPtInfoBinding
 import com.example.winsrehab.ui.main.patient.info.PtInfoVM
@@ -21,22 +24,17 @@ class pt_infoFragment : Fragment() {
     private val viewModel: PtInfoVM by activityViewModels()
     private val args by navArgs<pt_infoFragmentArgs>()
     private var account: String = ""
-    private val mode: String
-        get() = args.mode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         account = resolveAccount()
-        Log.d(
-            "pt_infoFragment",
-            "account: $account, mode: $mode"
-        )
+        Log.d("pt_infoFragment", "account: $account")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPtInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,121 +42,112 @@ class pt_infoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //观察患者数据,变化就更新
+        // 初始化各行的图标和标题
+        setupInfoRows()
+
+        // 观察患者数据，变化就更新
         viewModel.patient.observe(viewLifecycleOwner) { patient ->
-            patient?.let { 
+            patient?.let {
                 fillUI(it)
-                renderTopBar(it.name, it.signature, it.progress)
             }
         }
 
-        //设置UI模式（患者/医生区分可编辑字段）
-        setModeUI(mode)
-
-        //拉取患者信息
+        // 拉取患者信息
         viewModel.loadPatient(account)
 
-        //头像按钮点击事件（占位，待实现）
-        binding.btnAvatar.setOnClickListener {
-            Toast.makeText(requireContext(), "更换头像功能待实现", Toast.LENGTH_SHORT).show()
+        // 设置点击事件
+        setupClickListeners()
+    }
+
+    /**
+     * 初始化各行的图标和标题
+     */
+    private fun setupInfoRows() {
+        // 基本信息板块
+        setupRow(binding.rowPhone.root, R.drawable.ic_phone, "电话")
+        setupRow(binding.rowEmail.root, R.drawable.ic_email, "邮箱")
+        setupRow(binding.rowDob.root, R.drawable.ic_calendar, "出生日期")
+        setupRow(binding.rowAddress.root, R.drawable.ic_location, "地址")
+
+        // 康复信息板块
+        setupRow(binding.rowRecord.root, R.drawable.ic_description, "康复记录")
+        setupRow(binding.rowTraining.root, R.drawable.ic_calendar, "训练计划")
+        setupRow(binding.rowDoctor.root, R.drawable.ic_user, "主治医生")
+
+        // 设置板块
+        setupRow(binding.rowSystem.root, R.drawable.ic_settings, "系统设置")
+    }
+
+    /**
+     * 设置单行的图标和标题
+     */
+    private fun setupRow(rowView: View, iconRes: Int, title: String) {
+        rowView.findViewById<ImageView>(R.id.rowIcon).setImageResource(iconRes)
+        rowView.findViewById<TextView>(R.id.rowTitle).text = title
+    }
+
+    /**
+     * 设置单行的值
+     */
+    private fun setRowValue(rowView: View, value: String?) {
+        rowView.findViewById<TextView>(R.id.rowValue).text = value?.takeIf { it.isNotBlank() } ?: "未设置"
+    }
+
+    /**
+     * 填充UI数据
+     */
+    private fun fillUI(patient: Patient) {
+        // 顶部卡片信息
+        binding.tvPatientName.text = patient.name ?: "患者"
+        binding.tvPatientId.text = "患者 ID: ${patient.id}"
+        binding.tvRehabCenter.text = "康复中心：XX医院康复科"
+
+        // 基本信息
+        setRowValue(binding.rowPhone.root, patient.account)  // 电话用account
+        setRowValue(binding.rowEmail.root, null)  // 邮箱暂无，显示未设置
+        setRowValue(binding.rowDob.root, null)    // 出生日期暂无，显示未设置
+        setRowValue(binding.rowAddress.root, null) // 地址暂无，显示未设置
+
+        // 康复信息
+        setRowValue(binding.rowRecord.root, "查看详情")
+        setRowValue(binding.rowTraining.root, "查看详情")
+        setRowValue(binding.rowDoctor.root, patient.physicianCode)  // 显示主治医生工号
+
+        // 设置板块
+        setRowValue(binding.rowSystem.root, "")
+    }
+
+    /**
+     * 设置点击事件
+     */
+    private fun setupClickListeners() {
+        // 康复记录 - 跳转到康复中心页
+        binding.rowRecord.root.setOnClickListener {
+            findNavController().navigate(R.id.pt_rehabFragment)
         }
 
-        //保存按钮点击事件
-        binding.btnSave.setOnClickListener { saveInfo() }
+        // 训练计划 - 暂不设置点击事件
+        // binding.rowTraining.root.setOnClickListener { }
+
+        // 主治医生 - 暂不设置点击事件
+        // binding.rowDoctor.root.setOnClickListener { }
+
+        // 系统设置 - 暂不设置点击事件
+        // binding.rowSystem.root.setOnClickListener { }
+
+        // 切换账户 - 暂不设置点击事件
+        // binding.btnLogout.setOnClickListener { }
     }
 
-    private fun fillUI(p: Patient) = with(binding) {
-        etName.setText(p.name ?: "")
-        etGender.setText(p.gender ?: "")
-        etAge.setText(if (p.age > 0) p.age.toString() else "")
-        etDoctorName.setText(p.physicianName ?: "")
-        etDoctorCode.setText(p.physicianCode ?: "")
-        etDiagnosis.setText(p.diagnosis ?: "")
-        etStage.setText(p.stage ?: "")
-        etProgress.setText(if (p.progress > 0) p.progress.toString() else "")
-        etSignature.setText(p.signature ?: "")
-        etAiResult.setText(p.aiResult ?: "")
-        etLastTraining.setText(p.lastTrainingDate ?: "")
-
-    }
-
-    private fun saveInfo() {
-        val name = binding.etName.text.toString().trim()
-        val gender = binding.etGender.text.toString().trim()
-        val age = binding.etAge.text.toString().toIntOrNull() ?: 0
-        val doctor = binding.etDoctorName.text.toString().trim()
-        val code = binding.etDoctorCode.text.toString().trim()
-        val signature = binding.etSignature.text.toString().trim()
-
-        val diagnosis = binding.etDiagnosis.text.toString().trim()
-        val stage = binding.etStage.text.toString().trim()
-        val progress = binding.etProgress.text.toString().toIntOrNull() ?: 0
-        val aiResult = binding.etAiResult.text.toString().trim()
-        val lastTraining = binding.etLastTraining.text.toString().trim()
-
-
-
-        if (mode == "patient") {
-            if (name.isEmpty() || gender.isEmpty() || age == 0) {
-                Toast.makeText(requireContext(), "请填写完整的基础信息", Toast.LENGTH_SHORT).show()
-                return
-            }
-            viewModel.saveBasicInfo(account, name, gender, age, doctor, code, signature)
-        } else { // doctor
-            // 可选校验：诊断或进度
-            viewModel.saveRehabInfo(account, diagnosis, stage, progress, aiResult, lastTraining)
-        }
-
-        Toast.makeText(requireContext(), "信息保存成功", Toast.LENGTH_SHORT).show()
-
-        //通知主Activity更新顶部栏信息
-        val result = Bundle()
-        result.putBoolean("patient_info_updated", true)
-        result.putString("patient_name", name)
-        result.putString("patient_signature", signature)
-        Log.d("pt_infoFragment","result:$result")
-        // 直接发给宿主 Activity 所在的 FragmentManager，避免 NavHost 嵌套导致收不到
-        requireActivity().supportFragmentManager.setFragmentResult("patient_info_result", result)
-    }
-
-    private fun setModeUI(mode: String) = with(binding) {
-        val patientEditable = (mode == "patient")
-        val doctorEditable = (mode == "doctor")
-
-        // 患者：基础信息可写，康复信息只读
-        etName.isEnabled = patientEditable
-        etGender.isEnabled = patientEditable
-        etAge.isEnabled = patientEditable
-        etDoctorName.isEnabled = patientEditable
-        etDoctorCode.isEnabled = patientEditable
-        etSignature.isEnabled = patientEditable
-
-        // 医生：基础信息只读，康复信息可写
-        etDiagnosis.isEnabled = doctorEditable
-        etStage.isEnabled = doctorEditable
-        etProgress.isEnabled = doctorEditable
-        etAiResult.isEnabled = doctorEditable
-        etLastTraining.isEnabled = doctorEditable
-    }
-
-
-     //BottomNav 未传递 account 时，从宿主 Activity 的 Intent 兜底获取。
+    /**
+     * BottomNav 未传递 account 时，从宿主 Activity 的 Intent 兜底获取
+     */
     private fun resolveAccount(): String {
         val navAccount = args.account ?: ""
         val intentAccount = requireActivity().intent.getStringExtra("account") ?: ""
         Log.d("pt_infoFragment", "args.account=$navAccount, intent.account=$intentAccount")
         if (navAccount.isNotEmpty()) return navAccount
         return intentAccount
-    }
-    private fun renderTopBar(name: String?, signature: String?, progress: Int?) {
-        binding.tvNickname.text = name ?: "患者"
-        //只展示个性签名，没有就给一条默认提示
-        binding.tvSignature.text = signature
-            ?.takeIf { it.isNotBlank() }
-            ?: "这个人还没有写个性签名"
-
-        // 可以在这里设置头像（如果有的话）
-        // binding.ivAvatar.setImageResource(...)
     }
 
     override fun onDestroyView() {
