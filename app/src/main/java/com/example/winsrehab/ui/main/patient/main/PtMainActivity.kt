@@ -49,37 +49,7 @@ class PtMainActivity : AppCompatActivity() {
         //设置底部导航栏
         binding.bottomNav.setupWithNavController(navController)
 
-        // 观察患者信息，更新顶部栏
-        infoViewModel.patient.observe(this) { patient ->
-            patient?.let {
-                renderTopBar(it.name, it.signature, it.progress)
-            }
-        }
-        // 首次加载患者信息
+        // 首次加载患者信息（供各 Fragment 通过 activityViewModels 共享）
         infoViewModel.loadPatient(account)
-
-        //监听信息更新通知
-        supportFragmentManager.setFragmentResultListener("patient_info_result", this) { _, result ->
-            val updatedName = result.getString("patient_name")
-            val updatedSignature = result.getString("patient_signature")
-            
-            // 直接使用事件中的新数据更新顶部栏，不依赖重新加载
-            renderTopBar(
-                updatedName ?: infoViewModel.patient.value?.name,
-                updatedSignature ?: infoViewModel.patient.value?.signature,
-                infoViewModel.patient.value?.progress
-            )
-        }
-    }
-
-    private fun renderTopBar(name: String?, signature: String?, progress: Int?) {
-        binding.tvNickname.text = name ?: "患者"
-        //只展示个性签名，没有就给一条默认提示
-        binding.tvSignature.text = signature
-            ?.takeIf { it.isNotBlank() }
-            ?: "这个人还没有写个性签名"
-
-        // 可以在这里设置头像（如果有的话）
-        // binding.ivAvatar.setImageResource(...)
     }
 }

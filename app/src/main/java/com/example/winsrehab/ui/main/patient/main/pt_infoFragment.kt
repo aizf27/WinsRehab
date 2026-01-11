@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.databinding.FragmentPtInfoBinding
@@ -18,7 +18,7 @@ class pt_infoFragment : Fragment() {
     private var _binding: FragmentPtInfoBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PtInfoVM by viewModels()
+    private val viewModel: PtInfoVM by activityViewModels()
     private val args by navArgs<pt_infoFragmentArgs>()
     private var account: String = ""
     private val mode: String
@@ -46,7 +46,10 @@ class pt_infoFragment : Fragment() {
 
         //观察患者数据,变化就更新
         viewModel.patient.observe(viewLifecycleOwner) { patient ->
-            patient?.let { fillUI(it) }
+            patient?.let { 
+                fillUI(it)
+                renderTopBar(it.name, it.signature, it.progress)
+            }
         }
 
         //设置UI模式（患者/医生区分可编辑字段）
@@ -146,6 +149,16 @@ class pt_infoFragment : Fragment() {
         Log.d("pt_infoFragment", "args.account=$navAccount, intent.account=$intentAccount")
         if (navAccount.isNotEmpty()) return navAccount
         return intentAccount
+    }
+    private fun renderTopBar(name: String?, signature: String?, progress: Int?) {
+        binding.tvNickname.text = name ?: "患者"
+        //只展示个性签名，没有就给一条默认提示
+        binding.tvSignature.text = signature
+            ?.takeIf { it.isNotBlank() }
+            ?: "这个人还没有写个性签名"
+
+        // 可以在这里设置头像（如果有的话）
+        // binding.ivAvatar.setImageResource(...)
     }
 
     override fun onDestroyView() {
