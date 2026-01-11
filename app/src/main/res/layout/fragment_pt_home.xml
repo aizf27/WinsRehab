@@ -2,372 +2,594 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/patient_root"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@drawable/bg_page_gradient">
 
-    <!-- 顶部栏（仿QQ样式） -->
+    <!-- 1. 顶部 Header -->
     <LinearLayout
-        android:id="@+id/top_bar"
-        android:layout_width="0dp"
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:background="@color/white"
         android:elevation="2dp"
+        android:padding="16dp"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 头像 -->
-        <ImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/img_tx"
-            android:scaleType="centerCrop"
-            android:background="@drawable/shape_rounded_card_light"
-            android:padding="2dp" />
-
-        <!-- 昵称和个性签名 -->
-        <LinearLayout
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp"
+            android:text="康复助手"
+            android:textColor="#15803D"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/tv_nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="患者昵称"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            <!-- 铃铛 + 红点 -->
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_bell"
+                    app:tint="#4B5563" />
+
+                <!-- 红点 -->
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/shape_circle_red"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"/>
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/tv_signature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="个性签名..."
-                android:textSize="12sp"
-                android:textColor="#666666"
-                android:layout_marginTop="2dp"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:layout_marginStart="8dp"
+                android:background="@drawable/btn_outline_gray"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="切换账户"
+                android:textColor="#4B5563"
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 顶部统计卡片区域 -->
-    <LinearLayout
-        android:id="@+id/stats_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/top_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <!-- 2. 滚动内容 -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
-        <!-- 今日训练卡片 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_today_training"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            android:backgroundTint="@color/white">
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- A. 欢迎卡片 (绿色渐变) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_gradient_green"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tvGreeting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="早上好"
+                                android:textColor="#E6FFFFFF"
+                                android:textSize="12sp"/>
+                            <TextView
+                                android:id="@+id/tvUserName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="张先生"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:id="@+id/tvRehabDay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="今天是康复训练的第 28 天，继续加油！"
+                                android:textColor="#E6FFFFFF"
+                                android:textSize="12sp"
+                                android:layout_marginTop="2dp"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_activity"
+                            android:alpha="0.8"
+                            app:tint="@color/white"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#33FFFFFF"
+                        android:layout_marginVertical="12dp"/>
+
+                    <!-- 3列数据 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="本周完成" android:textColor="#B3FFFFFF" android:textSize="10sp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="85%" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="累计天数" android:textColor="#B3FFFFFF" android:textSize="10sp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="28天" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="今日任务" android:textColor="#B3FFFFFF" android:textSize="10sp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2/4" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- B. 今日任务 Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="今日任务"
+                    android:textColor="#1F2937"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查看全部"
+                    android:textColor="#16A34A"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <!-- 任务 1 (绿色) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- 模拟 border-l-4 (绿色条) -->
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="#22C55E"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <!-- 图标背景 -->
+                            <FrameLayout
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/shape_circle_green_light">
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_activity"
+                                    app:tint="#16A34A"/>
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="12dp"
+                                android:orientation="vertical">
+                                <TextView android:text="上肢功能训练" android:textColor="#111827" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="建议时长：30分钟" android:textColor="#6B7280" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="开始"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp"
+                                android:background="@drawable/bg_btn_green_small"/>
+                        </LinearLayout>
+
+                        <!-- 时间 -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+                            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_clock" app:tint="#4B5563"/>
+                            <TextView android:text="上午 10:00 - 10:30" android:textColor="#4B5563" android:textSize="12sp" android:layout_marginStart="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 任务 2 (黄色) - 可以复用上面的结构，只需改颜色 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- 模拟 border-l-4 (黄色条) -->
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="#FACC15"/> <!-- yellow-400 -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <!-- 黄色背景圆圈 -->
+                            <FrameLayout
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/shape_circle_yellow_light"> <!-- 需新建 yellow_light -->
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_activity"
+                                    app:tint="#CA8A04"/> <!-- yellow-600 -->
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="12dp"
+                                android:orientation="vertical">
+                                <TextView android:text="下肢平衡练习" android:textColor="#111827" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                                <TextView android:text="建议时长：20分钟" android:textColor="#6B7280" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="待完成"
+                                android:textColor="#CA8A04"
+                                android:textSize="12sp"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp"
+                                android:background="@drawable/bg_btn_outline_yellow"/> <!-- 需新建 -->
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+                            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_clock" app:tint="#4B5563"/>
+                            <TextView android:text="下午 14:00 - 14:20" android:textColor="#4B5563" android:textSize="12sp" android:layout_marginStart="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- C. 功能卡片网格 (2x2) -->
+            <!-- 行 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <!-- 心理助手 (紫) -->
+                <LinearLayout
+                    android:id="@+id/cardPsychology"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_gradient_pink"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_purple_light">
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_psychology" android:layout_gravity="center" app:tint="#9333EA"/>
+                        </FrameLayout>
+                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" app:tint="#A855F7"/>
+                    </LinearLayout>
+
+                    <TextView android:text="心理助手" android:textSize="14sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:text="AI陪伴，倾听心声" android:textSize="10sp" android:textColor="#4B5563" android:layout_marginBottom="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_message" app:tint="#9333EA"/>
+                        <TextView android:text="随时可用" android:textSize="10sp" android:textColor="#9333EA" android:layout_marginStart="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 视频库 (蓝) -->
+                <LinearLayout
+                    android:id="@+id/cardTraining"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_gradient_blue"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_blue_light">
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_video" android:layout_gravity="center" app:tint="#2563EB"/>
+                        </FrameLayout>
+                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" app:tint="#60A5FA"/>
+                    </LinearLayout>
+
+                    <TextView android:text="训练视频库" android:textSize="14sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:text="专业指导视频" android:textSize="10sp" android:textColor="#4B5563" android:layout_marginBottom="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_play" app:tint="#2563EB"/>
+                        <TextView android:text="120+ 视频" android:textSize="10sp" android:textColor="#2563EB" android:layout_marginStart="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 行 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
+
+                <!-- 病友社区 (橙) -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_gradient_yellow"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_orange_light">
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_users" android:layout_gravity="center" app:tint="#EA580C"/>
+                        </FrameLayout>
+                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" app:tint="#FB923C"/>
+                    </LinearLayout>
+                    <TextView android:text="病友社区" android:textSize="14sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:text="分享经验，互相鼓励" android:textSize="10sp" android:textColor="#4B5563" android:layout_marginBottom="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_trophy" app:tint="#EA580C"/>
+                        <TextView android:text="排行榜" android:textSize="10sp" android:textColor="#EA580C" android:layout_marginStart="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 医生反馈 (青) -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_gradient_teal"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_teal_light">
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_stethoscope" android:layout_gravity="center" app:tint="#0D9488"/>
+                        </FrameLayout>
+                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                        <!-- 红色徽标 -->
+                        <TextView android:text="3" android:textSize="10sp" android:textColor="@color/white" android:background="@drawable/shape_circle_red" android:paddingHorizontal="6dp" android:paddingVertical="1dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <TextView android:text="医生反馈" android:textSize="14sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:text="李医生的专业建议" android:textSize="10sp" android:textColor="#4B5563" android:layout_marginBottom="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
+                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_message" app:tint="#0D9488"/>
+                        <TextView android:text="3条新消息" android:textSize="10sp" android:textColor="#0D9488" android:layout_marginStart="4dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- D. 康复进度 (图表) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本周康复进度"
+                android:textColor="#1F2937"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:text="本周完成率" android:textColor="#4B5563" android:textSize="14sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="85%" android:textColor="#16A34A" android:textSize="24sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_trending_up" app:tint="#22C55E"/>
+                    </LinearLayout>
+
+                    <!-- 水平进度条 -->
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:progress="85"
+                        android:progressDrawable="@drawable/custom_progress_bar_green"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView android:text="已完成 6/7 项训练任务" android:textColor="#4B5563" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginVertical="16dp"/>
+
+                    <!-- 周柱状图 (复用之前的 item_week_bar) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- E. 快捷功能 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="快捷功能"
+                android:textColor="#1F2937"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="horizontal">
 
-                <!-- 图标和标题行 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                <!-- 按钮 1 -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="12dp" app:cardElevation="1dp" android:layout_marginEnd="8dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="16dp">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_calendar" app:tint="#22C55E"/>
+                        <TextView android:text="训练日历" android:textSize="12sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                    <!-- 圆形图标背景 -->
-                    <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/shape_circle_green_bg">
+                <!-- 按钮 2 -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="12dp" app:cardElevation="1dp" android:layout_marginEnd="8dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="16dp">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_activity" app:tint="#22C55E"/>
+                        <TextView android:text="健康数据" android:textSize="12sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                        <!-- 心跳/训练图标 -->
-                        <ImageView
-                            android:id="@+id/iv_training_icon"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:contentDescription="训练图标"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_heart_beat" />
-                    </FrameLayout>
-
-                    <!-- 标题 -->
-                    <TextView
-                        android:id="@+id/tv_today_training_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="12dp"
-                        android:text="今日训练"
-                        android:textSize="14sp"
-                        android:textColor="#666666" />
-                </LinearLayout>
-
-                <!-- 数值 -->
-                <TextView
-                    android:id="@+id/tv_today_training_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3 项"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#00BC8C" />
+                <!-- 按钮 3 -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="12dp" app:cardElevation="1dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="16dp">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_video" app:tint="#22C55E"/>
+                        <TextView android:text="康复中心" android:textSize="12sp" android:textColor="#111827" android:layout_marginTop="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <!-- 完成进度卡片 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_progress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            android:backgroundTint="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- 图标和标题行 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
-
-                    <!-- 圆形图标背景 -->
-                    <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/shape_circle_green_bg">
-
-                        <!-- 进度/图表图标 -->
-                        <ImageView
-                            android:id="@+id/iv_progress_icon"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="进度图标"
-                            android:src="@drawable/ic_prossce" />
-                    </FrameLayout>
-
-                    <!-- 标题 -->
-                    <TextView
-                        android:id="@+id/tv_progress_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="12dp"
-                        android:text="完成进度"
-                        android:textSize="14sp"
-                        android:textColor="#666666" />
-                </LinearLayout>
-
-                <!-- 数值 -->
-                <TextView
-                    android:id="@+id/tv_progress_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="33%"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#00BC8C" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <!-- 功能网格区域 -->
-    <GridLayout
-        android:id="@+id/patient_functions"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/stats_container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- 训练视频库卡片 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardTraining"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="6dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/img_blue_back"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="训练视频库"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="医生示范动作"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 心理助手卡片 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardPsychology"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="6dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/img_pink_back"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="心理助手"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="心情打卡 and AI 励志"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 医生反馈卡片 -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="6dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/img_yellow_back"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="医生反馈"
-                    android:textStyle="bold"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="查看医生建议"
-                    android:layout_marginTop="6dp"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(敬请期待)"
-                    android:textSize="10sp"
-                    android:textColor="#999999"
-                    android:layout_marginTop="2dp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 病友社区卡片 -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="6dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/img_grenn_back"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="病友社区"
-                    android:textStyle="bold"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="排行榜 / 分享"
-                    android:layout_marginTop="6dp"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(敬请期待)"
-                    android:textSize="10sp"
-                    android:textColor="#999999"
-                    android:layout_marginTop="2dp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </GridLayout>
-
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

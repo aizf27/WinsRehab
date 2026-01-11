@@ -52,8 +52,10 @@ class pt_infoFragment : Fragment() {
             }
         }
 
-        // 拉取患者信息
-        viewModel.loadPatient(account)
+        // 只在数据为空时才拉取患者信息（避免重复查询数据库）
+        if (viewModel.patient.value == null) {
+            viewModel.loadPatient(account)
+        }
 
         // 设置点击事件
         setupClickListeners()

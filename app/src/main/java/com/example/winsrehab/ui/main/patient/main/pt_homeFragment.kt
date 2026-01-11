@@ -12,6 +12,7 @@ import com.example.winsrehab.databinding.FragmentPtHomeBinding
 import com.example.winsrehab.ui.main.patient.Video.TrainingVideoActivity
 import com.example.winsrehab.ui.main.patient.info.PtInfoVM
 import com.example.winsrehab.ui.main.patient.psychology.PsychologyActivity
+import java.util.Calendar
 
 class pt_homeFragment : Fragment() {
     private var _binding: FragmentPtHomeBinding? = null
@@ -32,34 +33,23 @@ class pt_homeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 观察患者信息，更新顶部栏
+        // 设置问候语（根据当前时间）
+        setupGreeting()
+
+        // 观察患者信息，更新欢迎卡片
         infoViewModel.patient.observe(viewLifecycleOwner) { patient ->
             patient?.let {
-                renderTopBar(it.name, it.signature, it.progress)
+                binding.tvUserName.text = it.name ?: "患者"
             }
         }
 
-        // 监听患者信息更新事件（从 pt_infoFragment 保存后触发）
-        requireActivity().supportFragmentManager.setFragmentResultListener(
-            "patient_info_result",
-            viewLifecycleOwner
-        ) { _, result ->
-            val updatedName = result.getString("patient_name")
-            val updatedSignature = result.getString("patient_signature")
-            renderTopBar(
-                updatedName ?: infoViewModel.patient.value?.name,
-                updatedSignature ?: infoViewModel.patient.value?.signature,
-                infoViewModel.patient.value?.progress
-            )
-        }
-
-        //跳到示范视频页
+        // 跳到示范视频页
         binding.cardTraining.setOnClickListener {
             val intent = Intent(requireContext(), TrainingVideoActivity::class.java)
             startActivity(intent)
         }
 
-        //跳到心理助手页
+        // 跳到心理助手页
         binding.cardPsychology.setOnClickListener {
             val intent = Intent(requireContext(), PsychologyActivity::class.java)
             startActivity(intent)
@@ -71,14 +61,17 @@ class pt_homeFragment : Fragment() {
         _binding = null
     }
 
-    private fun renderTopBar(name: String?, signature: String?, progress: Int?) {
-        binding.tvNickname.text = name ?: "患者"
-        //只展示个性签名，没有就给一条默认提示
-        binding.tvSignature.text = signature
-            ?.takeIf { it.isNotBlank() }
-            ?: "这个人还没有写个性签名"
-
-        // 可以在这里设置头像（如果有的话）
-        // binding.ivAvatar.setImageResource(...)
+    /**
+     * 根据当前时间设置问候语
+     */
+    private fun setupGreeting() {
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val greeting = when {
+            hour in 6..11 -> "早上好"
+            hour in 12..13 -> "中午好"
+            hour in 14..17 -> "下午好"
+            else -> "晚上好"
+        }
+        binding.tvGreeting.text = greeting
     }
 }
