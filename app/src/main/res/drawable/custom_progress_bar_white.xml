@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景 (半透明白) -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="4dp"/>
+            <solid android:color="#33FFFFFF"/>
+        </shape>
+    </item>
+    <!-- 进度 (纯白) -->
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <shape>
+                <corners android:radius="4dp"/>
+                <solid android:color="#FFFFFF"/>
+            </shape>
+        </scale>
+    </item>
+</layer-list>
