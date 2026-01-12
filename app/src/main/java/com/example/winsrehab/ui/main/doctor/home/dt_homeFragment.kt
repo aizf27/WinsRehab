@@ -6,37 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.databinding.FragmentDtHomeBinding
-import com.example.winsrehab.ui.main.doctor.adapter.PatientAdapter
-import com.example.winsrehab.R
-import kotlin.getValue
+import java.util.Calendar
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [dt_homeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class dt_homeFragment : Fragment() {
 
     private var _binding: FragmentDtHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: DtHomeVM by viewModels()
-    private val args by navArgs<dt_homeFragmentArgs>() // 注意使用小写开头的Fragment类名
-    private var doctorCode : String=""
-    private var ptCount: Int=0
-
-    private lateinit var adapter: PatientAdapter
+    private val args by navArgs<dt_homeFragmentArgs>()
+    private var doctorCode: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,58 +27,40 @@ class dt_homeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDtHomeBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        return  binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //初始化RecyclerView和Adapter
-        adapter= PatientAdapter { patient ->
-            val bundle = bundleOf(
-                "account" to patient.account,
-                "mode" to "doctor"
-            )
-            findNavController().navigate(R.id.action_dt_homeFragment_to_pt_infoFragment, bundle)
-        }
-        binding.rvKeyPatients.layoutManager= LinearLayoutManager(requireContext())
-        binding.rvKeyPatients.adapter=adapter
+        setupGreeting()
 
-        //观察数据变化并更新UI
-        viewModel.patients.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list)  //把最新的患者列表交给adapter，触发DiffUtil检查变化并刷新
-            //更新患者总数
-            ptCount=adapter.itemCount
-            binding.tvTotalValue.text = ptCount.toString()
-           // Log.d("DtHomeActivity", "PtCount: $ptCount")
+        binding.cardPatientManage.setOnClickListener {
+            val activity = requireActivity() as? DtHomeActivity
+            activity?.binding?.bottomNav?.selectedItemId = com.example.winsrehab.R.id.dt_pt_manageFragment
         }
 
-        // 监听医生信息更新通知
-        parentFragmentManager.setFragmentResultListener("doctor_info_result", viewLifecycleOwner) { _, result ->
-            val isUpdated = result.getBoolean("doctor_info_updated", false)
-            if (isUpdated) {
-                // 重新加载患者数据，确保显示最新信息
-                viewModel.loadPatients(doctorCode)
-                Log.d("dt_homeFragment", "医生信息已更新，重新加载患者数据")
-            }
+        binding.cardMyInfo.setOnClickListener {
+            val activity = requireActivity() as? DtHomeActivity
+            activity?.binding?.bottomNav?.selectedItemId = com.example.winsrehab.R.id.dt_info_Fragment
         }
-
-        // 加载患者数据
-        viewModel.loadPatients(doctorCode)
-        binding.tvTotalValue.text = adapter.itemCount.toString()
     }
 
-    // 优化：在页面可见时自动刷新数据，确保显示最新信息
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadPatients(doctorCode)
+    private fun setupGreeting() {
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val greeting = when {
+            hour in 6..11 -> "早上好"
+            hour in 12..13 -> "中午好"
+            hour in 14..17 -> "下午好"
+            else -> "晚上好"
+        }
+        binding.tvGreeting.text = greeting
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null  //释放ViewBinding，避免内存泄漏
+        _binding = null
     }
-
 }

@@ -40,7 +40,7 @@ class DtHomeActivity : AppCompatActivity() {
         //自定义底部导航点击，传递参数
         binding.bottomNav.setOnItemSelectedListener { item ->
             val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.dt_bot_nav, inclusive = true)
+                .setPopUpTo(R.id.dt_bot_nav, inclusive = false)
                 .setLaunchSingleTop(true)
                 .build()
 
@@ -50,6 +50,13 @@ class DtHomeActivity : AppCompatActivity() {
                         putString("doctorCode", doctorCode)
                     }
                     navController.navigate(R.id.dt_homeFragment, bundle, navOptions)
+                    true
+                }
+                R.id.dt_pt_manageFragment -> {
+                    val bundle = Bundle().apply {
+                        putString("doctorCode", doctorCode)
+                    }
+                    navController.navigate(R.id.dt_pt_manageFragment, bundle, navOptions)
                     true
                 }
                 R.id.dt_info_Fragment -> {

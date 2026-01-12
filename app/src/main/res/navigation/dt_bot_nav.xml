@@ -9,18 +9,31 @@
         android:id="@+id/dt_homeFragment"
         android:name="com.example.winsrehab.ui.main.doctor.home.dt_homeFragment"
         android:label="fragment_dt_home"
-        tools:layout="@layout/fragment_dt_home" >
+        tools:layout="@layout/fragment_dt_home">
+        <argument
+            android:name="doctorCode"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dt_pt_manageFragment"
+        android:name="com.example.winsrehab.ui.main.doctor.home.dt_pt_manageFragment"
+        android:label="fragment_dt_pt_manage"
+        tools:layout="@layout/fragment_dt_pt_manage" >
         <action
-            android:id="@+id/action_dt_homeFragment_to_dt_info_Fragment"
+            android:id="@+id/action_dt_pt_manageFragment_to_dt_info_Fragment"
             app:destination="@id/dt_info_Fragment" />
         <action
-            android:id="@+id/action_dt_homeFragment_to_pt_infoFragment"
+            android:id="@+id/action_dt_pt_manageFragment_to_pt_infoFragment"
             app:destination="@id/pt_infoFragment" />
         <argument
             android:name="doctorCode"
             app:argType="string"
             android:defaultValue='""' />
     </fragment>
+
+    <!-- 我的 Fragment -->
     <fragment
         android:id="@+id/dt_info_Fragment"
         android:name="com.example.winsrehab.ui.main.doctor.home.dt_info_Fragment"
@@ -33,6 +46,8 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
+
+    <!-- 患者信息详情页 -->
     <fragment
         android:id="@+id/pt_infoFragment"
         android:name="com.example.winsrehab.ui.main.patient.main.pt_infoFragment"

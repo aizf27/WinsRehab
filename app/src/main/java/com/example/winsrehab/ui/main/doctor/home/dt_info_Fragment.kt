@@ -123,7 +123,7 @@ class dt_info_Fragment : Fragment() {
                 // 获取 Activity 中的底部导航栏并选中主页
                 val activity = requireActivity() as? DtHomeActivity
                 activity?.let {
-                    it.binding.bottomNav.selectedItemId = R.id.dt_homeFragment
+                    it.binding.bottomNav.selectedItemId = R.id.dt_pt_manageFragment
                 }
             } else {
                 Toast.makeText(requireContext(), "保存失败，请重试", Toast.LENGTH_SHORT).show()
