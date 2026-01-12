@@ -55,14 +55,14 @@ class dt_pt_manageFragment : Fragment() {
             )
             findNavController().navigate(R.id.action_dt_pt_manageFragment_to_pt_infoFragment, bundle)
         }
-        binding.rvKeyPatients.layoutManager= LinearLayoutManager(requireContext())
-        binding.rvKeyPatients.adapter=adapter
-
-        viewModel.patients.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list)
-            ptCount=adapter.itemCount
-            binding.tvTotalValue.text = ptCount.toString()
-        }
+//        binding.rvKeyPatients.layoutManager= LinearLayoutManager(requireContext())
+//        binding.rvKeyPatients.adapter=adapter
+//
+//        viewModel.patients.observe(viewLifecycleOwner) { list ->
+//            adapter.submitList(list)
+//            ptCount=adapter.itemCount
+//            binding.tvTotalValue.text = ptCount.toString()
+//        }
 
         parentFragmentManager.setFragmentResultListener("doctor_info_result", viewLifecycleOwner) { _, result ->
             val isUpdated = result.getBoolean("doctor_info_updated", false)
@@ -73,7 +73,7 @@ class dt_pt_manageFragment : Fragment() {
         }
 
         viewModel.loadPatients(doctorCode)
-        binding.tvTotalValue.text = adapter.itemCount.toString()
+//        binding.tvTotalValue.text = adapter.itemCount.toString()
     }
 
     override fun onResume() {

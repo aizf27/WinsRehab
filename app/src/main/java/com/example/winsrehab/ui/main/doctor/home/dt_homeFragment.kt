@@ -37,15 +37,15 @@ class dt_homeFragment : Fragment() {
 
         setupGreeting()
 
-        binding.cardPatientManage.setOnClickListener {
-            val activity = requireActivity() as? DtHomeActivity
-            activity?.binding?.bottomNav?.selectedItemId = com.example.winsrehab.R.id.dt_pt_manageFragment
-        }
-
-        binding.cardMyInfo.setOnClickListener {
-            val activity = requireActivity() as? DtHomeActivity
-            activity?.binding?.bottomNav?.selectedItemId = com.example.winsrehab.R.id.dt_info_Fragment
-        }
+//        binding.cardPatientManage.setOnClickListener {
+//            val activity = requireActivity() as? DtHomeActivity
+//            activity?.binding?.bottomNav?.selectedItemId = com.example.winsrehab.R.id.dt_pt_manageFragment
+//        }
+//
+//        binding.cardMyInfo.setOnClickListener {
+//            val activity = requireActivity() as? DtHomeActivity
+//            activity?.binding?.bottomNav?.selectedItemId = com.example.winsrehab.R.id.dt_info_Fragment
+//        }
     }
 
     private fun setupGreeting() {
