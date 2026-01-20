@@ -58,6 +58,16 @@
             android:exported="false"
             android:launchMode="standard"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!--等待医生确认页面-->
+        <activity android:name=".ui.main.patient.binding.WaitingBindingActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!--医生端患者申请列表页面-->
+        <activity android:name=".ui.main.doctor.application.PatientApplicationActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light" />
         <!--把SelectLogActivity设为启动Activity -->
         <activity
             android:name=".ui.main.selectLog.SelectLogActivity"

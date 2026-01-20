@@ -41,5 +41,10 @@ class PatientRepository(private val patientDao: PatientDao) {
     fun getPatientsByDoctor(doctorCode: String): Flow<List<Patient>> {
         return patientDao.getPatientsByDoctorFlow(doctorCode)
     }
+    
+    suspend fun getBindingStatus(account: String): String? {
+        val patient = patientDao.getPatientByAccount(account).first()
+        return patient?.bindingStatus
+    }
 
 }

@@ -5,13 +5,16 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.winsrehab.databinding.ActivityPtLogBinding
+import com.example.winsrehab.ui.main.patient.binding.WaitingBindingActivity
 import com.example.winsrehab.ui.main.patient.main.PtMainActivity
 
 class PtLogActivity: AppCompatActivity () {
@@ -49,9 +52,58 @@ class PtLogActivity: AppCompatActivity () {
                 1->{
                     Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show()
                     saveLogInfo()
-                    viewModel.checkInfoComplete(binding.etPtAccount.text.toString())
+                    // 检查绑定状态
+                    viewModel.checkBindingStatus(binding.etPtAccount.text.toString())
                 }
                 2-> Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show()
+            }
+        }
+        
+        //绑定状态观察
+        viewModel.bindingStatus.observe(this) { status ->
+            val account = binding.etPtAccount.text.toString()
+            when(status) {
+                "unbound" -> {
+                    // 未绑定，显示绑定对话框
+                    showBindDoctorDialog(account)
+                }
+                "pending" -> {
+                    // 待确认，跳转到等待页面
+                    val intent = Intent(this, WaitingBindingActivity::class.java)
+                    intent.putExtra("account", account)
+                    startActivity(intent)
+                    finish()
+                }
+                "active" -> {
+                    // 已绑定，检查信息完整性
+                    viewModel.checkInfoComplete(account)
+                }
+                "rejected" -> {
+                    // 被拒绝，提示并允许重新绑定
+                    AlertDialog.Builder(this)
+                        .setTitle("绑定被拒绝")
+                        .setMessage("医生已拒绝您的绑定申请，请重新绑定其他医生")
+                        .setPositiveButton("重新绑定") { _, _ ->
+                            showBindDoctorDialog(account)
+                        }
+                        .setCancelable(false)
+                        .show()
+                }
+            }
+        }
+        
+        //绑定结果观察
+        viewModel.bindingResult.observe(this) { result ->
+            when(result) {
+                0 -> Toast.makeText(this, "医生工号不存在，请检查后重试", Toast.LENGTH_SHORT).show()
+                1 -> {
+                    Toast.makeText(this, "绑定申请已发送，等待医生确认", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, WaitingBindingActivity::class.java)
+                    intent.putExtra("account", binding.etPtAccount.text.toString())
+                    startActivity(intent)
+                    finish()
+                }
+                2 -> Toast.makeText(this, "绑定失败，请稍后重试", Toast.LENGTH_SHORT).show()
             }
         }
         //注册结果观察
@@ -123,6 +175,32 @@ class PtLogActivity: AppCompatActivity () {
         if (remember) {editor.putString("PtPassword",password)}
         else {editor.remove("PtPassword")}
         editor.apply()
+    }
+    
+    private fun showBindDoctorDialog(account: String) {
+        val input = EditText(this)
+        input.hint = "请输入医生工号"
+        input.setPadding(50, 30, 50, 30)
+        
+        AlertDialog.Builder(this)
+            .setTitle("绑定医生")
+            .setMessage("首次登录需要绑定医生才能使用")
+            .setView(input)
+            .setPositiveButton("确定") { _, _ ->
+                val doctorCode = input.text.toString().trim()
+                if (doctorCode.isEmpty()) {
+                    Toast.makeText(this, "医生工号不能为空", Toast.LENGTH_SHORT).show()
+                    showBindDoctorDialog(account) // 重新显示对话框
+                } else {
+                    viewModel.bindDoctor(account, doctorCode)
+                }
+            }
+            .setNegativeButton("取消") { _, _ ->
+                Toast.makeText(this, "必须绑定医生才能使用", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 
 }

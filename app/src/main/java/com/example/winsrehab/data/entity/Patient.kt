@@ -14,6 +14,7 @@ data class Patient (
                  val gender: String? = null, //性别
                  val physicianName: String? = null ,     //医生姓名
                  val physicianCode: String? = null ,     //医生工号
+                 val bindingStatus: String = "unbound",  //绑定状态：unbound/pending/active/rejected
                  val diagnosis: String? = null,    //诊断/病情描述
                  val stage: String? = null ,             //康复阶段（如：软瘫期/痉挛期/恢复期）
                  val progress :Int= 0,                      //康复进度（0-100）
@@ -33,6 +34,7 @@ data class Patient (
                 gender,
                 physicianName,
                 physicianCode,
+                "unbound", // bindingStatus
                 null, // diagnosis
                 null, // stage
                 0,    // progress
