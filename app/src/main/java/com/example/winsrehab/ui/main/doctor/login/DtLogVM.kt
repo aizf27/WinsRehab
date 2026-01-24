@@ -18,13 +18,13 @@ class DtLogVM : ViewModel() {
     val registerResult = MutableLiveData<Boolean>()
     val infoComplete = MutableLiveData<Boolean>()
 
-    fun loginDoctor(id: String, password: String) {
+    fun loginDoctor(doctorCode: String, password: String) {
         //启动一个协程
         viewModelScope.launch {
-            val success = repository.login(id, password)
+            val success = repository.login(doctorCode, password)
             loginResult.postValue(
                 when {
-                    !repository.isExist(id) -> 0
+                    !repository.isExist(doctorCode) -> 0
                     success -> 1
                     else -> 2
                 }
@@ -32,18 +32,18 @@ class DtLogVM : ViewModel() {
         }
     }
 
-    fun registerDoctor(id: String, password: String) {
+    fun registerDoctor(doctorCode: String, password: String) {
         viewModelScope.launch {
             val success = repository.registerDoctor(
-                Doctor(id = id, password = password)
+                Doctor(doctorCode = doctorCode, password = password)
             )
             registerResult.postValue(success)
         }
     }
 
-    fun checkInfoComplete(id: String) {
+    fun checkInfoComplete(doctorCode: String) {
         viewModelScope.launch {
-            val complete = repository.isInfoComplete(id)
+            val complete = repository.isInfoComplete(doctorCode)
             infoComplete.postValue(complete)
         }
     }

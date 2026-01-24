@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DoctorDao {
 
-    @Query("SELECT * FROM doctor WHERE id = :id")
-    fun getDoctorById(id: String): Flow<Doctor?>
+    @Query("SELECT * FROM doctor WHERE doctorCode = :doctorCode")
+    fun getDoctorById(doctorCode: String): Flow<Doctor?>
 
-    @Query("SELECT * FROM doctor WHERE id = :id AND password = :password")
-    suspend fun login(id: String, password: String): Doctor?
+    @Query("SELECT * FROM doctor WHERE doctorCode = :doctorCode AND password = :password")
+    suspend fun login(doctorCode: String, password: String): Doctor?
 
-    @Query("SELECT EXISTS(SELECT 1 FROM doctor WHERE id = :id)")
-    suspend fun isExist(id: String): Boolean
+    @Query("SELECT EXISTS(SELECT 1 FROM doctor WHERE doctorCode = :doctorCode)")
+    suspend fun isExist(doctorCode: String): Boolean
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertDoctor(doctor: Doctor)
@@ -23,10 +23,10 @@ interface DoctorDao {
     @Update
     suspend fun updateDoctor(doctor: Doctor)
 
-    @Query("UPDATE doctor SET patientCount = :count WHERE id = :id")
-    suspend fun updatePatientCount(id: String, count: Int)
+    @Query("UPDATE doctor SET patientCount = :count WHERE doctorCode = :doctorCode")
+    suspend fun updatePatientCount(doctorCode: String, count: Int)
 
-    @Query("SELECT * FROM doctor WHERE id = :doctorCode LIMIT 1")
+    @Query("SELECT * FROM doctor WHERE doctorCode = :doctorCode LIMIT 1")
     fun getDoctorInfo(doctorCode: String): LiveData<Doctor?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

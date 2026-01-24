@@ -60,77 +60,49 @@ class dt_info_Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.doctor.observe(viewLifecycleOwner) { doctor ->
-//            Log.d("dt_info_Fragment", "doctor: $doctor")
-//            if (doctor != null) {
-//                binding.tvCode.text = "工号：${doctor.id}"
-//                binding.etName.setText(doctor.name)
-//                binding.etAge.setText(doctor.age?.toString() ?: "")
-//                // 始终使用从主页传递过来的实际患者数，而不是数据库中存储的旧值
-//                binding.etPtNum.setText(totalCount.toString())
-//                binding.etGender.setText(doctor.gender)
-//                binding.etDepartment.setText(doctor.department)
-//            } else {
-//                Log.d("dt_info_Fragment", "doctor is null, using doctorCode: $doctorCode")
-//                binding.tvCode.text = "工号：$doctorCode"
-//                binding.etPtNum.setText(totalCount.toString())
-//            }
-//        }
-//
-//        Log.d("dt_info_Fragment", "calling loadDoctorInfo with doctorCode: $doctorCode")
-//        viewModel.loadDoctorInfo(doctorCode)
-//        binding.btnSave.setOnClickListener { saveDoctorInfo() }
+        // 观察医生数据
+        viewModel.doctor.observe(viewLifecycleOwner) { doctor ->
+            doctor?.let {
+                // 更新卡片信息（与数据库同步）
+                binding.tvDoctorName.text = it.name.takeIf { name -> name != "未设置" } ?: "未设置"
+                
+                // 性别、年龄、科室
+                val info = buildString {
+                    if (it.gender != "未设置") {
+                        append(it.gender)
+                    }
+                    if (it.age > 0) {
+                        if (isNotEmpty()) append(" · ")
+                        append("${it.age}岁")
+                    }
+                    if (it.department != "未设置") {
+                        if (isNotEmpty()) append(" · ")
+                        append(it.department)
+                    }
+                    if (isEmpty()) append("未设置")
+                }
+                binding.tvDoctorInfo.text = info
+                
+                // 工号
+                binding.tvDoctorCode.text = "工号：${it.doctorCode}"
+            }
+        }
 
+        // 加载医生信息
+        viewModel.loadDoctorInfo(doctorCode)
 
+        // 编辑按钮 - 跳转到编辑页面
+        binding.btnSave.setOnClickListener {
+            val action = dt_info_FragmentDirections.actionDtInfoFragmentToDtInfoEditFragment(doctorCode)
+            findNavController().navigate(action)
+        }
+
+        // 点击卡片 - 跳转到编辑页面
+        binding.profileCard.setOnClickListener {
+            val action = dt_info_FragmentDirections.actionDtInfoFragmentToDtInfoEditFragment(doctorCode)
+            findNavController().navigate(action)
+        }
     }
-    private fun saveDoctorInfo() {
-//        val name = binding.etName.text.toString().trim()
-//        val ageStr = binding.etAge.text.toString().trim()
-//        val ptNumStr = binding.etPtNum.text.toString().trim()
-//        val gender = binding.etGender.text.toString().trim()
-//        val department = binding.etDepartment.text.toString().trim()
-//
-//        if (name.isEmpty() || ageStr.isEmpty() || ptNumStr.isEmpty() ||
-//            gender.isEmpty() || department.isEmpty()
-//        ) {
-//            Toast.makeText(requireContext(), "请填写完整信息", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        val age = ageStr.toIntOrNull()
-//        val ptNum = ptNumStr.toIntOrNull()
-//        if (age == null || ptNum == null) {
-//            Toast.makeText(requireContext(), "年龄和患者数必须是数字", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//        val oldPassword = viewModel.doctor.value?.password ?: ""
-//        //创建医生对象
-//        val doctor = Doctor(
-//            id = doctorCode,//别搞错
-//            password = oldPassword,
-//            name = name,
-//            gender = gender,
-//            age = age,
-//            department = department,
-//            patientCount = ptNum
-//        )
-
-//        viewModel.saveDoctorInfo(doctor) { success ->
-//            if (success) {
-//                Toast.makeText(requireContext(), "信息保存成功", Toast.LENGTH_SHORT).show()
-//
-//                // 通过底部导航栏切换回主页，确保参数正确传递
-//                // 获取 Activity 中的底部导航栏并选中主页
-//                val activity = requireActivity() as? DtHomeActivity
-//                activity?.let {
-//                    it.binding.bottomNav.selectedItemId = R.id.dt_pt_manageFragment
-//                }
-//            } else {
-//                Toast.makeText(requireContext(), "保存失败，请重试", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding=null

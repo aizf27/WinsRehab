@@ -13,8 +13,11 @@ import com.example.winsrehab.data.entity.DoctorTask
 import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.data.entity.PtRehabVideo
 
-@Database(entities = [Doctor::class, Patient::class, PtRehabVideo::class, DemoVideo::class, DoctorTask::class],
-    version = 5, exportSchema = true)
+@Database(
+    entities = [Doctor::class, Patient::class, PtRehabVideo::class, DemoVideo::class, DoctorTask::class],
+    version = 6,
+    exportSchema = true
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun doctorDao(): DoctorDao
     abstract fun patientDao(): PatientDao

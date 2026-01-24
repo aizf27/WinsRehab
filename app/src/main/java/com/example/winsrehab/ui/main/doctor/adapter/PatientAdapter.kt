@@ -19,7 +19,7 @@ class PatientAdapter(
     //高效对比新旧列表，只更新发生变化的 item
     object DiffCallback : DiffUtil.ItemCallback<Patient>() {
         override fun areItemsTheSame(oldItem: Patient, newItem: Patient): Boolean =
-            oldItem.id == newItem.id     //以主键 id 判断
+            oldItem.patientId == newItem.patientId     //以主键 id 判断
         override fun areContentsTheSame(oldItem: Patient, newItem: Patient): Boolean =
             oldItem == newItem
     }
@@ -35,10 +35,10 @@ class PatientAdapter(
         //装数据到view
         val patient = getItem(position)
         holder.tvName.text = patient.name
-        holder.tvStage.text = "康复阶段：" + (patient.stage ?: "")
-        holder.progressTraining.progress = patient.progress
-         holder.tvProgressValue.text = "${patient.progress}%"
-        holder.tvAiResult.text = patient.aiResult ?: ""
+//        holder.tvStage.text = "康复阶段：" + (patient.stage ?: "")
+//        holder.progressTraining.progress = patient.progress
+//         holder.tvProgressValue.text = "${patient.progress}%"
+//        holder.tvAiResult.text = patient.aiResult ?: ""
         holder.imgAvatar.setImageResource(R.drawable.img_tx)
         holder.imgAiEval.setImageResource(R.drawable.img_ai)
 

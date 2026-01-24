@@ -45,16 +45,16 @@ class PtLogVM: ViewModel () {
     fun registerPatient(account: String, password: String) {
         viewModelScope.launch {
             val success = repository.registerPatient(
-                //id和account值相同，id做主键
-                Patient(id = account,account = account, password = password)
+                // patientId和account值相同，patientId做主键
+                Patient(patientId = account, account = account, password = password)
             )
             registerResult.postValue(success)
         }
     }
 
-    fun checkInfoComplete(id: String) {
+    fun checkInfoComplete(account: String) {
         viewModelScope.launch {
-            val complete = repository.isInfoComplete(id)
+            val complete = repository.isInfoComplete(account)
             infoComplete.postValue(complete)
         }
     }
@@ -62,6 +62,7 @@ class PtLogVM: ViewModel () {
     fun checkBindingStatus(account: String) {
         viewModelScope.launch {
             val status = repository.getBindingStatus(account)
+            android.util.Log.d("PtLogVM", "checkBindingStatus: account=$account, status=$status")
             bindingStatus.postValue(status ?: "unbound")
         }
     }
@@ -85,8 +86,8 @@ class PtLogVM: ViewModel () {
                 
                 // 3. 更新患者信息
                 val updatedPatient = patient.copy(
-                    physicianCode = doctorCode,
-                    physicianName = doctor.name,
+                    doctorCode = doctorCode,
+                    doctorName = doctor.name,
                     bindingStatus = "pending"
                 )
                 repository.updatePatient(updatedPatient)
@@ -95,8 +96,8 @@ class PtLogVM: ViewModel () {
                 val task = DoctorTask(
                     doctorCode = doctorCode,
                     taskType = "patient_binding",
-                    patientId = patient.id,
-                    patientName = patient.name ?: "未填写",
+                    patientId = patient.patientId,
+                    patientName = patient.name,
                     patientAccount = patient.account,
                     createdAt = System.currentTimeMillis()
                 )

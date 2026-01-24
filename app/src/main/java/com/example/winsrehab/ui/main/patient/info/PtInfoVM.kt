@@ -28,46 +28,43 @@ class PtInfoVM: ViewModel() {
         viewModelScope.launch {
             val old = repository.getPatientByAccount(account)
             val newPatient = old?.copy(
-                name = name, gender = gender, age = age,
-                physicianName = doctor, physicianCode = doctorCode,
+                name = name, 
+                gender = gender, 
+                age = age,
+                doctorName = doctor, 
+                doctorCode = doctorCode,
                 account = account,
                 signature = signature
             ) ?: Patient(
-                id = account,   //必须有唯一标识
+                patientId = account,   // 必须有唯一标识
                 account = account,
                 password = old?.password ?: "",
                 name = name,
                 gender = gender,
                 age = age,
-                physicianName = doctor,
-                physicianCode = doctorCode,
-                signature = signature,
-
+                doctorName = doctor,
+                doctorCode = doctorCode,
+                signature = signature
             )
             repository.insertPatient(newPatient)
-                patient.postValue(newPatient)
+            patient.postValue(newPatient)
         }
     }
 
     fun saveRehabInfo(
-        account: String, diagnosis: String, stage: String,
-        progress: Int, aiResult: String, lastTraining: String
+        account: String, diagnosis: String, rehabStage: String,
+        progress: Int
     ) {
         viewModelScope.launch {
             val old = repository.getPatientByAccount(account) ?: return@launch
             val updated = old.copy(
-
                 diagnosis = diagnosis,
-                stage = stage,
-                progress = progress,
-                aiResult = aiResult,
-                hasAlert = false,
-                lastTrainingDate = lastTraining
+                rehabStage = rehabStage,
+                overallProgress = progress,
+                hasAlert = false
             )
             repository.updatePatient(updated)
             patient.postValue(updated)
         }
     }
-
-
 }

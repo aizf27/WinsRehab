@@ -93,27 +93,57 @@ class pt_infoFragment : Fragment() {
      */
     private fun setRowValue(rowView: View, value: String?) {
         rowView.findViewById<TextView>(R.id.rowValue).text = value?.takeIf { it.isNotBlank() } ?: "未设置"
+        // 隐藏右箭头（除了康复记录）
+        val arrow = rowView.findViewById<ImageView>(R.id.rowIcon)?.parent as? View
+        arrow?.findViewById<ImageView>(R.id.rowIcon)?.let { iconView ->
+            // 找到右箭头并隐藏
+            (rowView as? ViewGroup)?.let { group ->
+                for (i in 0 until group.childCount) {
+                    val child = group.getChildAt(i)
+                    if (child is ImageView && child.drawable != null) {
+                        // 检查是否是右箭头（最后一个ImageView）
+                        if (i == group.childCount - 1) {
+                            child.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
      * 填充UI数据
      */
     private fun fillUI(patient: Patient) {
-        // 顶部卡片信息
-        binding.tvPatientName.text = patient.name ?: "患者"
-        binding.tvPatientId.text = "患者 ID: ${patient.id}"
-        binding.tvRehabCenter.text = "康复中心：XX医院康复科"
+        // 顶部卡片信息（与数据库同步）
+        binding.tvPatientName.text = patient.name.takeIf { it != "未设置" } ?: "未设置"
+        
+        // 性别和年龄
+        val genderAge = buildString {
+            if (patient.gender != "未设置") {
+                append(patient.gender)
+            }
+            if (patient.age > 0) {
+                if (isNotEmpty()) append(" · ")
+                append("${patient.age}岁")
+            }
+            if (isEmpty()) append("未设置")
+        }
+        binding.tvPatientGender.text = genderAge
+        
+        // 个性签名
+        binding.tvPatientSignature.text = patient.signature.takeIf { it != "未设置" } ?: "这个人很懒，什么都没留下"
 
         // 基本信息
-        setRowValue(binding.rowPhone.root, patient.account)  // 电话用account
-        setRowValue(binding.rowEmail.root, null)  // 邮箱暂无，显示未设置
-        setRowValue(binding.rowDob.root, null)    // 出生日期暂无，显示未设置
-        setRowValue(binding.rowAddress.root, null) // 地址暂无，显示未设置
+        setRowValue(binding.rowPhone.root, patient.phone)  // 电话
+        setRowValue(binding.rowEmail.root, patient.email)  // 邮箱
+        setRowValue(binding.rowDob.root, patient.dateOfBirth)    // 出生日期
+        setRowValue(binding.rowAddress.root, patient.address) // 地址
 
         // 康复信息
         setRowValue(binding.rowRecord.root, "查看详情")
         setRowValue(binding.rowTraining.root, "查看详情")
-        setRowValue(binding.rowDoctor.root, patient.physicianCode)  // 显示主治医生工号
+        setRowValue(binding.rowDoctor.root, patient.doctorName.takeIf { it != "未设置" } ?: "未绑定")
 
         // 设置板块
         setRowValue(binding.rowSystem.root, "")
@@ -123,6 +153,18 @@ class pt_infoFragment : Fragment() {
      * 设置点击事件
      */
     private fun setupClickListeners() {
+        // 编辑按钮 - 跳转到编辑页面
+        binding.btnEdit.setOnClickListener {
+            val action = pt_infoFragmentDirections.actionPtInfoFragmentToPtInfoEditFragment(account)
+            findNavController().navigate(action)
+        }
+
+        // 点击卡片 - 跳转到编辑页面
+        binding.profileCard.setOnClickListener {
+            val action = pt_infoFragmentDirections.actionPtInfoFragmentToPtInfoEditFragment(account)
+            findNavController().navigate(action)
+        }
+
         // 康复记录 - 跳转到康复中心页
         binding.rowRecord.root.setOnClickListener {
             findNavController().navigate(R.id.pt_rehabFragment)
@@ -134,7 +176,7 @@ class pt_infoFragment : Fragment() {
         // 主治医生 - 暂不设置点击事件
         // binding.rowDoctor.root.setOnClickListener { }
 
-        // 系统设置 - 暂不设置点击事件
+        // 系统���置 - 暂不设置点击事件
         // binding.rowSystem.root.setOnClickListener { }
 
         // 切换账户 - 暂不设置点击事件

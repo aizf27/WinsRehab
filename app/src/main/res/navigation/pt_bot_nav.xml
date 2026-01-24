@@ -44,6 +44,20 @@
             android:name="mode"
             app:argType="string"
             android:defaultValue="patient" />
+        <action
+            android:id="@+id/action_pt_infoFragment_to_ptInfoEditFragment"
+            app:destination="@id/ptInfoEditFragment" />
+    </fragment>
+
+    <!-- 患者信息编辑Fragment -->
+    <fragment
+        android:id="@+id/ptInfoEditFragment"
+        android:name="com.example.winsrehab.ui.main.patient.info.PtInfoEditFragment"
+        android:label="编辑个人信息"
+        tools:layout="@layout/fragment_pt_info_edit">
+        <argument
+            android:name="account"
+            app:argType="string" />
     </fragment>
 
 </navigation>

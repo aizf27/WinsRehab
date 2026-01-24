@@ -62,13 +62,16 @@ class PtLogActivity: AppCompatActivity () {
         //绑定状态观察
         viewModel.bindingStatus.observe(this) { status ->
             val account = binding.etPtAccount.text.toString()
+            Log.d("PtLogActivity", "bindingStatus observed: status=$status, account=$account")
             when(status) {
                 "unbound" -> {
                     // 未绑定，显示绑定对话框
+                    Log.d("PtLogActivity", "Status is unbound, showing bind dialog")
                     showBindDoctorDialog(account)
                 }
                 "pending" -> {
                     // 待确认，跳转到等待页面
+                    Log.d("PtLogActivity", "Status is pending, navigating to waiting page")
                     val intent = Intent(this, WaitingBindingActivity::class.java)
                     intent.putExtra("account", account)
                     startActivity(intent)
@@ -76,10 +79,12 @@ class PtLogActivity: AppCompatActivity () {
                 }
                 "active" -> {
                     // 已绑定，检查信息完整性
+                    Log.d("PtLogActivity", "Status is active, checking info complete")
                     viewModel.checkInfoComplete(account)
                 }
                 "rejected" -> {
                     // 被拒绝，提示并允许重新绑定
+                    Log.d("PtLogActivity", "Status is rejected, showing dialog")
                     AlertDialog.Builder(this)
                         .setTitle("绑定被拒绝")
                         .setMessage("医生已拒绝您的绑定申请，请重新绑定其他医生")
@@ -88,6 +93,9 @@ class PtLogActivity: AppCompatActivity () {
                         }
                         .setCancelable(false)
                         .show()
+                }
+                else -> {
+                    Log.e("PtLogActivity", "Unknown binding status: $status")
                 }
             }
         }

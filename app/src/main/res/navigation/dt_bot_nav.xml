@@ -45,6 +45,20 @@
         <argument android:name="totalCount"
             android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_dt_info_Fragment_to_dtInfoEditFragment"
+            app:destination="@id/dtInfoEditFragment" />
+    </fragment>
+
+    <!-- 医生信息编辑Fragment -->
+    <fragment
+        android:id="@+id/dtInfoEditFragment"
+        android:name="com.example.winsrehab.ui.main.doctor.info.DtInfoEditFragment"
+        android:label="编辑个人信息"
+        tools:layout="@layout/fragment_dt_info_edit">
+        <argument
+            android:name="doctorCode"
+            app:argType="string" />
     </fragment>
 
     <!-- 患者信息详情页 -->
