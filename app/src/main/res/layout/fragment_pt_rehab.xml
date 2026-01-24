@@ -55,15 +55,15 @@
         </LinearLayout>
 
         <!-- 切换账户按钮 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_outline_gray"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:text="切换账户"
-            android:textColor="#4B5563"
-            android:textSize="12sp"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/btn_outline_gray"-->
+<!--            android:paddingHorizontal="12dp"-->
+<!--            android:paddingVertical="6dp"-->
+<!--            android:text="切换账户"-->
+<!--            android:textColor="#4B5563"-->
+<!--            android:textSize="12sp"/>-->
     </LinearLayout>
 
     <!-- 2. 滚动内容 -->

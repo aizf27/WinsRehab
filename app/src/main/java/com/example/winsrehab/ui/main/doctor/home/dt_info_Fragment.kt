@@ -63,28 +63,7 @@ class dt_info_Fragment : Fragment() {
         // 观察医生数据
         viewModel.doctor.observe(viewLifecycleOwner) { doctor ->
             doctor?.let {
-                // 更新卡片信息（与数据库同步）
-                binding.tvDoctorName.text = it.name.takeIf { name -> name != "未设置" } ?: "未设置"
-                
-                // 性别、年龄、科室
-                val info = buildString {
-                    if (it.gender != "未设置") {
-                        append(it.gender)
-                    }
-                    if (it.age > 0) {
-                        if (isNotEmpty()) append(" · ")
-                        append("${it.age}岁")
-                    }
-                    if (it.department != "未设置") {
-                        if (isNotEmpty()) append(" · ")
-                        append(it.department)
-                    }
-                    if (isEmpty()) append("未设置")
-                }
-                binding.tvDoctorInfo.text = info
-                
-                // 工号
-                binding.tvDoctorCode.text = "工号：${it.doctorCode}"
+                fillUI(it)
             }
         }
 
@@ -103,6 +82,55 @@ class dt_info_Fragment : Fragment() {
             findNavController().navigate(action)
         }
     }
+    
+    /**
+     * 填充UI数据
+     */
+    private fun fillUI(doctor: Doctor) {
+        // 顶部卡片信息
+        binding.tvDoctorName.text = doctor.name.takeIf { it != "未设置" } ?: "未设置"
+        
+        // 性别、年龄、科室
+        val info = buildString {
+            if (doctor.gender != "未设置") {
+                append(doctor.gender)
+            }
+            if (doctor.age > 0) {
+                if (isNotEmpty()) append(" · ")
+                append("${doctor.age}岁")
+            }
+            if (doctor.department != "未设置") {
+                if (isNotEmpty()) append(" · ")
+                append(doctor.department)
+            }
+            if (isEmpty()) append("未设置")
+        }
+        binding.tvDoctorInfo.text = info
+        
+        // 工号
+        binding.tvDoctorCode.text = "工号：${doctor.doctorCode}"
+        
+        // 执业信息
+        binding.tvLicenseNumber.text = doctor.licenseNumber.takeIf { it != "未设置" } ?: "未设置"
+        binding.tvHospital.text = doctor.hospital.takeIf { it != "未设置" } ?: "未设置"
+        binding.tvTitle.text = doctor.title.takeIf { it != "未设置" } ?: "未设置"
+        binding.tvPatientCount.text = "${doctor.patientCount} 人"
+        
+        // 联系方式
+        binding.tvPhone.text = doctor.phone.takeIf { it != "未设置" } ?: "未设置"
+        binding.tvEmail.text = doctor.email.takeIf { it != "未设置" } ?: "未设置"
+        
+        // 工作统计
+        binding.tvMonthlyPlans.text = doctor.monthlyCompletedPlans.toString()
+        binding.tvSatisfaction.text = "${doctor.satisfactionRate.toInt()}%"
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // 每次返回时重新加载数据，确保显示最新信息
+        viewModel.loadDoctorInfo(doctorCode)
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
         _binding=null

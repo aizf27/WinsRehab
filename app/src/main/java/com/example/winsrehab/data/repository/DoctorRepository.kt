@@ -29,14 +29,19 @@ class DoctorRepository(private val doctorDao: DoctorDao) {
 
     // 更新医生信息
     suspend fun updateDoctorInfo(doctor: Doctor) {
-        // 先查询是否存在该医生信息
-        val existingDoctor = doctorDao.getDoctorInfo(doctor.doctorCode).value
-        if (existingDoctor == null) {
-            // 如果不存在，执行插入操作
-            doctorDao.insertDoctor(doctor)
-        } else {
-            // 如果存在，执行更新操作
-            doctorDao.updateDoctor(doctor)
+        try {
+            // 先查询是否存在该医生信息
+            val existingDoctor = doctorDao.getDoctorById(doctor.doctorCode).first()
+            if (existingDoctor == null) {
+                // 如果不存在，执行插入操作
+                doctorDao.insertDoctor(doctor)
+            } else {
+                // 如果存在，执行更新操作
+                doctorDao.updateDoctor(doctor)
+            }
+        } catch (e: Exception) {
+            // 如果更新失败，尝试使用 REPLACE 策略插入
+            doctorDao.insertDoctorInfo(doctor)
         }
     }
 

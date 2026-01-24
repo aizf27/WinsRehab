@@ -72,9 +72,10 @@ class pt_infoFragment : Fragment() {
         setupRow(binding.rowAddress.root, R.drawable.ic_location, "地址")
 
         // 康复信息板块
+        setupRow(binding.rowDoctor.root, R.drawable.ic_user, "主治医生")
         setupRow(binding.rowRecord.root, R.drawable.ic_description, "康复记录")
         setupRow(binding.rowTraining.root, R.drawable.ic_calendar, "训练计划")
-        setupRow(binding.rowDoctor.root, R.drawable.ic_user, "主治医生")
+
 
         // 设置板块
         setupRow(binding.rowSystem.root, R.drawable.ic_settings, "系统设置")
@@ -143,7 +144,7 @@ class pt_infoFragment : Fragment() {
         // 康复信息
         setRowValue(binding.rowRecord.root, "查看详情")
         setRowValue(binding.rowTraining.root, "查看详情")
-        setRowValue(binding.rowDoctor.root, patient.doctorName.takeIf { it != "未设置" } ?: "未绑定")
+        setRowValue(binding.rowDoctor.root, patient.doctorCode)
 
         // 设置板块
         setRowValue(binding.rowSystem.root, "")
@@ -192,6 +193,12 @@ class pt_infoFragment : Fragment() {
         Log.d("pt_infoFragment", "args.account=$navAccount, intent.account=$intentAccount")
         if (navAccount.isNotEmpty()) return navAccount
         return intentAccount
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 每次返回时重新加载数据，确保显示最新信息
+        viewModel.loadPatient(account)
     }
 
     override fun onDestroyView() {

@@ -33,39 +33,39 @@
             android:gravity="center_vertical">
 
             <!-- 铃铛 + 红点 -->
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true">
+<!--            <FrameLayout-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--                android:clickable="true">-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_bell"
-                    app:tint="#4B5563" />
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/ic_bell"-->
+<!--                    app:tint="#4B5563" />-->
 
-                <!-- 红点 -->
-                <View
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:background="@drawable/shape_circle_red"
-                    android:layout_gravity="top|end"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"/>
-            </FrameLayout>
+<!--                &lt;!&ndash; 红点 &ndash;&gt;-->
+<!--                <View-->
+<!--                    android:layout_width="8dp"-->
+<!--                    android:layout_height="8dp"-->
+<!--                    android:background="@drawable/shape_circle_red"-->
+<!--                    android:layout_gravity="top|end"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:layout_marginEnd="8dp"/>-->
+<!--            </FrameLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/btn_outline_gray"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:text="切换账户"
-                android:textColor="#4B5563"
-                android:textSize="12sp"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:background="@drawable/btn_outline_gray"-->
+<!--                android:paddingHorizontal="12dp"-->
+<!--                android:paddingVertical="6dp"-->
+<!--                android:text="切换账户"-->
+<!--                android:textColor="#4B5563"-->
+<!--                android:textSize="12sp"/>-->
         </LinearLayout>
     </LinearLayout>
 

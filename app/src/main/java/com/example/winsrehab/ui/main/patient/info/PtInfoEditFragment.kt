@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.winsrehab.databinding.FragmentPtInfoEditBinding
@@ -24,7 +24,7 @@ class PtInfoEditFragment : Fragment() {
     private var _binding: FragmentPtInfoEditBinding? = null
     private val binding get() = _binding!!
     
-    private val viewModel: PtInfoVM by viewModels()
+    private val viewModel: PtInfoVM by activityViewModels()
     private val args by navArgs<PtInfoEditFragmentArgs>()
     private var account: String = ""
 
@@ -65,7 +65,14 @@ class PtInfoEditFragment : Fragment() {
                 binding.tvName.text = it.name.takeIf { name -> name != "未设置" } ?: "未设置"
                 binding.tvGender.text = it.gender.takeIf { gender -> gender != "未设置" } ?: "未设置"
                 binding.tvAge.text = if (it.age > 0) "${it.age}岁" else "未设置"
+                binding.tvNickname.text = it.nickname.takeIf { nick -> nick != "未设置" } ?: "未设置"
                 binding.tvSignature.text = it.signature.takeIf { sig -> sig != "未设置" && sig != "这个人很懒，什么都没留下" } ?: "未设置"
+                
+                // 更新联系方式
+                binding.tvPhone.text = it.phone.takeIf { phone -> phone != "未设置" } ?: "未设置"
+                binding.tvEmail.text = it.email.takeIf { email -> email != "未设置" } ?: "未设置"
+                binding.tvDateOfBirth.text = it.dateOfBirth.takeIf { dob -> dob != "未设置" } ?: "未设置"
+                binding.tvAddress.text = it.address.takeIf { addr -> addr != "未设置" } ?: "未设置"
                 
                 // 更新医生信息（只读）
                 binding.tvDoctorName.text = it.doctorName.takeIf { name -> name != "未设置" } ?: "未绑定"
@@ -114,10 +121,41 @@ class PtInfoEditFragment : Fragment() {
             showAgeDialog()
         }
         
+        // 昵称点击
+        binding.layoutNickname.setOnClickListener {
+            showEditDialog("昵称", binding.tvNickname.text.toString(), maxLength = 20) { newValue ->
+                binding.tvNickname.text = newValue
+            }
+        }
+        
         // 个性签名点击
         binding.layoutSignature.setOnClickListener {
             showEditDialog("个性签名", binding.tvSignature.text.toString(), maxLength = 100) { newValue ->
                 binding.tvSignature.text = newValue
+            }
+        }
+        
+        // 手机号码点击
+        binding.layoutPhone.setOnClickListener {
+            showPhoneDialog()
+        }
+        
+        // 电子邮箱点击
+        binding.layoutEmail.setOnClickListener {
+            showEditDialog("电子邮箱", binding.tvEmail.text.toString(), maxLength = 50) { newValue ->
+                binding.tvEmail.text = newValue
+            }
+        }
+        
+        // 出生日期点击
+        binding.layoutDateOfBirth.setOnClickListener {
+            showDatePickerDialog()
+        }
+        
+        // 地址点击
+        binding.layoutAddress.setOnClickListener {
+            showEditDialog("地址", binding.tvAddress.text.toString(), maxLength = 100) { newValue ->
+                binding.tvAddress.text = newValue
             }
         }
     }
@@ -217,6 +255,68 @@ class PtInfoEditFragment : Fragment() {
     }
 
     /**
+     * 显示手机号输入对话框
+     */
+    private fun showPhoneDialog() {
+        val editText = EditText(requireContext()).apply {
+            val currentPhone = binding.tvPhone.text.toString()
+            setText(if (currentPhone == "未设置") "" else currentPhone)
+            hint = "请输入手机号码"
+            inputType = InputType.TYPE_CLASS_PHONE
+            setPadding(50, 30, 50, 30)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("编辑手机号码")
+            .setView(editText)
+            .setPositiveButton("确定") { _, _ ->
+                val phone = editText.text.toString().trim()
+                if (phone.isEmpty()) {
+                    Toast.makeText(requireContext(), "手机号码不能为空", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                if (!phone.matches(Regex("^1[3-9]\\d{9}$"))) {
+                    Toast.makeText(requireContext(), "请输入有效的手机号码", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                binding.tvPhone.text = phone
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+
+    /**
+     * 显示日期选择对话框
+     */
+    private fun showDatePickerDialog() {
+        val calendar = java.util.Calendar.getInstance()
+        val currentDate = binding.tvDateOfBirth.text.toString()
+        
+        // 解析当前日期
+        if (currentDate != "未设置") {
+            try {
+                val parts = currentDate.split("-")
+                if (parts.size == 3) {
+                    calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+                }
+            } catch (e: Exception) {
+                // 使用默认日期
+            }
+        }
+
+        android.app.DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val dateStr = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                binding.tvDateOfBirth.text = dateStr
+            },
+            calendar.get(java.util.Calendar.YEAR),
+            calendar.get(java.util.Calendar.MONTH),
+            calendar.get(java.util.Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    /**
      * 保存患者信息
      */
     private fun savePatientInfo() {
@@ -229,7 +329,12 @@ class PtInfoEditFragment : Fragment() {
         val name = binding.tvName.text.toString()
         val gender = binding.tvGender.text.toString()
         val ageStr = binding.tvAge.text.toString().replace("岁", "")
+        val nickname = binding.tvNickname.text.toString()
         val signature = binding.tvSignature.text.toString()
+        val phone = binding.tvPhone.text.toString()
+        val email = binding.tvEmail.text.toString()
+        val dateOfBirth = binding.tvDateOfBirth.text.toString()
+        val address = binding.tvAddress.text.toString()
 
         // 验证必填项
         if (name == "未设置" || name.isBlank()) {
@@ -247,22 +352,32 @@ class PtInfoEditFragment : Fragment() {
 
         val age = ageStr.toIntOrNull() ?: 0
 
-        // 调用 ViewModel 保存
-        viewModel.saveBasicInfo(
-            account = account,
+        // 创建更新后的患者对象
+        val updatedPatient = patient.copy(
             name = name,
             gender = gender,
             age = age,
-            doctor = patient.doctorName,
-            doctorCode = patient.doctorCode,
-            signature = if (signature == "未设置") "" else signature
+            nickname = if (nickname == "未设置") "未设置" else nickname,
+            signature = if (signature == "未设置") "这个人很懒，什么都没留下" else signature,
+            phone = if (phone == "未设置") "未设置" else phone,
+            email = if (email == "未设置") "未设置" else email,
+            dateOfBirth = if (dateOfBirth == "未设置") "未设置" else dateOfBirth,
+            address = if (address == "未设置") "未设置" else address,
+            updatedAt = System.currentTimeMillis()
         )
 
-        // 显示成功提示
-        Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
-
-        // 返回上一页
-        findNavController().navigateUp()
+        // 调用 ViewModel 保存
+        viewModel.savePatientInfo(updatedPatient) { success ->
+            if (success) {
+                // 显示成功提示
+                Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
+                
+                // 返回上一页
+                findNavController().navigateUp()
+            } else {
+                Toast.makeText(requireContext(), "保存失败，请重试", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

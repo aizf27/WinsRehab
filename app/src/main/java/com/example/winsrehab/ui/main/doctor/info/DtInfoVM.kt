@@ -28,12 +28,15 @@ class DtInfoVM: ViewModel() {
         }
     }
 
-    fun saveDoctorInfo(doctor: Doctor, onComplete: (Boolean) -> Unit) {
+    fun saveDoctorInfo(updatedDoctor: Doctor, onComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
-                repository.updateDoctorInfo( doctor)
+                repository.updateDoctorInfo(updatedDoctor)
+                // 更新 LiveData，这样返回信息页时能看到最新数据
+                doctor.postValue(updatedDoctor)
                 onComplete(true)
             } catch (e: Exception) {
+                e.printStackTrace()
                 onComplete(false)
             }
         }

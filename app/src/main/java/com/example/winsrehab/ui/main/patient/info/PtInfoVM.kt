@@ -51,6 +51,18 @@ class PtInfoVM: ViewModel() {
         }
     }
 
+    fun savePatientInfo(updatedPatient: Patient, onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                repository.updatePatient(updatedPatient)
+                patient.postValue(updatedPatient)
+                onComplete(true)
+            } catch (e: Exception) {
+                onComplete(false)
+            }
+        }
+    }
+
     fun saveRehabInfo(
         account: String, diagnosis: String, rehabStage: String,
         progress: Int

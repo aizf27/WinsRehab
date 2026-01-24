@@ -69,7 +69,14 @@ class DtInfoEditFragment : Fragment() {
                 
                 // 更新执业信息
                 binding.tvDepartment.text = it.department.takeIf { dept -> dept != "未设置" } ?: "未设置"
+                binding.tvTitle.text = it.title.takeIf { title -> title != "未设置" } ?: "未设置"
+                binding.tvHospital.text = it.hospital.takeIf { hospital -> hospital != "未设置" } ?: "未设置"
+                binding.tvLicenseNumber.text = it.licenseNumber.takeIf { license -> license != "未设置" } ?: "未设置"
                 binding.tvDoctorCode.text = it.doctorCode
+                
+                // 更新联系方式
+                binding.tvPhone.text = it.phone.takeIf { phone -> phone != "未设置" } ?: "未设置"
+                binding.tvEmail.text = it.email.takeIf { email -> email != "未设置" } ?: "未设置"
             }
         }
     }
@@ -113,6 +120,37 @@ class DtInfoEditFragment : Fragment() {
         // 科室点击
         binding.layoutDepartment.setOnClickListener {
             showDepartmentDialog()
+        }
+        
+        // 职称点击
+        binding.layoutTitle.setOnClickListener {
+            showTitleDialog()
+        }
+        
+        // 所属医院点击
+        binding.layoutHospital.setOnClickListener {
+            showEditDialog("所属医院", binding.tvHospital.text.toString(), maxLength = 50) { newValue ->
+                binding.tvHospital.text = newValue
+            }
+        }
+        
+        // 医师资格证号点击
+        binding.layoutLicenseNumber.setOnClickListener {
+            showEditDialog("医师资格证号", binding.tvLicenseNumber.text.toString(), maxLength = 30) { newValue ->
+                binding.tvLicenseNumber.text = newValue
+            }
+        }
+        
+        // 手机号码点击
+        binding.layoutPhone.setOnClickListener {
+            showPhoneDialog()
+        }
+        
+        // 电子邮箱点击
+        binding.layoutEmail.setOnClickListener {
+            showEditDialog("电子邮箱", binding.tvEmail.text.toString(), maxLength = 50) { newValue ->
+                binding.tvEmail.text = newValue
+            }
         }
     }
 
@@ -233,6 +271,63 @@ class DtInfoEditFragment : Fragment() {
     }
 
     /**
+     * 显示职称选择对话框
+     */
+    private fun showTitleDialog() {
+        val titles = arrayOf("住院医师", "主治医师", "副主任医师", "主任医师", "其他")
+        val currentTitle = binding.tvTitle.text.toString()
+        val checkedItem = titles.indexOf(currentTitle).takeIf { it >= 0 } ?: -1
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("选择职称")
+            .setSingleChoiceItems(titles, checkedItem) { dialog, which ->
+                if (which == titles.size - 1) {
+                    // 选择"其他"，弹出输入框
+                    dialog.dismiss()
+                    showEditDialog("职称", "") { newValue ->
+                        binding.tvTitle.text = newValue
+                    }
+                } else {
+                    binding.tvTitle.text = titles[which]
+                    dialog.dismiss()
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+
+    /**
+     * 显示手机号输入对话框
+     */
+    private fun showPhoneDialog() {
+        val editText = EditText(requireContext()).apply {
+            val currentPhone = binding.tvPhone.text.toString()
+            setText(if (currentPhone == "未设置") "" else currentPhone)
+            hint = "请输入手机号码"
+            inputType = InputType.TYPE_CLASS_PHONE
+            setPadding(50, 30, 50, 30)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("编辑手机号码")
+            .setView(editText)
+            .setPositiveButton("确定") { _, _ ->
+                val phone = editText.text.toString().trim()
+                if (phone.isEmpty()) {
+                    Toast.makeText(requireContext(), "手机号码不能为空", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                if (!phone.matches(Regex("^1[3-9]\\d{9}$"))) {
+                    Toast.makeText(requireContext(), "请输入有效的手机号码", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                binding.tvPhone.text = phone
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+
+    /**
      * 保存医生信息
      */
     private fun saveDoctorInfo() {
@@ -246,6 +341,11 @@ class DtInfoEditFragment : Fragment() {
         val gender = binding.tvGender.text.toString()
         val ageStr = binding.tvAge.text.toString().replace("岁", "")
         val department = binding.tvDepartment.text.toString()
+        val title = binding.tvTitle.text.toString()
+        val hospital = binding.tvHospital.text.toString()
+        val licenseNumber = binding.tvLicenseNumber.text.toString()
+        val phone = binding.tvPhone.text.toString()
+        val email = binding.tvEmail.text.toString()
 
         // 验证必填项
         if (name == "未设置" || name.isBlank()) {
@@ -260,22 +360,21 @@ class DtInfoEditFragment : Fragment() {
             Toast.makeText(requireContext(), "请填写年龄", Toast.LENGTH_SHORT).show()
             return
         }
-        if (department == "未设置" || department.isBlank()) {
-            Toast.makeText(requireContext(), "请填写科室", Toast.LENGTH_SHORT).show()
-            return
-        }
 
         val age = ageStr.toIntOrNull() ?: 0
 
         // 创建更新后的医生对象
-        val updatedDoctor = Doctor(
-            doctorCode = doctorCode,
-            password = doctor.password,
+        val updatedDoctor = doctor.copy(
             name = name,
             gender = gender,
             age = age,
-            department = department,
-            patientCount = doctor.patientCount
+            department = if (department == "未设置") "未设置" else department,
+            title = if (title == "未设置") "未设置" else title,
+            hospital = if (hospital == "未设置") "未设置" else hospital,
+            licenseNumber = if (licenseNumber == "未设置") "未设置" else licenseNumber,
+            phone = if (phone == "未设置") "未设置" else phone,
+            email = if (email == "未设置") "未设置" else email,
+            updatedAt = System.currentTimeMillis()
         )
 
         // 调用 ViewModel 保存

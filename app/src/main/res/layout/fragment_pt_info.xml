@@ -178,13 +178,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <include layout="@layout/item_info_row" android:id="@+id/row_doctor" />
+                    <View style="@style/Divider" />
                     <include layout="@layout/item_info_row" android:id="@+id/row_record" />
                     <View style="@style/Divider" />
 
                     <include layout="@layout/item_info_row" android:id="@+id/row_training" />
-                    <View style="@style/Divider" />
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_doctor" />
+
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

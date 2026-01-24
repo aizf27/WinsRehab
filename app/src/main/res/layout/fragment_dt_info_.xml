@@ -173,8 +173,10 @@
                             android:src="@drawable/ic_id_card" app:tint="#2563EB"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:layout_marginStart="12dp" android:text="医师资格证" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="110******2023" android:textColor="#111827" android:textSize="14sp"/>
+                        <TextView 
+                            android:id="@+id/tvLicenseNumber"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
                             android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
                     </LinearLayout>
@@ -191,8 +193,10 @@
                             android:src="@drawable/ic_briefcase" app:tint="#2563EB"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:layout_marginStart="12dp" android:text="所属医院" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="XX医院康复科" android:textColor="#111827" android:textSize="14sp"/>
+                        <TextView 
+                            android:id="@+id/tvHospital"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
                             android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
                     </LinearLayout>
@@ -209,8 +213,10 @@
                             android:src="@drawable/ic_award" app:tint="#2563EB"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:layout_marginStart="12dp" android:text="职称" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="主治医师" android:textColor="#111827" android:textSize="14sp"/>
+                        <TextView 
+                            android:id="@+id/tvTitle"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
                             android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
                     </LinearLayout>
@@ -227,8 +233,10 @@
                             android:src="@drawable/ic_users" app:tint="#2563EB"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:layout_marginStart="12dp" android:text="管理患者数" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="15 人" android:textColor="#111827" android:textSize="14sp"/>
+                        <TextView 
+                            android:id="@+id/tvPatientCount"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:gravity="end" android:text="0 人" android:textColor="#111827" android:textSize="14sp"/>
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
                             android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
                     </LinearLayout>
@@ -270,8 +278,10 @@
                             android:src="@drawable/ic_phone" app:tint="#2563EB"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:layout_marginStart="12dp" android:text="手机号码" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="139****8899" android:textColor="#111827" android:textSize="14sp"/>
+                        <TextView 
+                            android:id="@+id/tvPhone"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
                             android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
                     </LinearLayout>
@@ -288,8 +298,11 @@
                             android:src="@drawable/ic_email" app:tint="#2563EB"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:layout_marginStart="12dp" android:text="电子邮箱" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="li.doctor@..." android:textColor="#111827" android:textSize="14sp"/>
+                        <TextView 
+                            android:id="@+id/tvEmail"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"
+                            android:ellipsize="end" android:maxLines="1"/>
                         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
                             android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
                     </LinearLayout>
@@ -328,8 +341,10 @@
                         android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="本月完成" android:textColor="#4B5563" android:textSize="12sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="32" android:textColor="#2563EB" android:textSize="24sp" android:textStyle="bold"/>
+                        <TextView 
+                            android:id="@+id/tvMonthlyPlans"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="0" android:textColor="#2563EB" android:textSize="24sp" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="康复计划" android:textColor="#6B7280" android:textSize="12sp"/>
                     </LinearLayout>
@@ -349,8 +364,10 @@
                         android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="患者满意度" android:textColor="#4B5563" android:textSize="12sp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="98%" android:textColor="#2563EB" android:textSize="24sp" android:textStyle="bold"/>
+                        <TextView 
+                            android:id="@+id/tvSatisfaction"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="0%" android:textColor="#2563EB" android:textSize="24sp" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="综合评分" android:textColor="#6B7280" android:textSize="12sp"/>
                     </LinearLayout>

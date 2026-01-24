@@ -33,9 +33,9 @@ data class Patient(
     val signature: String = "这个人很懒，什么都没留下",        // 个性签名
     val hasAlert: Boolean = false,                         // 是否有异常预警
     val hasNewFeedback: Boolean = false,                   // 是否有新反馈
-    val lastActiveTime: Long = System.currentTimeMillis(), // 最后活跃时间戳
+    val lastActiveTime: Long = 0L,                         // 最后活跃时间戳
     val bindingStatus: String = "unbound",                 // 绑定状态（unbound/pending/active/rejected）
     val joinRanking: Boolean = true,                       // 是否参与排行榜
-    val createdAt: Long = System.currentTimeMillis(),      // 创建时间戳
-    val updatedAt: Long = System.currentTimeMillis()       // 更新时间戳
+    val createdAt: Long = 0L,                              // 创建时间戳
+    val updatedAt: Long = 0L                               // 更新时间戳
 )

@@ -21,6 +21,6 @@ data class Doctor(
     val patientCount: Int = 0,                             // 管理患者数（冗余字段）
     val monthlyCompletedPlans: Int = 0,                    // 本月完成计划数
     val satisfactionRate: Float = 0f,                      // 患者满意度（0-100）
-    val createdAt: Long = System.currentTimeMillis(),      // 创建时间戳
-    val updatedAt: Long = System.currentTimeMillis()       // 更新时间戳
+    val createdAt: Long = 0L,                              // 创建时间戳
+    val updatedAt: Long = 0L                               // 更新时间戳
 )
