@@ -29,6 +29,9 @@ interface DoctorDao {
     @Query("SELECT * FROM doctor WHERE doctorCode = :doctorCode LIMIT 1")
     fun getDoctorInfo(doctorCode: String): LiveData<Doctor?>
 
+    @Query("SELECT * FROM doctor WHERE doctorCode = :doctorCode LIMIT 1")
+    suspend fun getDoctorByCode(doctorCode: String): Doctor?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDoctorInfo(doctor: Doctor)
 

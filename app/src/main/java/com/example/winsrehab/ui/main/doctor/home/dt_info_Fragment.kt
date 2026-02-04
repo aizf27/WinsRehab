@@ -60,6 +60,9 @@ class dt_info_Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 初始化信息行
+        setupInfoRows()
+
         // 观察医生数据
         viewModel.doctor.observe(viewLifecycleOwner) { doctor ->
             doctor?.let {
@@ -80,6 +83,78 @@ class dt_info_Fragment : Fragment() {
         binding.profileCard.setOnClickListener {
             val action = dt_info_FragmentDirections.actionDtInfoFragmentToDtInfoEditFragment(doctorCode)
             findNavController().navigate(action)
+        }
+    }
+    
+    /**
+     * 初始化信息行的图标和标题
+     */
+    private fun setupInfoRows() {
+        // 执业信息
+        setupInfoRow(
+            binding.rowLicense,
+            R.drawable.ic_id_card,
+            "医师资格证"
+        )
+        
+        setupInfoRow(
+            binding.rowHospital,
+            R.drawable.ic_briefcase,
+            "所属医院"
+        )
+        
+        setupInfoRow(
+            binding.rowTitle,
+            R.drawable.ic_award,
+            "职称"
+        )
+        
+        setupInfoRow(
+            binding.rowPatientCount,
+            R.drawable.ic_users,
+            "管理患者数"
+        )
+
+        // 联系方式
+        setupInfoRow(
+            binding.rowPhone,
+            R.drawable.ic_phone,
+            "手机号码"
+        )
+        
+        setupInfoRow(
+            binding.rowEmail,
+            R.drawable.ic_email,
+            "电子邮箱"
+        )
+
+        // 设置
+        setupInfoRow(
+            binding.rowReport,
+            R.drawable.ic_file_text,
+            "我的报告"
+        )
+        
+        setupInfoRow(
+            binding.rowSettings,
+            R.drawable.ic_settings,
+            "系统设置"
+        )
+    }
+
+    /**
+     * 设置单个信息行的图标、标题和颜色
+     */
+    private fun setupInfoRow(
+        rowBinding: com.example.winsrehab.databinding.ItemInfoRowBinding,
+        iconRes: Int,
+        title: String
+    ) {
+        rowBinding.apply {
+            rowIcon.setImageResource(iconRes)
+            // 设置医生端的蓝色主题
+            rowIcon.setColorFilter(android.graphics.Color.parseColor("#2563EB"))
+            rowTitle.text = title
         }
     }
     
@@ -110,15 +185,19 @@ class dt_info_Fragment : Fragment() {
         // 工号
         binding.tvDoctorCode.text = "工号：${doctor.doctorCode}"
         
-        // 执业信息
-        binding.tvLicenseNumber.text = doctor.licenseNumber.takeIf { it != "未设置" } ?: "未设置"
-        binding.tvHospital.text = doctor.hospital.takeIf { it != "未设置" } ?: "未设置"
-        binding.tvTitle.text = doctor.title.takeIf { it != "未设置" } ?: "未设置"
-        binding.tvPatientCount.text = "${doctor.patientCount} 人"
+        // 执业信息 - 使用 include 的 binding
+        binding.rowLicense.rowValue.text = doctor.licenseNumber.takeIf { it != "未设置" } ?: "未设置"
+        binding.rowHospital.rowValue.text = doctor.hospital.takeIf { it != "未设置" } ?: "未设置"
+        binding.rowTitle.rowValue.text = doctor.title.takeIf { it != "未设置" } ?: "未设置"
+        binding.rowPatientCount.rowValue.text = "${doctor.patientCount} 人"
         
-        // 联系方式
-        binding.tvPhone.text = doctor.phone.takeIf { it != "未设置" } ?: "未设置"
-        binding.tvEmail.text = doctor.email.takeIf { it != "未设置" } ?: "未设置"
+        // 联系方式 - 使用 include 的 binding
+        binding.rowPhone.rowValue.text = doctor.phone.takeIf { it != "未设置" } ?: "未设置"
+        binding.rowEmail.rowValue.text = doctor.email.takeIf { it != "未设置" } ?: "未设置"
+        
+        // 设置项不需要显示值，隐藏 rowValue
+        binding.rowReport.rowValue.visibility = View.GONE
+        binding.rowSettings.rowValue.visibility = View.GONE
         
         // 工作统计
         binding.tvMonthlyPlans.text = doctor.monthlyCompletedPlans.toString()

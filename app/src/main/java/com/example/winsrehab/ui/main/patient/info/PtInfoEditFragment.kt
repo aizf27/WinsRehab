@@ -75,6 +75,7 @@ class PtInfoEditFragment : Fragment() {
                 binding.tvAddress.text = it.address.takeIf { addr -> addr != "未设置" } ?: "未设置"
                 
                 // 更新医生信息（只读）
+                // 主治医生显示医生名字
                 binding.tvDoctorName.text = it.doctorName.takeIf { name -> name != "未设置" } ?: "未绑定"
                 binding.tvDoctorCode.text = it.doctorCode.takeIf { code -> code != "未设置" } ?: "未绑定"
                 

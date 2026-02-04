@@ -12,12 +12,39 @@ class PtInfoVM: ViewModel() {
     private val repository : PatientRepository by lazy {
         PatientRepository(MyApp.instance.database.patientDao())
     }
+    private val doctorDao by lazy {
+        MyApp.instance.database.doctorDao()
+    }
     private val mode = MutableLiveData<String>()
     val patient = MutableLiveData<Patient>()
 
     fun loadPatient(account: String) {
         viewModelScope.launch {
-            patient.value = repository.getPatientByAccount(account)
+            val patientData = repository.getPatientByAccount(account)
+            
+            // 如果患者有绑定医生工号，查询医生姓名
+            if (patientData != null && patientData.doctorCode != "未设置") {
+                android.util.Log.d("PtInfoVM", "患者绑定的医生工号: ${patientData.doctorCode}")
+                val doctor = doctorDao.getDoctorByCode(patientData.doctorCode)
+                
+                if (doctor != null) {
+                    android.util.Log.d("PtInfoVM", "找到医生信息: 工号=${doctor.doctorCode}, 姓名=${doctor.name}")
+                    // 如果找到医生信息且姓名不同，更新患者的医生姓名
+                    if (doctor.name != patientData.doctorName) {
+                        val updatedPatient = patientData.copy(doctorName = doctor.name)
+                        repository.updatePatient(updatedPatient)
+                        patient.value = updatedPatient
+                        android.util.Log.d("PtInfoVM", "已更新患者的医生姓名为: ${doctor.name}")
+                    } else {
+                        patient.value = patientData
+                    }
+                } else {
+                    android.util.Log.w("PtInfoVM", "未找到工号为 ${patientData.doctorCode} 的医生")
+                    patient.value = patientData
+                }
+            } else {
+                patient.value = patientData
+            }
         }
     }
 

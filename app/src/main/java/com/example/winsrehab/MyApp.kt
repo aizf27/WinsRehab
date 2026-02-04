@@ -3,6 +3,7 @@ package com.example.winsrehab
 import android.app.Application
 import androidx.room.Room
 import com.example.winsrehab.data.database.AppDatabase
+import com.example.winsrehab.utils.TestDataHelper
 
 class MyApp : Application() {
 
@@ -21,6 +22,9 @@ class MyApp : Application() {
         )
             .fallbackToDestructiveMigration()  // 数据库结构变更时，删除旧数据库重建
             .build()
+        
+        // 初始化测试数据（确保有医生数据）
+        TestDataHelper.initTestDoctors()
     }
 
     companion object {

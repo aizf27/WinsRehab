@@ -141,172 +141,45 @@
 
             <!-- === 执业信息 === -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
-                android:text="执业信息"
-                android:textColor="#1F2937"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/SectionTitle"
+                android:text="执业信息" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="1dp"
-                app:cardBackgroundColor="#FFFFFF">
-
+                style="@style/InfoCardStyle">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- 行 1: 医师资格证 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_id_card" app:tint="#2563EB"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp" android:text="医师资格证" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView 
-                            android:id="@+id/tvLicenseNumber"
-                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6"/>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_license"/>
+                    <View style="@style/Divider"/>
 
-                    <!-- 行 2: 所属医院 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_briefcase" app:tint="#2563EB"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp" android:text="所属医院" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView 
-                            android:id="@+id/tvHospital"
-                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6"/>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_hospital"/>
+                    <View style="@style/Divider"/>
 
-                    <!-- 行 3: 职称 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_award" app:tint="#2563EB"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp" android:text="职称" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView 
-                            android:id="@+id/tvTitle"
-                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6"/>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_title"/>
+                    <View style="@style/Divider"/>
 
-                    <!-- 行 4: 管理患者数 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_users" app:tint="#2563EB"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp" android:text="管理患者数" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView 
-                            android:id="@+id/tvPatientCount"
-                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="0 人" android:textColor="#111827" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-
+                    <include layout="@layout/item_info_row" android:id="@+id/row_patient_count"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- === 联系方式 === -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
-                android:text="联系方式"
-                android:textColor="#1F2937"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/SectionTitle"
+                android:text="联系方式" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="1dp"
-                app:cardBackgroundColor="#FFFFFF">
-
+                style="@style/InfoCardStyle">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- 行 1: 手机号码 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_phone" app:tint="#2563EB"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp" android:text="手机号码" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView 
-                            android:id="@+id/tvPhone"
-                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6"/>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_phone"/>
+                    <View style="@style/Divider"/>
 
-                    <!-- 行 2: 电子邮箱 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_email" app:tint="#2563EB"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp" android:text="电子邮箱" android:textColor="#374151" android:textSize="14sp"/>
-                        <TextView 
-                            android:id="@+id/tvEmail"
-                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:gravity="end" android:text="未设置" android:textColor="#111827" android:textSize="14sp"
-                            android:ellipsize="end" android:maxLines="1"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-
+                    <include layout="@layout/item_info_row" android:id="@+id/row_email"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -376,60 +249,23 @@
 
             <!-- === 设置 === -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
-                android:text="设置"
-                android:textColor="#1F2937"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                style="@style/SectionTitle"
+                android:text="设置" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="1dp"
-                app:cardBackgroundColor="#FFFFFF">
-
+                style="@style/InfoCardStyle">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- 我的报告 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_file_text" app:tint="#2563EB"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:layout_marginStart="12dp" android:text="我的报告" android:textColor="#374151" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6"/>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_report"/>
+                    <View style="@style/Divider"/>
 
-                    <!-- 系统设置 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_settings" app:tint="#2563EB"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                            android:layout_marginStart="12dp" android:text="系统设置" android:textColor="#374151" android:textSize="14sp"/>
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                            android:src="@drawable/ic_chevron_right" app:tint="#9CA3AF"/>
-                    </LinearLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6"/>
+                    <include layout="@layout/item_info_row" android:id="@+id/row_settings"/>
+                    <View style="@style/Divider"/>
 
-                    <!-- 切换账户 (红色) -->
+                    <!-- 切换账户 (红色特殊样式) -->
                     <LinearLayout
                         android:id="@+id/btn_logout"
                         android:layout_width="match_parent"

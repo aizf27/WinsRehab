@@ -45,10 +45,10 @@
         android:textColor="#111827"
         android:textSize="14sp" /> <!-- text-gray-900 -->
 
-    <!-- 右箭头 -->
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_chevron_right"
-        app:tint="#9CA3AF" /> <!-- text-gray-400 -->
+<!--    &lt;!&ndash; 右箭头 &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:src="@drawable/ic_chevron_right"-->
+<!--        app:tint="#9CA3AF" /> &lt;!&ndash; text-gray-400 &ndash;&gt;-->
 </LinearLayout>

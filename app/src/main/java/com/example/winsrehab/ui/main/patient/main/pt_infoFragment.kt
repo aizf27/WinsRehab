@@ -144,7 +144,14 @@ class pt_infoFragment : Fragment() {
         // 康复信息
         setRowValue(binding.rowRecord.root, "查看详情")
         setRowValue(binding.rowTraining.root, "查看详情")
-        setRowValue(binding.rowDoctor.root, patient.doctorCode)
+        
+        // 主治医生：显示 "工号  姓名" 格式
+        val doctorInfo = if (patient.doctorCode != "未设置" && patient.doctorName != "未设置") {
+            "${patient.doctorCode}  ${patient.doctorName}"
+        } else {
+            "未绑定"
+        }
+        setRowValue(binding.rowDoctor.root, doctorInfo)
 
         // 设置板块
         setRowValue(binding.rowSystem.root, "")
