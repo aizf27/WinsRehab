@@ -495,7 +495,7 @@
                         android:id="@+id/red_line"
                         android:layout_width="4dp"
                         android:layout_height="0dp"
-                        android:background="#EF4444"
+                        android:background="@color/red_500"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
