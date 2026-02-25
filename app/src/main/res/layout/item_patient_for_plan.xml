@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 患者列表项布局 - 用于医生端选择患者创建计划 -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- 头像 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#FFE0B2">
+
+            <ImageView
+                android:id="@+id/img_patient_avatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_user"
+                app:tint="#FF8A65"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 患者信息 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_patient_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="患者姓名"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937"/>
+
+            <TextView
+                android:id="@+id/tv_patient_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="诊断信息"
+                android:textSize="13sp"
+                android:textColor="#6B7280"/>
+
+            <TextView
+                android:id="@+id/tv_rehab_stage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="康复阶段"
+                android:textSize="12sp"
+                android:textColor="#9CA3AF"/>
+        </LinearLayout>
+
+        <!-- 右侧箭头 -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="#9CA3AF"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+

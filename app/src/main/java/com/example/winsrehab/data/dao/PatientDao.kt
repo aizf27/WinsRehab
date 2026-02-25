@@ -29,4 +29,7 @@ interface PatientDao {
     @Query("SELECT * FROM patient WHERE doctorCode = :doctorCode")
     fun getPatientsByDoctorFlow(doctorCode: String): Flow<List<Patient>>
 
+    @Query("SELECT * FROM patient WHERE patientId = :patientId")
+    suspend fun getPatientById(patientId: String): Patient?
+
 }

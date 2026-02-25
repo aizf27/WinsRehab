@@ -68,6 +68,11 @@
             android:exported="false"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.Light" />
+        <!--创建康复计划页面-->
+        <activity android:name=".ui.main.doctor.plan.CreateRehabPlanActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <!--把SelectLogActivity设为启动Activity -->
         <activity
             android:name=".ui.main.selectLog.SelectLogActivity"

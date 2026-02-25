@@ -48,4 +48,10 @@
     <color name="purple_100">#F3E8FF</color>
     <color name="purple_600">#9333EA</color>
 
+    <!-- 温暖康复风格色彩 -->
+    <color name="warm_orange">#FF8A65</color>
+    <color name="warm_orange_light">#FFB74D</color>
+    <color name="warm_peach">#FFE0B2</color>
+    <color name="warm_red">#EF5350</color>
+
 </resources>
