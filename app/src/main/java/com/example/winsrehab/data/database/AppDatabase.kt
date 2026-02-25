@@ -2,20 +2,22 @@ package com.example.winsrehab.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.winsrehab.data.dao.DemoVideoDao
-import com.example.winsrehab.data.dao.DoctorDao
-import com.example.winsrehab.data.dao.DoctorTaskDao
-import com.example.winsrehab.data.dao.PatientDao
-import com.example.winsrehab.data.dao.PtRehabVideoDao
-import com.example.winsrehab.data.entity.DemoVideo
-import com.example.winsrehab.data.entity.Doctor
-import com.example.winsrehab.data.entity.DoctorTask
-import com.example.winsrehab.data.entity.Patient
-import com.example.winsrehab.data.entity.PtRehabVideo
+import com.example.winsrehab.data.dao.*
+import com.example.winsrehab.data.entity.*
 
 @Database(
-    entities = [Doctor::class, Patient::class, PtRehabVideo::class, DemoVideo::class, DoctorTask::class],
-    version = 6,
+    entities = [
+        Doctor::class,
+        Patient::class,
+        PtRehabVideo::class,
+        DemoVideo::class,
+        DoctorTask::class,
+        RehabPlan::class,
+        TrainingTask::class,
+        TaskInstance::class,
+        PlanAdjustment::class
+    ],
+    version = 7,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -24,4 +26,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun ptRehabVideoDao(): PtRehabVideoDao
     abstract fun demoVideoDao(): DemoVideoDao
     abstract fun doctorTaskDao(): DoctorTaskDao
+    
+    // 新增的康复计划相关DAO
+    abstract fun rehabPlanDao(): RehabPlanDao
+    abstract fun trainingTaskDao(): TrainingTaskDao
+    abstract fun taskInstanceDao(): TaskInstanceDao
+    abstract fun planAdjustmentDao(): PlanAdjustmentDao
 }

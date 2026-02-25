@@ -3,6 +3,7 @@ package com.example.winsrehab
 import android.app.Application
 import androidx.room.Room
 import com.example.winsrehab.data.database.AppDatabase
+import com.example.winsrehab.data.database.DatabaseMigrations
 import com.example.winsrehab.utils.TestDataHelper
 
 class MyApp : Application() {
@@ -20,7 +21,15 @@ class MyApp : Application() {
             AppDatabase::class.java,
             "rehab.db"
         )
-            .fallbackToDestructiveMigration()  // 数据库结构变更时，删除旧数据库重建
+            // 开发阶段：数据库结构变更时，删除旧数据库重建
+            .fallbackToDestructiveMigration()
+            
+            // 正式发布时使用Migration（取消上面的fallbackToDestructiveMigration，启用下面的addMigrations）
+            // .addMigrations(
+            //     DatabaseMigrations.MIGRATION_3_4,
+            //     DatabaseMigrations.MIGRATION_4_5,
+            //     DatabaseMigrations.MIGRATION_6_7
+            // )
             .build()
         
         // 初始化测试数据（确保有医生数据）
