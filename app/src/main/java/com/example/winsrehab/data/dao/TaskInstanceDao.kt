@@ -21,9 +21,9 @@ interface TaskInstanceDao {
     suspend fun insertInstance(instance: TaskInstance): Long
     
     /**
-     * 批量插入任务实例
+     * 批量插入任务实例（使用IGNORE策略，遇到冲突跳过）
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertInstances(instances: List<TaskInstance>): List<Long>
     
     /**
@@ -93,6 +93,12 @@ interface TaskInstanceDao {
      */
     @Query("SELECT EXISTS(SELECT 1 FROM task_instance WHERE patientId = :patientId AND taskId = :taskId AND scheduledDate = :date)")
     suspend fun isInstanceExists(patientId: String, taskId: Long, date: String): Boolean
+
+    /**
+     * 获取任务的最后生成日期（用于interval频率判断）
+     */
+    @Query("SELECT MAX(scheduledDate) FROM task_instance WHERE taskId = :taskId AND patientId = :patientId")
+    suspend fun getLastScheduledDate(taskId: Long, patientId: String): String?
     
     /**
      * 获取患者今日任务总数

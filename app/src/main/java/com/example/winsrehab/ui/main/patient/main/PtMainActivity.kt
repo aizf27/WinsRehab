@@ -4,19 +4,36 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import androidx.navigation.fragment.NavHostFragment
 
 import androidx.navigation.ui.setupWithNavController
+import com.example.winsrehab.MyApp
 import com.example.winsrehab.R
 import com.example.winsrehab.databinding.ActivityPtMainBinding
+import com.example.winsrehab.data.repository.TaskInstanceRepository
 import com.example.winsrehab.ui.main.patient.info.PtInfoVM
+import com.example.winsrehab.utils.TaskGenerationHelper
+import kotlinx.coroutines.launch
 
 class PtMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPtMainBinding
     private val infoViewModel: PtInfoVM by viewModels()
     private var account: String = ""
+
+    private val taskInstanceRepository: TaskInstanceRepository by lazy {
+        TaskInstanceRepository(
+            MyApp.instance.database.taskInstanceDao(),
+            MyApp.instance.database.rehabPlanDao(),
+            MyApp.instance.database.trainingTaskDao()
+        )
+    }
+
+    companion object {
+        private const val TAG = "PtMainActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,5 +68,28 @@ class PtMainActivity : AppCompatActivity() {
 
         // 首次加载患者信息（供各 Fragment 通过 activityViewModels 共享）
         infoViewModel.loadPatient(account)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 界面恢复时刷新任务生成（防止中途激活新计划或跨日期）
+        if (account.isNotEmpty()) {
+            refreshDailyTasks()
+        }
+    }
+
+    /**
+     * 刷新今日任务生成
+     */
+    private fun refreshDailyTasks() {
+        lifecycleScope.launch {
+            try {
+                val today = TaskGenerationHelper.getTodayDate()
+                val count = taskInstanceRepository.generateDailyTasks(account, today)
+                Log.i(TAG, "刷新任务: 新生成${count}个任务")
+            } catch (e: Exception) {
+                Log.e(TAG, "刷新任务失败", e)
+            }
+        }
     }
 }

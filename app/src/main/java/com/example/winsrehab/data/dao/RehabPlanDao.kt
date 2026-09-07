@@ -57,6 +57,12 @@ interface RehabPlanDao {
      */
     @Query("SELECT * FROM rehab_plan WHERE patientId = :patientId AND status = 'active' ORDER BY createdAt DESC")
     fun getActivePlansByPatient(patientId: String): Flow<List<RehabPlan>>
+
+    /**
+     * 获取患者的活跃康复计划（一次性查询，用于任务生成）
+     */
+    @Query("SELECT * FROM rehab_plan WHERE patientId = :patientId AND status = 'active' ORDER BY createdAt DESC")
+    suspend fun getActivePlansByPatientOnce(patientId: String): List<RehabPlan>
     
     /**
      * 获取患者的草稿计划
