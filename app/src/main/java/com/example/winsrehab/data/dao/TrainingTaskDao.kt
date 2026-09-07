@@ -119,3 +119,5 @@ interface TrainingTaskDao {
     suspend fun updateReferenceVideo(taskId: Long, videoId: Long?)
 }
 
+
+
