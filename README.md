@@ -1,71 +1,79 @@
-# WinsRehab - 智慧康复APP
+# WinsRehab - 医患双端康复管理
 
-WinsRehab 是一个基于Android的康复训练管理APP，为医生和患者提供便捷的康复训练视频管理、患者信息跟踪和AI心理咨询服务。
+WinsRehab 是一个本地优先的 Android 康复管理应用：医生制定康复计划，系统按频率自动生成训练任务，患者执行并上传视频，医生审核反馈，形成康复闭环。
 
-## 🌟 功能特性
+> 当前为个人项目阶段（v0.5-dev）：单设备、本地 Room 数据库，无后端和跨设备同步。
 
-### 医生端功能
-- **患者管理**：查看和管理负责的患者列表
-- **患者信息**：了解患者基本信息并维护康复进度
-- **康复视频管理**：为患者分配和跟踪康复训练视频（待开发）
-- **数据统计**：查看患者康复数据和统计信息
+## 当前进度
 
-### 患者端功能
-- **个人信息管理**：维护个人基本信息并关注康复数据
-- **康复视频训练**：观看医生分配的康复训练视频
-- **AI心理咨询**：与AI心理咨询师进行对话交流
-- **康复进度跟踪**：查看个人康复进度和分析结果
+约 **45%**（2026-11-09）。代码基线停在 2026-09-07：任务自动生成已完成，患者任务列表、视频录制与审核、放松中心待开发。详细计划见 [docs/开发计划.md](docs/开发计划.md)。
 
-### 系统特色
-- **双端设计**：医生端和患者端分离，功能明确
-- **本地数据库**：使用Room数据库进行数据持久化
-- **视频播放**：支持本地assets
-- **AI集成**：集成AI心理咨询服务
+### 已实现
 
-## 🏗️ 技术架构
+- 医生/患者双端登录注册、医患绑定（申请、确认、拒绝）
+- 医生端患者管理、创建/激活康复计划、计划列表
+- 康复计划数据层：Room 9 张表（计划、任务模板、任务实例、调整记录等）
+- 任务自动生成：`daily` / `weekly` / `interval`，登录与 `onResume` 触发，自动去重
+- AI 心理助手（DeepSeek）
+- 示范视频列表与播放
 
-### 核心技术栈
-- **开发语言**：Kotlin
-- **架构模式**：MVVM (Model-View-ViewModel)
-- **数据库**：Room Database
-- **异步处理**：Kotlin  Flow
-- **网络请求**：OkHttp和Gson
-- **UI框架**：XML
+### 待实现
 
-### 主要组件
-- `Room Database`：本地数据存储
-- `ViewModel`：UI数据管理和生命周期感知
-- `LiveData/Flow`：数据流处理
-- `RecyclerView`：列表展示
-- `VideoView`：视频播放支持
+- 患者端今日任务列表、完成/跳过
+- CameraX 视频录制、任务关联
+- 医生待审核列表、播放、通过/驳回、评语
+- 反馈、通知、计划调整 UI
+- 放松中心（五子棋、Media3 后台音乐）
 
-## 📁 项目结构
-<img width="306" height="547" alt="image" src="https://github.com/user-attachments/assets/d78bb855-85c1-47b5-b9c7-123a2024cade" />
+## 技术栈
 
-## 🚀 快速开始
+- **语言/架构**：Kotlin，MVVM + Repository
+- **数据**：Room v7（9 张表），Coroutines + Flow
+- **UI**：ViewBinding + Navigation Component + BottomNavigationView
+- **SDK**：minSdk 26 / targetSdk 34 / compileSdk 36，Java 11
+- **网络**：OkHttp + Gson，DeepSeek Chat API
 
-### 环境要求
-- Android Studio Arctic Fox 或更高版本
-- Kotlin 1.5+
-- Android SDK API 21+
+## 项目结构
 
-### 安装步骤
-1. 克隆项目到本地
-2. 使用Android Studio打开项目
-3. 同步Gradle依赖
-4. 构建并运行应用
+```
+app/src/main/java/com/example/winsrehab/
+├── data/
+│   ├── entity/        # 数据实体
+│   ├── dao/           # Room DAO
+│   ├── repository/    # 业务逻辑
+│   └── database/      # AppDatabase + 迁移
+├── ui/
+│   ├── main/
+│   │   ├── doctor/    # 医生端：登录、主页、计划、患者申请
+│   │   ├── patient/   # 患者端：登录、主页、绑定、心理助手
+│   │   └── selectLog/ # 角色选择
+│   └── theme/
+├── utils/             # TaskGenerationHelper、TestDataHelper
+└── MyApp.kt
+```
 
-### 使用说明
-1. 首次使用需要注册账号（医生/患者）
-2. 登录后根据角色进入相应功能界面
-3. 医生可以管理患者
-4. 患者可以查看训练视频和进行心理咨询
+## 运行
 
-## 📱 主要界面
+1. 用 Android Studio 打开项目，等待 Gradle 同步
+2. 编译并运行 `app`
+3. 测试账号：
+   - 医生：`1` / `123456`
+   - 患者：`test001` / `123456`
 
-- **登录界面**：医生和患者分别登录
-- **医生主页**：患者列表和信息管理
-- **患者主页**：康复训练和心理咨询服务
-- **视频播放器**：支持本地和网络视频播放
-- **个人信息**：用户信息维护界面
+首次运行可用 `TestDataHelper.initTaskGenerationTestData()` 初始化演示数据。
 
+> 心理助手需要 DeepSeek API Key。当前 Key 硬编码在 `PsychologyActivity.kt`，发布前应移到 `local.properties` 并通过 `BuildConfig` 读取，同时轮换已进入 git 历史的旧 Key。
+
+## 文档
+
+- [项目总览](docs/项目总览.md)：定位、架构、数据模型、业务流程
+- [开发进度跟踪](docs/开发进度跟踪.md)：实际完成情况、开发日志、已知问题
+- [开发计划](docs/开发计划.md)：4 周冲刺计划、验收脚本
+- [AGENTS.md](AGENTS.md)：项目记忆与代码规范（Claude Code 通过 `CLAUDE.md` 引用）
+
+## 已知限制
+
+- 本地模式：医生和患者必须在同一台设备/同一个数据库切账号演示
+- 密码明文存储、数据库未加密，仅用于演示
+- 开发期使用 `fallbackToDestructiveMigration()`，升级会清空数据
+- 无自动化测试，仅有默认单元测试样例
