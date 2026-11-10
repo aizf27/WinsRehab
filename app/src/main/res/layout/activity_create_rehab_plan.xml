@@ -12,7 +12,7 @@
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@drawable/bg_gradient_warm"
+        android:background="@drawable/bg_brand_gradient"
         android:elevation="@dimen/elevation_1"
         app:layout_constraintTop_toTopOf="parent">
 

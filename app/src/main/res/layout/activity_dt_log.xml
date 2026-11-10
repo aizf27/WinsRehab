@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:text="@string/dotlog_theme"
-                    android:textColor="@android:color/white" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                     android:textStyle="bold" />
             </FrameLayout>
             <!-- 输入框容器 -->
@@ -137,7 +137,7 @@
                 android:text="登录"
                 android:backgroundTint="@color/brand_doctor_primary"
                 style="@style/MyRoundButton"
-                android:textColor="@android:color/white" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                 android:layout_marginTop="@dimen/space_24"/>
 
             <Button

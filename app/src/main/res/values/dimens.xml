@@ -11,6 +11,9 @@
     <dimen name="space_32">32dp</dimen>
     <dimen name="space_48">48dp</dimen> <!-- 仅用于列表与页面底部统一留白 -->
 
+    <!-- 列表行右侧统一留白：数值与 space_48 同源，语义不同（不是页面底部留白） -->
+    <dimen name="row_trailing_reserve">48dp</dimen>
+
     <!-- 圆角档位 -->
     <dimen name="radius_8">8dp</dimen>
     <dimen name="radius_12">12dp</dimen>

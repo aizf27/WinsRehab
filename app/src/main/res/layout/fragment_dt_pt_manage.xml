@@ -273,8 +273,8 @@
                         <FrameLayout
                             android:layout_width="56dp"
                             android:layout_height="56dp"
-                            android:background="@drawable/bg_badge_purple"
-                            android:backgroundTint="@color/surface_variant">
+                            android:background="@drawable/bg_chip"
+                            android:backgroundTint="@color/primary_container">
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
@@ -364,7 +364,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_badge_purple"
+                            android:background="@drawable/bg_chip"
+                            android:backgroundTint="@color/primary_container"
                             android:gravity="center_vertical"
                             android:paddingHorizontal="@dimen/space_8"
                             android:paddingVertical="@dimen/space_4">
@@ -376,8 +377,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/space_8"
-                            android:background="@drawable/bg_badge_purple"
-                            android:backgroundTint="@color/surface_variant"
+                            android:background="@drawable/bg_chip"
+                            android:backgroundTint="@color/notice_container"
                             android:gravity="center_vertical"
                             android:paddingHorizontal="@dimen/space_8"
                             android:paddingVertical="@dimen/space_4">

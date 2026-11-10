@@ -32,6 +32,15 @@
     <color name="disabled_fg">#FF9CA3AF</color> <!-- 禁用态前景 -->
     <color name="scrim">#33000000</color> <!-- 半透明遮罩与阴影 -->
 
+    <!-- 浅色容器底：卡片、图标圆底、标签底专用，一律配 on_surface 系文字，不配 on_primary -->
+    <color name="primary_container">#FFDBEAFE</color> <!-- 主色浅底 -->
+    <color name="success_container">#FFDCFCE7</color> <!-- 成功浅底 -->
+    <color name="warning_container">#FFFFEDD5</color> <!-- 警示浅底 -->
+    <color name="info_container">#FFCCFBF1</color> <!-- 信息浅底（青） -->
+    <color name="accent_container">#FFFAE8FF</color> <!-- 强调浅底（紫粉） -->
+    <color name="notice_container">#FFFEF9C3</color> <!-- 提醒浅底（黄） -->
+    <color name="on_primary_overlay">#33FFFFFF</color> <!-- 品牌色底上的半透明容器层 -->
+
     <!-- 任务与计划状态 -->
     <color name="status_pending">#FF2563EB</color> <!-- 待执行 -->
     <color name="status_completed">#FF16A34A</color> <!-- 已完成 -->

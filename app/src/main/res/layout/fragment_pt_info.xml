@@ -82,7 +82,7 @@
                         android:id="@+id/avatarContainer"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/shape_circle_white_alpha"
+                        android:background="@drawable/bg_avatar_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -92,7 +92,7 @@
                             android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_user"
-                            app:tint="@color/on_primary"/>
+                            app:tint="@color/brand_patient_primary"/>
                     </FrameLayout>
 
                     <!-- 文字信息 -->

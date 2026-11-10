@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- 次要按钮底：白底 + 品牌主色描边 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="@color/surface"/>
     <corners android:radius="@dimen/radius_16"/>
-    <stroke android:width="2dp" android:color="@color/warning"/>
+    <stroke android:width="2dp" android:color="@color/primary"/>
 </shape>
-
-
-

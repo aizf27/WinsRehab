@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 圆形浅底：提醒档（黄），配 warning 图标 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="@color/surface_variant"/>
+    <solid android:color="@color/notice_container"/>
 </shape>

@@ -77,13 +77,12 @@
                     android:background="@drawable/bg_dt_welcome_card"
                     android:padding="@dimen/space_24">
 
-                    <androidx.cardview.widget.CardView
+                    <!-- 头像圆底：白色正圆 + 品牌色图标，圆形用 oval 表达不占圆角档 -->
+                    <FrameLayout
                         android:id="@+id/avatar_container"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
-                        app:cardBackgroundColor="@color/surface_variant"
-                        app:cardCornerRadius="@dimen/radius_16"
-                        app:cardElevation="@dimen/elevation_0"
+                        android:background="@drawable/bg_avatar_circle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
@@ -93,8 +92,8 @@
                             android:layout_height="36dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_user"
-                            app:tint="@color/on_primary"/>
-                    </androidx.cardview.widget.CardView>
+                            app:tint="@color/primary"/>
+                    </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"

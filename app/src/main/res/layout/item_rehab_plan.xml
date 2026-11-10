@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_gradient_warm"
+            android:background="@drawable/bg_brand_gradient"
             android:padding="@dimen/space_16"
             android:orientation="vertical">
 
@@ -64,8 +64,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="进行中" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                    android:textColor="@color/on_primary"
-                    android:background="@drawable/bg_badge_purple"
+                    android:textColor="@color/status_pending"
+                    android:background="@drawable/bg_chip"
+                    android:backgroundTint="@color/primary_container"
                     android:paddingHorizontal="@dimen/space_12"
                     android:paddingVertical="@dimen/space_4"/>
 

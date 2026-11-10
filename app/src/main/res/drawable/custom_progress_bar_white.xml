@@ -1,17 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 品牌色底上的进度条：半透明白轨道 + 不透明白进度 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 背景 (半透明白) -->
     <item android:id="@android:id/background">
-        <shape>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/on_primary_overlay"/>
             <corners android:radius="@dimen/radius_8"/>
-            <solid android:color="@color/surface_variant"/>
         </shape>
     </item>
-    <!-- 进度 (纯白) -->
     <item android:id="@android:id/progress">
         <scale android:scaleWidth="100%">
-            <shape>
+            <shape android:shape="rectangle">
+                <solid android:color="@color/on_primary"/>
                 <corners android:radius="@dimen/radius_8"/>
-                <solid android:color="@color/surface"/>
             </shape>
         </scale>
     </item>

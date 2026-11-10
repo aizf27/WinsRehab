@@ -23,7 +23,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@android:drawable/ic_menu_myplaces"
-                android:tint="@color/info"
+                app:tint="@color/info"
                 android:layout_marginEnd="@dimen/space_12"/>
 
             <LinearLayout

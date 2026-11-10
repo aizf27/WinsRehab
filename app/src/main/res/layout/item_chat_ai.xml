@@ -11,5 +11,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_ai_bubble"
         android:padding="@dimen/space_8"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
         android:textColor="@color/on_surface"/>
 </LinearLayout>

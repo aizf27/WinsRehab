@@ -36,13 +36,21 @@
 
 ### D1 取值表组织方式：语义色 + 固定档位 + 文本外观
 
-**选择**：颜色落 `res/values/colors.xml`，收敛为约 24 个语义色；间距/圆角/阴影/尺寸落 `res/values/dimens.xml`（`space_4/8/12/16/24/32/48`、`radius_8/12/16`、`elevation_0/1`；`0dp` 表示无间距、`1dp` 是描边线宽，两者都不计入间距档；现状里 56dp 这类单点留白就近并入 `space_48`，48 只用于列表与页面底部的统一留白，不允许当普通内外边距用）；字号不落 `dimen`，落 `res/values/styles.xml` 的文本外观（`TextAppearance.WinsRehab.Caption11 / Body12 / Body14 / Title16 / Headline20 / Display24`）。
+**选择**：颜色落 `res/values/colors.xml`，收敛为约 24 个语义色 + 7 个浅色容器底（见下）；间距/圆角/阴影/尺寸落 `res/values/dimens.xml`（`space_4/8/12/16/24/32/48` + `row_trailing_reserve`、`radius_8/12/16`、`elevation_0/1`；`0dp` 表示无间距、`1dp` 是描边线宽，两者都不计入间距档；`space_48` 只用于页面底部与列表底部的统一留白，列表行右侧的 48dp 固定留白单独走 `row_trailing_reserve`——数值与 `space_48` 同源但语义不同，测试同时锁定两者取值相等；这两档都不允许当普通内外边距用；现状里 56dp 这类单点留白就近并入 `space_48`）；字号不落 `dimen`，落 `res/values/styles.xml` 的文本外观（`TextAppearance.WinsRehab.Caption11 / Body12 / Body14 / Title16 / Headline20 / Display24`）。
 
 **理由**：字号写成 `dimen` 会被当成尺寸滥用（有人拿它做 margin），文本外观能同时锁住字号、字重与行距，且在布局里语义明确；用 `textAppearance` 后「6 档」这条约束可被静态检查（grep `android:textSize` 应为零命中）。
 
 **备选**：全部塞 `colors.xml` + 裸 `dimen`（放弃——管不住字重与行距，也管不住「6 档」）；引入设计令牌代码生成（放弃——本轮 XML 路线，生成器成本高于收益）。
 
 **语义色清单（约 24 个）**：`brand_doctor_primary`、`brand_doctor_primary_dark`、`brand_patient_primary`、`brand_patient_primary_light`、`surface`、`surface_variant`、`on_surface`、`on_surface_secondary`、`on_surface_tertiary`、`outline`、`divider`、`primary`、`on_primary`、`success`、`warning`、`danger`、`info`、`disabled_bg`、`disabled_fg`、`scrim`、`status_pending`、`status_completed`、`status_skipped_rejected`、`status_review`。计划状态色复用 `status_*` 族，不另开一组。
+
+**浅色容器底档（7 个）**：`primary_container`(#DBEAFE)、`success_container`(#DCFCE7)、`warning_container`(#FFEDD5)、`info_container`(#CCFBF1)、`accent_container`(#FAE8FF，紫粉强调)、`notice_container`(#FEF9C3，黄)、`on_primary_overlay`(#33FFFFFF，品牌深色底上的半透明容器层)。这 7 个是「彩色卡片 / 图标圆底 / 标签底」的唯一来源，合计 24 + 7 = 31 个颜色定义。
+
+**容器底与 `on_primary` 的搭配约束**：容器底一律配 `on_surface` / `on_surface_secondary` / 对应语义前景色（如 `primary_container` 配 `status_pending` 文字）；`on_primary`（白）只允许落在深色实底上——`primary`、`brand_doctor_primary`、`brand_patient_primary`、`status_*`、`bg_brand_gradient`、`bg_dt_welcome_card` / `bg_pt_welcome_green` 这类品牌渐变。白字压在容器底或 `surface_variant` 上属于对比度故障（1.05:1），不允许。
+
+**彩色底不降级为中性灰**：基线里被压成 `surface_variant` 的 11 类自绘彩色底（`#DBEAFE`/`#DCFCE7`/`#FFEDD5`/`#F3E8FF`/`#CCFBF1`/`#FEF9C3`/`#FAE8FF`/`#E3F2FD` + 4 组 3D 卡渐变 + 4 组功能卡渐变 + `#33FFFFFF` 白叠层）逐一对齐到上面 6 个容器档：卡片之间、图标圆底之间靠容器档区分语义，不再整站变灰。渐变形态保留，但只允许两端都是取值表里的颜色——「`surface` → 容器档」（3D 卡、功能卡）；原先靠 `#203B82F6` 这类字面量做的彩色投影与高光层删除，改用 1dp 同色描边。主 CTA 与品牌页头改走 `primary` → `brand_doctor_primary_dark` 的品牌渐变（`bg_brand_gradient` / `bg_button_primary`），不再借用 `warning` 暖色当主按钮色——暖色白字对比度只有 2.5:1，且 `warning` 语义是「警示/待处理」。
+
+**圆形与胶囊不占圆角档**：spec 的圆角是硬性的 8/12/16 三档，圆形/胶囊属于「特殊形状自绘例外」，用 `<shape android:shape="oval">` 表达（`shape_logmap`、`bg_avatar_circle`、`shape_circle_*_light`、`shape_circle_red`），不新增 `radius_full` 档，也不把正圆圆角就近折成 `radius_16`。72dp 头像位因此由 CardView 改 `FrameLayout` + oval 底，仍保留原 id `avatar_container`。
 
 **旧颜色名处置**：40 个旧名在本变更内被消费方替换完后删除；不保留兼容别名（全页面同批改造，编译期即可暴露遗漏）。
 
