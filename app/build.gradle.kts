@@ -1,11 +1,22 @@
 
 
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
+
+// 优先读环境变量（CI），否则读本机 local.properties（该文件已被 git 忽略）
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val deepSeekApiKey = System.getenv("DEEPSEEK_API_KEY")
+    ?: localProperties.getProperty("DEEPSEEK_API_KEY")
+    ?: ""
 
 android {
     namespace = "com.example.winsrehab"
@@ -18,6 +29,8 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // 密钥不写进源码，构建时从 local.properties / 环境变量注入
+        buildConfigField("String", "DEEPSEEK_API_KEY", "\"$deepSeekApiKey\"")
     }
 
     buildTypes {
@@ -42,6 +55,7 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
     }
 
     composeOptions {

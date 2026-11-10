@@ -62,7 +62,7 @@ app/src/main/java/com/example/winsrehab/
 
 首次运行可用 `TestDataHelper.initTaskGenerationTestData()` 初始化演示数据。
 
-> 心理助手需要 DeepSeek API Key。当前 Key 硬编码在 `PsychologyActivity.kt`，发布前应移到 `local.properties` 并通过 `BuildConfig` 读取，同时轮换已进入 git 历史的旧 Key。
+> 心理助手需要 DeepSeek API Key。在根目录 `local.properties` 中配置 `DEEPSEEK_API_KEY=你的Key`（该文件不入库），Gradle 会通过 `BuildConfig` 注入。旧 Key 已从源码移除，但仍需在 DeepSeek 平台轮换。
 
 ## 文档
 

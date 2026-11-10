@@ -1,6 +1,7 @@
 package com.example.winsrehab.data.repository
 
 import android.util.Log
+import com.example.winsrehab.BuildConfig
 import com.example.winsrehab.data.entity.ChatMessage
 import com.example.winsrehab.data.model.MessageItem
 import com.example.winsrehab.data.model.RequestBodyData
@@ -18,9 +19,15 @@ class PsychologyRepository {
     private val client = OkHttpClient()
     private val gson = Gson()
 
-    suspend fun requestAI(messages: List<ChatMessage>, apiKey: String): String =
+    suspend fun requestAI(messages: List<ChatMessage>): String =
         //放协程里，不然卡爆
         withContext(Dispatchers.IO){
+        //密钥由构建时注入，不在源码里硬编码
+        val apiKey = BuildConfig.DEEPSEEK_API_KEY
+        if (apiKey.isBlank()) {
+            Log.e("PsychologyRepository", "DEEPSEEK_API_KEY 未配置，请在 local.properties 填写")
+            return@withContext ""
+        }
         try {
 
             val reqMessages = mutableListOf<MessageItem>()

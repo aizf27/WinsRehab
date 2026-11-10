@@ -29,10 +29,10 @@ class PsychologyVM: ViewModel () {
     fun buildRequestMessages(): List<ChatMessage> = _chatList.value?.toList() ?: emptyList()
 
 
-    fun requestAI(apiKey: String) {
+    fun requestAI() {
         val messages = buildRequestMessages()
         viewModelScope.launch {
-            val reply = repository.requestAI(messages, apiKey)
+            val reply = repository.requestAI(messages)
             addAIMessage(reply)
         }
     }

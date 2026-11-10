@@ -11,9 +11,6 @@ class PsychologyActivity: AppCompatActivity () {
     private lateinit var binding: ActivityPsychologyBinding
     private val adapter = ChatAdapter()
     private val viewModle = PsychologyVM()
-    object key {
-        const val API_KEY = "sk-d6e708da4ac740d89600089d911f9a65"
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPsychologyBinding.inflate(layoutInflater)
@@ -36,7 +33,7 @@ class PsychologyActivity: AppCompatActivity () {
                binding.etMessage.text.clear()
 
                 viewModle.addUserMessage(message)
-                viewModle.requestAI(key.API_KEY)
+                viewModle.requestAI()
 
 
             }

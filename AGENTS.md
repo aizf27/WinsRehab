@@ -166,7 +166,7 @@ Patient 表中的 `todayTasksCompleted`、`weeklyCompletionRate` 等统计字段
 
 ### 5. 安全债（发布前必须处理）
 - 密码当前**明文**存储，未哈希
-- DeepSeek API Key 硬编码在 `PsychologyActivity.kt`，且已进入 git 历史，需要轮换并外置
+- DeepSeek API Key 已改从 `local.properties` / 环境变量经 `BuildConfig` 注入；历史提交中的旧 Key 仍需轮换
 - Room 数据库未加密
 
 ### 6. 第三方技能库
@@ -205,4 +205,4 @@ Patient 表中的 `todayTasksCompleted`、`weeklyCompletionRate` 等统计字段
 
 ---
 
-**最后更新**：2026-11-09
+**最后更新**：2026-11-10
