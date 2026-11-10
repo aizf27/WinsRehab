@@ -3,10 +3,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <!-- 填充颜色 -->
-    <!-- #33FFFFFF 分解如下：-->
-    <!-- 33: 代表 20% 的透明度 (Alpha) -->
-    <!-- FFFFFF: 代表白色 -->
-    <solid android:color="#33FFFFFF" />
+    <!-- 填充颜色：原本是 20% 透明度的白色，现在统一走语义色表 -->
+    <!-- 具体色值只在 res/values/colors.xml 定义，这里只引用语义名 -->
+    <solid android:color="@color/surface_variant" />
 
 </shape>

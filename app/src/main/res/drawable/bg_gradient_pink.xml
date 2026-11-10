@@ -3,46 +3,46 @@
     <!-- 底层阴影效果 -->
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="16dp"/>
-            <solid android:color="#20D946EF"/>
+            <corners android:radius="@dimen/radius_16"/>
+            <solid android:color="@color/scrim"/>
         </shape>
     </item>
     <!-- 主渐变层 -->
     <item
-        android:bottom="2dp"
-        android:right="2dp">
+        android:bottom="@dimen/space_4"
+        android:right="@dimen/space_4">
         <shape android:shape="rectangle">
-            <corners android:radius="16dp"/>
+            <corners android:radius="@dimen/radius_16"/>
             <gradient
-                android:startColor="#FDF4FF"
-                android:centerColor="#FAE8FF"
-                android:endColor="#F5D0FE"
+                android:startColor="@color/surface_variant"
+                android:centerColor="@color/surface_variant"
+                android:endColor="@color/surface_variant"
                 android:angle="135"
                 android:type="linear"/>
         </shape>
     </item>
     <!-- 顶部高光 -->
     <item
-        android:bottom="2dp"
-        android:right="2dp">
+        android:bottom="@dimen/space_4"
+        android:right="@dimen/space_4">
         <shape android:shape="rectangle">
-            <corners android:radius="16dp"/>
+            <corners android:radius="@dimen/radius_16"/>
             <gradient
-                android:startColor="#40FFFFFF"
-                android:endColor="#00FFFFFF"
+                android:startColor="@color/surface"
+                android:endColor="@android:color/transparent"
                 android:angle="90"
                 android:type="linear"/>
         </shape>
     </item>
     <!-- 边框 -->
     <item
-        android:bottom="2dp"
-        android:right="2dp">
+        android:bottom="@dimen/space_4"
+        android:right="@dimen/space_4">
         <shape android:shape="rectangle">
-            <corners android:radius="16dp"/>
+            <corners android:radius="@dimen/radius_16"/>
             <stroke
                 android:width="1dp"
-                android:color="#20D946EF"/>
+                android:color="@color/scrim"/>
         </shape>
     </item>
 </layer-list>

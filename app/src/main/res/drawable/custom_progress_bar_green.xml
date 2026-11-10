@@ -1,15 +1,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
-            <corners android:radius="6dp"/>
-            <solid android:color="#E5E7EB"/> <!-- gray-200 -->
+            <corners android:radius="@dimen/radius_8"/>
+            <solid android:color="@color/divider"/> <!-- gray-200 -->
         </shape>
     </item>
     <item android:id="@android:id/progress">
         <scale android:scaleWidth="100%">
             <shape>
-                <corners android:radius="6dp"/>
-                <solid android:color="#22C55E"/> <!-- green-500 -->
+                <corners android:radius="@dimen/radius_8"/>
+                <solid android:color="@color/brand_patient_primary_light"/> <!-- green-500 -->
             </shape>
         </scale>
     </item>

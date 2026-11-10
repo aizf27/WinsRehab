@@ -4,18 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="@dimen/space_16">
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/space_32"
         android:text="心理聊天助手"
-        android:textColor="#000000"
-        android:textSize="20sp"/>
+        android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/space_8"
         android:id="@+id/rvChat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,7 +38,7 @@
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green_shallow"
+            android:backgroundTint="@color/brand_patient_primary"
             style="@style/MyRoundButton"
 
             android:text="发送"/>

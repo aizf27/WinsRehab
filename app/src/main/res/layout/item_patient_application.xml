@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    android:layout_marginBottom="@dimen/space_12"
+    app:cardCornerRadius="@dimen/radius_8"
+    app:cardElevation="@dimen/elevation_1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/space_16">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,8 +23,8 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@android:drawable/ic_menu_myplaces"
-                android:tint="#2196F3"
-                android:layout_marginEnd="12dp"/>
+                android:tint="@color/info"
+                android:layout_marginEnd="@dimen/space_12"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -36,28 +36,25 @@
                     android:id="@+id/tvPatientName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="患者姓名"
-                    android:textSize="18sp"
+                    android:text="患者姓名" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                     android:textStyle="bold"
-                    android:textColor="#333333"/>
+                    android:textColor="@color/on_surface"/>
 
                 <TextView
                     android:id="@+id/tvPatientAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="账号：13800138000"
-                    android:textSize="14sp"
-                    android:textColor="#666666"
-                    android:layout_marginTop="4dp"/>
+                    android:text="账号：13800138000" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                    android:textColor="@color/on_surface_secondary"
+                    android:layout_marginTop="@dimen/space_4"/>
 
                 <TextView
                     android:id="@+id/tvApplyTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="申请时间：2小时前"
-                    android:textSize="12sp"
-                    android:textColor="#999999"
-                    android:layout_marginTop="4dp"/>
+                    android:text="申请时间：2小时前" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface_tertiary"
+                    android:layout_marginTop="@dimen/space_4"/>
 
             </LinearLayout>
 
@@ -67,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/space_16"
             android:gravity="end">
 
             <Button
@@ -75,8 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="拒绝"
-                android:backgroundTint="#E04D6C"
-                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/danger"
+                android:layout_marginEnd="@dimen/space_8"
 
                 />
 
@@ -85,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="确认"
-                android:backgroundTint="#4CAF50"
+                android:backgroundTint="@color/success"
 
                 />
 

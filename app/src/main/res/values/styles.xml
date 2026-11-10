@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 界面唯一取字号处：全站 6 档文本外观，布局里只引用不写字号 -->
+
+    <!-- 6 档文本外观的公共父级，parent 置空以切断隐式继承 -->
+    <style name="TextAppearance.WinsRehab" parent="" />
+
+    <style name="TextAppearance.WinsRehab.Caption11">
+        <item name="android:textSize">11sp</item> <!-- 说明文字、角标 -->
+    </style>
+
+    <style name="TextAppearance.WinsRehab.Body12">
+        <item name="android:textSize">12sp</item> <!-- 辅助信息、时间戳 -->
+    </style>
+
+    <style name="TextAppearance.WinsRehab.Body14">
+        <item name="android:textSize">14sp</item> <!-- 正文 -->
+    </style>
+
+    <style name="TextAppearance.WinsRehab.Title16">
+        <item name="android:textSize">16sp</item> <!-- 小标题、列表主文字 -->
+    </style>
+
+    <style name="TextAppearance.WinsRehab.Headline20">
+        <item name="android:textSize">20sp</item> <!-- 页面标题 -->
+    </style>
+
+    <style name="TextAppearance.WinsRehab.Display24">
+        <item name="android:textSize">24sp</item> <!-- 数值强调 -->
+    </style>
+
+</resources>

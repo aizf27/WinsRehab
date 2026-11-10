@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/surface">
 
 
 
@@ -25,10 +25,10 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/surface"
         app:itemIconTint="@color/pt_bottom_nav_icon_selector"
         app:itemTextColor="@color/pt_bottom_nav_text_selector"
-        app:itemRippleColor="@color/green_shallow"
+        app:itemRippleColor="@color/brand_patient_primary"
         app:menu="@menu/pt_nav_menu" />
 
 </LinearLayout>

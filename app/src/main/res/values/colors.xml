@@ -1,57 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- 界面唯一取色处：只保留语义名，改一处即全站生效 -->
 
-    <color name="gray">#D9D7D7</color>
-    <color name="gray_300">#D1D5DB</color>
-    <color name="gray_400">#9CA3AF</color>
-    <color name="gray_500">#6B7280</color>
-    <color name="blue_deep">#38A9F0</color>
-    <color name="blue_shallow">#0B97F3</color>
-    <color name="green_ai">#A4F4CF</color>
-    <color name="green_deep">#38A08E</color>
-    <color name="green_shallow">#3CC6AF</color>
-    <color name="green_400">#4ADE80</color>
-    <color name="green_500">#22C55E</color>
-    <color name="green_600">#16A34A</color>
-    <color name="green_700">#15803D</color>
-    <color name="back_green">#E8F5E9</color>
-    <color name="icon_green">#00DD95</color>
+    <!-- 双端品牌色 -->
+    <color name="brand_doctor_primary">#FF2563EB</color> <!-- 医生端主色 -->
+    <color name="brand_doctor_primary_dark">#FF1D4ED8</color> <!-- 医生端主色深 -->
+    <color name="brand_patient_primary">#FF16A34A</color> <!-- 患者端主色 -->
+    <color name="brand_patient_primary_light">#FF22C55E</color> <!-- 患者端辅绿 -->
 
+    <!-- 表面与文字 -->
+    <color name="surface">#FFFFFFFF</color> <!-- 卡片与页面底色 -->
+    <color name="surface_variant">#FFF9FAFB</color> <!-- 次级表面、浅色底块 -->
+    <color name="on_surface">#FF1F2937</color> <!-- 主要文字 -->
+    <color name="on_surface_secondary">#FF4B5563</color> <!-- 次要文字 -->
+    <color name="on_surface_tertiary">#FF9CA3AF</color> <!-- 提示文字与占位 -->
+    <color name="outline">#FFD1D5DB</color> <!-- 描边 -->
+    <color name="divider">#FFE5E7EB</color> <!-- 分隔线 -->
 
+    <!-- 通用主色与反色文字 -->
+    <color name="primary">#FF2563EB</color> <!-- 主操作色 -->
+    <color name="on_primary">#FFFFFFFF</color> <!-- 主色上的文字与图标 -->
 
-<!--    医生-->
-    <color name="blue_50">#EFF6FF</color>
-    <color name="blue_100">#DBEAFE</color>
-    <color name="blue_500">#3B82F6</color>
-    <color name="blue_600">#2563EB</color>
-    <color name="blue_700">#1D4ED8</color>
+    <!-- 语义反馈色 -->
+    <color name="success">#FF16A34A</color> <!-- 成功、已完成 -->
+    <color name="warning">#FFEA580C</color> <!-- 警示、待处理 -->
+    <color name="danger">#FFDC2626</color> <!-- 错误、驳回 -->
+    <color name="info">#FF3B82F6</color> <!-- 信息提示 -->
 
-    <color name="gray_50">#F9FAFB</color>
-    <color name="gray_200">#E5E7EB</color>
+    <!-- 禁用与遮罩 -->
+    <color name="disabled_bg">#FFE5E7EB</color> <!-- 禁用态底色 -->
+    <color name="disabled_fg">#FF9CA3AF</color> <!-- 禁用态前景 -->
+    <color name="scrim">#33000000</color> <!-- 半透明遮罩与阴影 -->
 
-    <color name="gray_600">#4B5563</color>
-    <color name="gray_800">#1F2937</color>
-    <color name="gray_900">#111827</color>
-
-    <color name="red_500">#EF4444</color>
-
-    <color name="white_alpha_90">#E6FFFFFF</color>
-
-    <!-- 背景色块 -->
-    <color name="purple_100">#F3E8FF</color>
-    <color name="purple_600">#9333EA</color>
-
-    <!-- 温暖康复风格色彩 -->
-    <color name="warm_orange">#FF8A65</color>
-    <color name="warm_orange_light">#FFB74D</color>
-    <color name="warm_peach">#FFE0B2</color>
-    <color name="warm_red">#EF5350</color>
+    <!-- 任务与计划状态 -->
+    <color name="status_pending">#FF2563EB</color> <!-- 待执行 -->
+    <color name="status_completed">#FF16A34A</color> <!-- 已完成 -->
+    <color name="status_skipped_rejected">#FF6B7280</color> <!-- 已跳过、已驳回 -->
+    <color name="status_review">#FFEA580C</color> <!-- 待审核 -->
 
 </resources>

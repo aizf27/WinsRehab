@@ -9,9 +9,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#E5E7EB"
-        android:layout_marginHorizontal="4dp"
-        android:padding="2dp"> <!-- padding 模拟边框 -->
+        android:background="@color/divider"
+        android:layout_marginHorizontal="@dimen/space_4"
+        android:padding="@dimen/space_4"> <!-- padding 模拟边框 -->
 
         <!-- 这里需要用代码动态设置 LayoutParams 的高度或者 weight 来控制绿色高度 -->
         <!-- 暂时写死一个高度供预览 -->
@@ -20,23 +20,21 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="bottom"
-            android:background="#4ADE80"/> <!-- green-400 -->
+            android:background="@color/brand_patient_primary_light"/> <!-- green-400 -->
     </FrameLayout>
 
     <TextView
         android:id="@+id/tvDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="周一"
-        android:textSize="12sp"
-        android:textColor="#4B5563"/>
+        android:layout_marginTop="@dimen/space_8"
+        android:text="周一" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+        android:textColor="@color/on_surface_secondary"/>
 
     <TextView
         android:id="@+id/tvCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4/4"
-        android:textSize="10sp"
-        android:textColor="#6B7280"/>
+        android:text="4/4" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"
+        android:textColor="@color/on_surface_secondary"/>
 </LinearLayout>

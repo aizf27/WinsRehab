@@ -4,33 +4,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="1dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardCornerRadius="@dimen/radius_12"
+    app:cardElevation="@dimen/elevation_1"
+    app:cardBackgroundColor="@color/surface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="16dp">
+        android:padding="@dimen/space_16">
 
         <TextView
             android:id="@+id/tvStatLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="累计训练"
-            android:textColor="#4B5563"
-            android:textSize="12sp"/>
+            android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
         <TextView
             android:id="@+id/tvStatValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="28 天"
-            android:textColor="#16A34A"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginTop="4dp"/>
+            android:textColor="@color/brand_patient_primary"
+            android:textStyle="bold" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+            android:layout_marginTop="@dimen/space_4"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

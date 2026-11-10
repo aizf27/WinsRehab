@@ -3,22 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="@color/surface_variant">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:padding="@dimen/space_16"
         android:clipToPadding="false"/>
 
     <TextView
         android:id="@+id/tvEmpty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="暂无患者申请"
-        android:textSize="18sp"
-        android:textColor="#999999"
+        android:text="暂无患者申请" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+        android:textColor="@color/on_surface_tertiary"
         android:gravity="center"
         android:visibility="gone"/>
 

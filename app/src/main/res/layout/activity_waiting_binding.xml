@@ -4,63 +4,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp"
-    android:background="#F5F5F5">
+    android:padding="@dimen/space_32"
+    android:background="@color/surface_variant">
 
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@android:drawable/ic_dialog_info"
-        android:tint="#FF9800"
-        android:layout_marginBottom="24dp"/>
+        android:tint="@color/warning"
+        android:layout_marginBottom="@dimen/space_24"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="等待医生确认中..."
-        android:textSize="24sp"
+        android:text="等待医生确认中..." android:textAppearance="@style/TextAppearance.WinsRehab.Display24"
         android:textStyle="bold"
-        android:textColor="#333333"
-        android:layout_marginBottom="16dp"/>
+        android:textColor="@color/on_surface"
+        android:layout_marginBottom="@dimen/space_16"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="已向医生发送绑定申请"
-        android:textSize="16sp"
-        android:textColor="#666666"
-        android:layout_marginBottom="8dp"/>
+        android:text="已向医生发送绑定申请" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+        android:textColor="@color/on_surface_secondary"
+        android:layout_marginBottom="@dimen/space_8"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请耐心等待医生确认"
-        android:textSize="16sp"
-        android:textColor="#666666"
-        android:layout_marginBottom="32dp"/>
+        android:text="请耐心等待医生确认" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+        android:textColor="@color/on_surface_secondary"
+        android:layout_marginBottom="@dimen/space_32"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="@dimen/space_32"/>
 
     <Button
         android:id="@+id/btnRefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="刷新状态"
-        android:textSize="16sp"
-        android:paddingHorizontal="32dp"
-        android:paddingVertical="12dp"/>
+        android:text="刷新状态" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+        android:paddingHorizontal="@dimen/space_32"
+        android:paddingVertical="@dimen/space_12"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="系统会每30秒自动刷新状态"
-        android:textSize="12sp"
-        android:textColor="#999999"
-        android:layout_marginTop="16dp"/>
+        android:text="系统会每30秒自动刷新状态" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+        android:textColor="@color/on_surface_tertiary"
+        android:layout_marginTop="@dimen/space_16"/>
 
 </LinearLayout>
 

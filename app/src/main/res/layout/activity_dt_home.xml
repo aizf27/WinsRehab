@@ -8,8 +8,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    android:layout_margin="10dp"
-    android:background="#F5F7FA">
+    android:layout_margin="@dimen/space_8"
+    android:background="@color/surface_variant">
 <androidx.fragment.app.FragmentContainerView
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -23,10 +23,10 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/surface"
         app:itemIconTint="@color/dt_bottom_nav_icon_selector"
         app:itemTextColor="@color/dt_bottom_nav_text_selector"
-        app:itemRippleColor="@color/blue_shallow"
+        app:itemRippleColor="@color/primary"
         app:menu="@menu/dt_nav_menu"/>
 
 
