@@ -2,6 +2,7 @@ package com.example.winsrehab.data.dao
 
 import androidx.room.*
 import com.example.winsrehab.data.entity.TaskInstance
+import com.example.winsrehab.data.model.TaskInstanceWithTask
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -51,31 +52,7 @@ interface TaskInstanceDao {
     suspend fun getInstanceByIdOnce(instanceId: Long): TaskInstance?
     
     // ==================== 业务查询 ====================
-    
-    /**
-     * 获取患者指定日期的所有任务实例
-     */
-    @Query("SELECT * FROM task_instance WHERE patientId = :patientId AND scheduledDate = :date ORDER BY createdAt ASC")
-    fun getInstancesByDate(patientId: String, date: String): Flow<List<TaskInstance>>
-    
-    /**
-     * 获取患者指定日期的所有任务实例（一次性查询）
-     */
-    @Query("SELECT * FROM task_instance WHERE patientId = :patientId AND scheduledDate = :date ORDER BY createdAt ASC")
-    suspend fun getInstancesByDateOnce(patientId: String, date: String): List<TaskInstance>
-    
-    /**
-     * 获取患者指定日期范围的任务实例
-     */
-    @Query("SELECT * FROM task_instance WHERE patientId = :patientId AND scheduledDate BETWEEN :startDate AND :endDate ORDER BY scheduledDate ASC, createdAt ASC")
-    fun getInstancesByDateRange(patientId: String, startDate: String, endDate: String): Flow<List<TaskInstance>>
-    
-    /**
-     * 获取患者指定日期范围的任务实例（一次性查询）
-     */
-    @Query("SELECT * FROM task_instance WHERE patientId = :patientId AND scheduledDate BETWEEN :startDate AND :endDate ORDER BY scheduledDate ASC, createdAt ASC")
-    suspend fun getInstancesByDateRangeOnce(patientId: String, startDate: String, endDate: String): List<TaskInstance>
-    
+
     /**
      * 获取患者指定状态的任务实例
      */
@@ -95,28 +72,29 @@ interface TaskInstanceDao {
     suspend fun isInstanceExists(patientId: String, taskId: Long, date: String): Boolean
 
     /**
-     * 获取患者今日任务总数
+     * 某计划下某患者、在计划窗口内已完成的任务数（进度分子；与分母同窗口）
      */
-    @Query("SELECT COUNT(*) FROM task_instance WHERE patientId = :patientId AND scheduledDate = :date")
-    suspend fun getTodayTaskCount(patientId: String, date: String): Int
-    
+    @Query("""
+        SELECT COUNT(*) FROM task_instance ti
+        INNER JOIN training_task tt ON tt.taskId = ti.taskId
+        WHERE tt.planId = :planId AND ti.patientId = :patientId AND ti.status = 'completed'
+          AND ti.scheduledDate BETWEEN :startDate AND :endDate
+    """)
+    suspend fun getCompletedCountInWindow(planId: Long, patientId: String, startDate: String, endDate: String): Int
+
     /**
-     * 获取患者今日已完成任务数
+     * 本周区间任务联表查询：只投影今日列表需要的任务名/时长/优先级
+     * 今日列表与本周柱状图共用这一份结果，避免同页两套数据源
      */
-    @Query("SELECT COUNT(*) FROM task_instance WHERE patientId = :patientId AND scheduledDate = :date AND status = 'completed'")
-    suspend fun getTodayCompletedCount(patientId: String, date: String): Int
-    
-    /**
-     * 获取患者本周任务总数
-     */
-    @Query("SELECT COUNT(*) FROM task_instance WHERE patientId = :patientId AND scheduledDate BETWEEN :startDate AND :endDate")
-    suspend fun getWeekTaskCount(patientId: String, startDate: String, endDate: String): Int
-    
-    /**
-     * 获取患者本周已完成任务数
-     */
-    @Query("SELECT COUNT(*) FROM task_instance WHERE patientId = :patientId AND scheduledDate BETWEEN :startDate AND :endDate AND status = 'completed'")
-    suspend fun getWeekCompletedCount(patientId: String, startDate: String, endDate: String): Int
+    @Query("""
+        SELECT ti.*, tt.taskName AS taskName,
+               tt.suggestedDuration AS suggestedDuration, tt.priority AS priority
+        FROM task_instance ti
+        INNER JOIN training_task tt ON tt.taskId = ti.taskId
+        WHERE ti.patientId = :patientId AND ti.scheduledDate BETWEEN :startDate AND :endDate
+        ORDER BY CASE tt.priority WHEN 'important' THEN 0 ELSE 1 END ASC, ti.createdAt ASC
+    """)
+    fun getWeekInstancesWithTask(patientId: String, startDate: String, endDate: String): Flow<List<TaskInstanceWithTask>>
     
     /**
      * 更新任务实例状态

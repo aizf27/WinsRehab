@@ -270,18 +270,59 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp"/>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginBottom="24dp">
 
-                <!-- 列表项：你可以用 RecyclerView，这里用 include 模拟 -->
-                <include layout="@layout/item_exercise_task" android:id="@+id/task1"/>
-                <include layout="@layout/item_exercise_task" android:id="@+id/task2"/>
-                <include layout="@layout/item_exercise_task" android:id="@+id/task3"/>
-                <include layout="@layout/item_exercise_task" android:id="@+id/task4"/>
-            </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTodayTasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
+
+                <TextView
+                    android:id="@+id/tvEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="24dp"
+                    android:gravity="center"
+                    android:text="今天还没有训练任务"
+                    android:textColor="#6B7280"
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
+
+                <ProgressBar
+                    android:id="@+id/loadingView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/errorView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="加载失败"
+                        android:textColor="#EF4444"/>
+
+                    <Button
+                        android:id="@+id/btnRetry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="重试"/>
+                </LinearLayout>
+            </FrameLayout>
 
             <!-- D. 本周完成情况 (柱状图) -->
             <TextView

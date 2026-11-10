@@ -17,15 +17,14 @@
         android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- 完成状态图标 (Check/Circle) -->
+        <!-- 状态图标：完成绿勾 / 其余灰圈 -->
         <ImageView
             android:id="@+id/imgStatus"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_circle_outline"
-            app:tint="#D1D5DB" /> <!-- gray-300 -->
+            app:tint="#D1D5DB" />
 
-        <!-- 中间文本 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,7 +36,7 @@
                 android:id="@+id/tvTaskName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="上肢伸展运动"
+                tools:text="肩关节外展训练"
                 android:textColor="#111827"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
@@ -58,22 +57,22 @@
                     android:id="@+id/tvDuration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="10 分钟"
+                    tools:text="15 分钟"
                     android:textColor="#4B5563"
                     android:textSize="12sp"
                     android:layout_marginStart="4dp"/>
                 <TextView
-                    android:id="@+id/tvSets"
+                    android:id="@+id/tvPriority"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="3 组 x 10 次"
-                    android:textColor="#6B7280"
+                    tools:text="重要"
+                    android:textColor="#DC2626"
                     android:textSize="12sp"
                     android:layout_marginStart="12dp"/>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 开始按钮 (如果已完成则隐藏) -->
+        <!-- 只有待完成任务显示「开始」 -->
         <TextView
             android:id="@+id/btnStartTask"
             android:layout_width="wrap_content"

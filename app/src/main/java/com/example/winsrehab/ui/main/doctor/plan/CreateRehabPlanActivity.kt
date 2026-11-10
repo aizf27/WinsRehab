@@ -112,7 +112,7 @@ class CreateRehabPlanActivity : AppCompatActivity() {
 
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
-        DatePickerDialog(
+        val dialog = DatePickerDialog(
             this,
             { _, year, month, dayOfMonth ->
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -123,7 +123,10 @@ class CreateRehabPlanActivity : AppCompatActivity() {
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        )
+        // 即时反馈的第二道：开始日不能早于今天；权威判定仍在保存时
+        dialog.datePicker.minDate = System.currentTimeMillis()
+        dialog.show()
     }
 
     private fun showAddTaskDialog() {

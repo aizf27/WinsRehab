@@ -1,20 +1,32 @@
 package com.example.winsrehab.ui.main.patient.main
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.winsrehab.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.winsrehab.data.model.TaskInstanceWithTask
 import com.example.winsrehab.databinding.FragmentPtRehabBinding
+import com.example.winsrehab.ui.main.patient.adapter.TaskInstanceAdapter
+import kotlinx.coroutines.launch
 
+/**
+ * 患者康复页：全部数据来自 ViewModel，不再写死模拟数据
+ */
 class pt_rehabFragment : Fragment() {
+
     private var _binding: FragmentPtRehabBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: PtRehabViewModel by viewModels()
+    private lateinit var adapter: TaskInstanceAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,150 +39,110 @@ class pt_rehabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 初始化模拟数据
-        setupTodayProgress()
-        setupExerciseTasks()
-        setupWeekBars()
-        setupStatCards()
+        setupRecycler()
+        binding.btnRetry.setOnClickListener { viewModel.retry() }
+
+        // BottomNav 切页不带 nav 参数，account 由 resolveAccount 回落宿主 Intent
+        viewModel.load(resolveAccount())
+        observeState()
     }
 
-    /**
-     * 设置今日进度卡片数据
-     */
-    private fun setupTodayProgress() {
-        binding.tvProgressCount.text = "2/4 项已完成"
-        binding.tvProgressPercent.text = "完成率: 50%"
-        binding.progressBarToday.progress = 50
+    private fun setupRecycler() {
+        adapter = TaskInstanceAdapter { item -> showTaskDialog(item) }
+        binding.rvTodayTasks.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvTodayTasks.adapter = adapter
     }
 
-    /**
-     * 设置训练任务列表数据
-     */
-    private fun setupExerciseTasks() {
-        // 模拟数据
-        data class TaskData(
-            val name: String,
-            val duration: String,
-            val sets: String,
-            val isCompleted: Boolean
-        )
+    // 与 pt_infoFragment.resolveAccount 同款兜底链
+    private fun resolveAccount(): String {
+        val navAccount = arguments?.getString("account") ?: ""
+        val intentAccount = requireActivity().intent.getStringExtra("account") ?: ""
+        return navAccount.ifEmpty { intentAccount }
+    }
 
-        val tasks = listOf(
-            TaskData("上肢伸展运动", "10 分钟", "3 组 x 10 次", true),
-            TaskData("手指灵活训练", "15 分钟", "2 组 x 15 次", true),
-            TaskData("肩部旋转练习", "10 分钟", "3 组 x 8 次", false),
-            TaskData("握力训练", "5 分钟", "4 组 x 12 次", false)
-        )
-
-        val taskViews = listOf(
-            binding.task1.root,
-            binding.task2.root,
-            binding.task3.root,
-            binding.task4.root
-        )
-
-        tasks.forEachIndexed { index, task ->
-            setupTaskItem(taskViews[index], task.name, task.duration, task.sets, task.isCompleted)
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // 重新进入 STARTED 会重新订阅，today/weekRange 随之重算
+                viewModel.uiState.collect { render(it) }
+            }
         }
     }
 
-    /**
-     * 设置单个任务项
-     */
-    private fun setupTaskItem(
-        taskView: View,
-        name: String,
-        duration: String,
-        sets: String,
-        isCompleted: Boolean
-    ) {
-        taskView.findViewById<TextView>(R.id.tvTaskName).text = name
-        taskView.findViewById<TextView>(R.id.tvDuration).text = duration
-        taskView.findViewById<TextView>(R.id.tvSets).text = sets
-
-        val imgStatus = taskView.findViewById<ImageView>(R.id.imgStatus)
-        val btnStart = taskView.findViewById<TextView>(R.id.btnStartTask)
-
-        if (isCompleted) {
-            imgStatus.setImageResource(R.drawable.ic_check_circle)
-            imgStatus.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green_600))
-            btnStart.visibility = View.GONE
-        } else {
-            imgStatus.setImageResource(R.drawable.ic_circle_outline)
-            imgStatus.setColorFilter(ContextCompat.getColor(requireContext(), R.color.gray_300))
-            btnStart.visibility = View.VISIBLE
+    private fun render(state: RehabUiState) {
+        when (state) {
+            is RehabUiState.Loading -> showLoading()
+            is RehabUiState.Content -> showContent(state)
+            is RehabUiState.Error -> showError(state.message)
         }
     }
 
-    /**
-     * 设置本周柱状图数据
-     */
-    private fun setupWeekBars() {
-        // 模拟数据：周一到周日的完成情况
-        data class WeekData(val day: String, val completed: Int, val total: Int)
+    private fun showLoading() {
+        binding.loadingView.visibility = View.VISIBLE
+        binding.rvTodayTasks.visibility = View.GONE
+        binding.tvEmpty.visibility = View.GONE
+        binding.errorView.visibility = View.GONE
+    }
 
-        val weekData = listOf(
-            WeekData("周一", 4, 4),
-            WeekData("周二", 3, 4),
-            WeekData("周三", 4, 4),
-            WeekData("周四", 2, 4),
-            WeekData("周五", 3, 4),
-            WeekData("周六", 1, 4),
-            WeekData("周日", 2, 4)  // 今天
+    private fun showContent(state: RehabUiState.Content) {
+        binding.loadingView.visibility = View.GONE
+        binding.errorView.visibility = View.GONE
+        binding.rvTodayTasks.visibility = View.VISIBLE
+        binding.tvEmpty.text = RehabFormatter.emptyText()
+        binding.tvEmpty.visibility = if (state.todayTasks.isEmpty()) View.VISIBLE else View.GONE
+
+        adapter.submitList(state.todayTasks)
+
+        binding.tvProgressCount.text = RehabFormatter.progressCountText(state.todayCompleted, state.todayTotal)
+        binding.tvProgressPercent.text = RehabFormatter.progressPercentText(state.todayCompleted, state.todayTotal)
+        binding.progressBarToday.progress = RehabFormatter.percent(state.todayCompleted, state.todayTotal)
+
+        renderWeekBars(state)
+        renderStatCards(state)
+    }
+
+    private fun renderWeekBars(state: RehabUiState.Content) {
+        val bars = listOf(
+            binding.weekBar1, binding.weekBar2, binding.weekBar3, binding.weekBar4,
+            binding.weekBar5, binding.weekBar6, binding.weekBar7
         )
-
-        val barViews = listOf(
-            binding.weekBar1.root,
-            binding.weekBar2.root,
-            binding.weekBar3.root,
-            binding.weekBar4.root,
-            binding.weekBar5.root,
-            binding.weekBar6.root,
-            binding.weekBar7.root
-        )
-
-        weekData.forEachIndexed { index, data ->
-            setupWeekBar(barViews[index], data.day, data.completed, data.total)
+        state.weekBars.forEachIndexed { index, bar ->
+            if (index >= bars.size) return@forEachIndexed
+            val item = bars[index]
+            item.tvDay.text = RehabFormatter.dayLabel(bar)
+            item.tvCount.text = RehabFormatter.weekCountText(bar)
+            val heightPx = (RehabFormatter.barHeightDp(bar.completed, bar.total) * resources.displayMetrics.density).toInt()
+            val params = item.viewBarFill.layoutParams as FrameLayout.LayoutParams
+            params.height = heightPx
+            item.viewBarFill.layoutParams = params
         }
     }
 
-    /**
-     * 设置单个柱状图
-     */
-    private fun setupWeekBar(barView: View, day: String, completed: Int, total: Int) {
-        barView.findViewById<TextView>(R.id.tvDay).text = day
-        barView.findViewById<TextView>(R.id.tvCount).text = "$completed/$total"
-
-        // 计算柱子高度（最大100dp）
-        val maxHeight = 100
-        val fillHeight = if (total > 0) (completed.toFloat() / total * maxHeight).toInt() else 0
-
-        val viewBarFill = barView.findViewById<View>(R.id.viewBarFill)
-        val params = viewBarFill.layoutParams as FrameLayout.LayoutParams
-        params.height = (fillHeight * resources.displayMetrics.density).toInt()
-        viewBarFill.layoutParams = params
+    private fun renderStatCards(state: RehabUiState.Content) {
+        binding.statCard1.tvStatLabel.text = "累计训练"
+        binding.statCard1.tvStatValue.text = RehabFormatter.placeholderText()
+        binding.statCard2.tvStatLabel.text = "本周完成"
+        binding.statCard2.tvStatValue.text = "${state.weekCompleted}/${state.weekTotal}"
+        binding.statCard3.tvStatLabel.text = "连续打卡"
+        binding.statCard3.tvStatValue.text = RehabFormatter.placeholderText()
     }
 
-    /**
-     * 设置底部统计卡片数据
-     */
-    private fun setupStatCards() {
-        // 统计卡片1：累计训练
-        setupStatCard(binding.statCard1.root, "累计训练", "28 天")
-
-        // 统计卡片2：本周完成
-        setupStatCard(binding.statCard2.root, "本周完成", "19/28")
-
-        // 统计卡片3：连续打卡
-        setupStatCard(binding.statCard3.root, "连续打卡", "7 天")
+    private fun showError(message: String) {
+        binding.loadingView.visibility = View.GONE
+        binding.rvTodayTasks.visibility = View.GONE
+        binding.tvEmpty.visibility = View.GONE
+        binding.errorView.visibility = View.VISIBLE
+        binding.tvError.text = RehabFormatter.errorText(message)
     }
 
-    /**
-     * 设置单个统计卡片
-     */
-    private fun setupStatCard(cardView: View, label: String, value: String) {
-        cardView.findViewById<TextView>(R.id.tvStatLabel).text = label
-        cardView.findViewById<TextView>(R.id.tvStatValue).text = value
+    private fun showTaskDialog(item: TaskInstanceWithTask) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(item.taskName)
+            .setMessage("请选择本次操作")
+            .setPositiveButton("完成") { _, _ -> viewModel.completeTask(item.instance.instanceId) }
+            .setNegativeButton("跳过") { _, _ -> viewModel.skipTask(item.instance.instanceId) }
+            .setNeutralButton("取消", null)
+            .show()
     }
 
     override fun onDestroyView() {

@@ -8,6 +8,7 @@ import com.example.winsrehab.data.entity.TrainingTask
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 /**
  * 测试数据帮助类
@@ -165,8 +166,8 @@ object TestDataHelper {
                     doctorCode = "1",
                     planName = "测试康复计划",
                     goal = "测试任务生成功能",
-                    startDate = "2026-09-01",
-                    endDate = "2026-09-30",
+                    startDate = LocalDate.now().toString(),
+                    endDate = LocalDate.now().plusDays(29).toString(),
                     status = "active",  // 重要：必须是active状态
                     progress = 0,
                     createdAt = System.currentTimeMillis(),

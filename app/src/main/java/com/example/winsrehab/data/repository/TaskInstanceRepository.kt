@@ -6,10 +6,9 @@ import com.example.winsrehab.data.dao.RehabPlanDao
 import com.example.winsrehab.data.dao.TrainingTaskDao
 import com.example.winsrehab.data.entity.TaskInstance
 import com.example.winsrehab.data.model.TaskStatus
+import com.example.winsrehab.utils.PlanDates
 import com.example.winsrehab.utils.TaskSchedule
 import kotlinx.coroutines.flow.Flow
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * 任务实例Repository
@@ -73,46 +72,7 @@ class TaskInstanceRepository(
     }
     
     // ==================== 业务查询 ====================
-    
-    /**
-     * 获取患者今日任务
-     */
-    fun getTodayInstances(patientId: String): Flow<List<TaskInstance>> {
-        val today = getTodayDate()
-        return dao.getInstancesByDate(patientId, today)
-    }
-    
-    /**
-     * 获取患者今日任务（一次性）
-     */
-    suspend fun getTodayInstancesOnce(patientId: String): List<TaskInstance> {
-        val today = getTodayDate()
-        return dao.getInstancesByDateOnce(patientId, today)
-    }
-    
-    /**
-     * 获取患者指定日期的任务
-     */
-    fun getInstancesByDate(patientId: String, date: String): Flow<List<TaskInstance>> {
-        return dao.getInstancesByDate(patientId, date)
-    }
-    
-    /**
-     * 获取患者本周任务
-     */
-    fun getWeekInstances(patientId: String): Flow<List<TaskInstance>> {
-        val (startDate, endDate) = getWeekDateRange()
-        return dao.getInstancesByDateRange(patientId, startDate, endDate)
-    }
-    
-    /**
-     * 获取患者本周任务（一次性）
-     */
-    suspend fun getWeekInstancesOnce(patientId: String): List<TaskInstance> {
-        val (startDate, endDate) = getWeekDateRange()
-        return dao.getInstancesByDateRangeOnce(patientId, startDate, endDate)
-    }
-    
+
     /**
      * 获取指定状态的任务实例
      */
@@ -163,6 +123,13 @@ class TaskInstanceRepository(
                 val planStartDate = TaskSchedule.parseDate(plan.startDate)
                 if (planStartDate == null) {
                     Log.e(TAG, "计划[${plan.planName}]开始日期非法: ${plan.startDate}，跳过")
+                    continue
+                }
+
+                // 计划时间窗：只在开始日到结束日之间生成；未开始或已到期直接跳过该计划
+                // 结束日非法同样视为出窗（PlanDates.isWithinPlanWindow 解析失败返回 false）
+                if (!PlanDates.isWithinPlanWindow(plan.startDate, plan.endDate, dateKey)) {
+                    Log.i(TAG, "计划[${plan.planName}]日期${dateKey}不在窗口[${plan.startDate}~${plan.endDate}]内，跳过")
                     continue
                 }
 
@@ -236,65 +203,9 @@ class TaskInstanceRepository(
     }
     
     // ==================== 统计功能 ====================
-    
-    /**
-     * 获取患者今日任务总数
-     */
-    suspend fun getTodayTaskCount(patientId: String): Int {
-        val today = getTodayDate()
-        return dao.getTodayTaskCount(patientId, today)
-    }
-    
-    /**
-     * 获取患者今日已完成任务数
-     */
-    suspend fun getTodayCompletedCount(patientId: String): Int {
-        val today = getTodayDate()
-        return dao.getTodayCompletedCount(patientId, today)
-    }
-    
-    /**
-     * 获取患者本周任务总数
-     */
-    suspend fun getWeekTaskCount(patientId: String): Int {
-        val (startDate, endDate) = getWeekDateRange()
-        return dao.getWeekTaskCount(patientId, startDate, endDate)
-    }
-    
-    /**
-     * 获取患者本周已完成任务数
-     */
-    suspend fun getWeekCompletedCount(patientId: String): Int {
-        val (startDate, endDate) = getWeekDateRange()
-        return dao.getWeekCompletedCount(patientId, startDate, endDate)
-    }
-    
-    /**
-     * 计算本周完成率
-     */
-    suspend fun getWeekCompletionRate(patientId: String): Float {
-        val total = getWeekTaskCount(patientId)
-        if (total == 0) return 0f
-        val completed = getWeekCompletedCount(patientId)
-        return (completed.toFloat() / total.toFloat()) * 100f
-    }
-    
+
     // ==================== 状态管理 ====================
-    
-    /**
-     * 标记任务为已完成
-     */
-    suspend fun completeInstance(instanceId: Long) {
-        dao.updateInstanceStatus(instanceId, TaskStatus.COMPLETED, System.currentTimeMillis())
-    }
-    
-    /**
-     * 标记任务为跳过
-     */
-    suspend fun skipInstance(instanceId: Long) {
-        dao.updateInstanceStatus(instanceId, TaskStatus.SKIPPED, System.currentTimeMillis())
-    }
-    
+
     /**
      * 关联训练视频
      */
@@ -310,32 +221,8 @@ class TaskInstanceRepository(
     }
     
     // ==================== 辅助方法 ====================
-    
-    /**
-     * 获取今日日期字符串（yyyy-MM-dd）
-     */
-    private fun getTodayDate(): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return sdf.format(Date())
-    }
-    
-    /**
-     * 获取本周日期范围（周一到周日）
-     */
-    private fun getWeekDateRange(): Pair<String, String> {
-        val calendar = Calendar.getInstance()
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        
-        // 设置为本周一
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        val startDate = sdf.format(calendar.time)
-        
-        // 设置为本周日
-        calendar.add(Calendar.DAY_OF_WEEK, 6)
-        val endDate = sdf.format(calendar.time)
-        
-        return Pair(startDate, endDate)
-    }
+
+    // 已移除：本周区间计算收敛到 utils/DateRanges，今日/本周日期助手不再被使用
 }
 
 

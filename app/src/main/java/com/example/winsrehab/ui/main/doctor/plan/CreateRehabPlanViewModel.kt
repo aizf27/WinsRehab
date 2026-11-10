@@ -1,6 +1,7 @@
 package com.example.winsrehab.ui.main.doctor.plan
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,9 +13,9 @@ import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.data.repository.RehabPlanRepository
 import com.example.winsrehab.data.repository.TrainingTaskRepository
 import com.example.winsrehab.data.repository.PatientRepository
+import com.example.winsrehab.utils.PlanDates
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.LocalDate
 
 /**
  * 创建康复计划ViewModel
@@ -101,6 +102,12 @@ class CreateRehabPlanViewModel(application: Application) : AndroidViewModel(appl
                     _saveResult.value = Result.failure(Exception("请选择开始日期"))
                     return@launch
                 }
+                // 开始日期不能早于今天；草稿与直接激活共用这一条校验
+                if (!PlanDates.isStartDateValid(startDate, LocalDate.now())) {
+                    Log.i("CreateRehabPlanVM", "开始日期早于今天被拦截: $startDate")
+                    _saveResult.value = Result.failure(Exception("开始日期不能早于今天"))
+                    return@launch
+                }
                 if (durationDays <= 0) {
                     _saveResult.value = Result.failure(Exception("请输入有效的周期天数"))
                     return@launch
@@ -112,8 +119,12 @@ class CreateRehabPlanViewModel(application: Application) : AndroidViewModel(appl
                     return@launch
                 }
 
-                // 计算结束日期
-                val endDate = calculateEndDate(startDate, durationDays)
+                // 计算结束日期：开始日 + 周期天数 - 1
+                val endDate = PlanDates.calculateEndDate(startDate, durationDays)
+                if (endDate == null) {
+                    _saveResult.value = Result.failure(Exception("开始日期格式非法"))
+                    return@launch
+                }
 
                 // 创建计划
                 val plan = RehabPlan(
@@ -128,6 +139,7 @@ class CreateRehabPlanViewModel(application: Application) : AndroidViewModel(appl
                 )
 
                 val planId = planRepository.createPlan(plan)
+                Log.i("CreateRehabPlanVM", "保存计划成功: planId=$planId, startDate=$startDate, endDate=$endDate")
 
                 // 保存任务
                 if (taskList.isNotEmpty()) {
@@ -141,17 +153,6 @@ class CreateRehabPlanViewModel(application: Application) : AndroidViewModel(appl
                 _saveResult.value = Result.failure(e)
             }
         }
-    }
-
-    /**
-     * 计算结束日期
-     */
-    private fun calculateEndDate(startDate: String, durationDays: Int): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        calendar.time = sdf.parse(startDate) ?: Date()
-        calendar.add(Calendar.DAY_OF_YEAR, durationDays)
-        return sdf.format(calendar.time)
     }
 }
 

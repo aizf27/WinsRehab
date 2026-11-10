@@ -110,12 +110,10 @@ class RehabPlanRepository(private val dao: RehabPlanDao) {
     }
     
     /**
-     * 更新计划进度
+     * 更新计划进度（已移至 TaskExecutionRepository，计划进度只保留一个写入口）
      */
-    suspend fun updateProgress(planId: Long, progress: Int) {
-        dao.updatePlanProgress(planId, progress, System.currentTimeMillis())
-    }
-    
+    // 已移除：进度写入口统一由 TaskExecutionRepository 承担
+
     // ==================== 统计功能 ====================
     
     /**
