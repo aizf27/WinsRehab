@@ -8,7 +8,7 @@
 
 WinsRehab 是**医患双端康复管理系统**：医生制定康复计划，系统按频率自动生成训练任务，患者执行并上传视频，医生审核反馈，形成康复闭环。
 
-**技术栈**：Kotlin + MVVM + Room（版本 7，9 张表）
+**技术栈**：Kotlin + MVVM + Room（版本 8，10 张表）
 
 **当前阶段**：本地优先、单设备演示，无后端、无跨设备同步。
 
@@ -24,7 +24,7 @@ Repository（业务逻辑）
   ↓ Coroutines
 DAO（数据库访问）
   ↓
-Entity（9 张表）
+Entity（10 张表）
 ```
 
 ### 核心数据模型
@@ -32,6 +32,7 @@ Entity（9 张表）
 - **康复计划**：RehabPlan（draft→active→completed/cancelled）
 - **任务系统**：TrainingTask（模板，频率规则）→ TaskInstance（实例，患者执行）
 - **调整追踪**：PlanAdjustment（记录医生调整历史）
+- **轻量反馈**：Feedback（患者留言、医生回复）
 - **辅助**：PtRehabVideo、DemoVideo、DoctorTask
 - `ChatMessage` 是心理助手的聊天数据类，不是 Room 表
 
@@ -80,21 +81,28 @@ Entity（9 张表）
 
 ---
 
-## 当前状态（2026-11-09）
+## 当前状态（2026-11-10）
 
-### 已完成（约 45%）
+### 已完成（约 48%）
 - ✅ 用户系统：登录注册、医患绑定、信息管理
 - ✅ 主界面框架：双端底部导航
-- ✅ 康复计划数据层：4 个 Entity + DAO + Repository，数据库 v7
+- ✅ 康复计划数据层：4 个 Entity + DAO + Repository，数据库 v7（W1D1 升 v8）
+- ✅ **W1D1 数据与规则**（2026-11-10）
+  - `data/model/Status.kt`：TaskStatus / PlanStatus / VideoReviewStatus / UploadStatus / BindingStatus
+  - `TaskInstance` 唯一索引 `(taskId, patientId, scheduledDate)`
+  - `PtRehabVideo` 补任务关联、本地/远端路径、审核、上传、时长与大小字段
+  - `Feedback` 表；数据库升 v8（10 张表，继续 `fallbackToDestructiveMigration()`）
+  - `utils/TaskSchedule.kt` 纯函数 + `TaskScheduleTest`（10 个用例全绿）
 - ✅ 医生端康复计划 UI：创建、任务管理、计划列表
-- ✅ **任务自动生成**：`TaskGenerationHelper` + `generateDailyTasks()`
+- ✅ **任务自动生成**：`generateDailyTasks()`
   - daily / weekly / interval
   - 登录触发 + `onResume` 刷新
   - `isInstanceExists` 去重 + 批量插入 IGNORE
+  - 频率判断已换 `TaskSchedule`，不再依赖 `lastScheduledDate`
 - ✅ AI 心理助手（DeepSeek）
 - ✅ 示范视频库（列表、播放）
 
-### 待实现（约 55%）
+### 待实现（约 52%）
 - 🚧 患者端今日任务列表、完成/跳过
 - 🚧 视频录制（CameraX）、任务关联
 - 🚧 医生审核（播放、通过/驳回、评语）
@@ -103,8 +111,8 @@ Entity（9 张表）
 
 ### 重要说明
 - 代码基线停在 **2026-09-07**，2026-11-09 重启，执行 [docs/开发计划.md](docs/开发计划.md)
-- 新计划中的 `TaskSchedule` 纯函数、数据库 v8、CameraX、Media3 **都还没实现**
-- 现有 interval 生成依赖“上次生成日期”，新计划要求改成只依赖 `(task, planStartDate, date)` 的纯函数
+- `TaskSchedule` 纯函数、数据库 v8 已于 W1D1 完成；CameraX、Media3 **还没实现**
+- interval 生成现在只依赖 `(task, planStartDate, date)`；旧的 `TaskGenerationHelper.shouldGenerateToday()` 已标 `@Deprecated`，不要再用
 
 ---
 
@@ -123,9 +131,9 @@ TaskInstanceRepository.generateDailyTasks(patientId, today)
   ↓
 1. 获取患者所有 active 计划
 2. 遍历计划的任务模板（TrainingTask）
-3. 判断频率（TaskGenerationHelper.shouldGenerateToday）
-4. 检查去重（isInstanceExists）
-5. 批量插入 TaskInstance（OnConflictStrategy.IGNORE）
+3. 判断频率（`TaskSchedule.shouldGenerate(task, plan.startDate, date)`，只依赖任务/计划开始日/日期）
+4. 检查去重（`isInstanceExists`）
+5. 批量插入 TaskInstance（OnConflictStrategy.IGNORE + 唯一索引兜底）
 ```
 
 ### 触发点
@@ -133,12 +141,13 @@ TaskInstanceRepository.generateDailyTasks(patientId, today)
 - 应用恢复时（`PtMainActivity.onResume`）
 
 ### 去重保护
-- 数据库级别：`OnConflictStrategy.IGNORE`
+- 数据库级别：`TaskInstance` 唯一索引 `(taskId, patientId, scheduledDate)` + `OnConflictStrategy.IGNORE`
 - 业务级别：`isInstanceExists` 查询
 
 ### 已知局限
-- interval 依赖 `getLastScheduledDate()`，漏签或补生成会让节奏漂移
-- 没有单元测试；`app/src/test` 里只有默认 `ExampleUnitTest`
+- `TaskSchedule` 已有 JVM 单测；状态流转、计划进度、去重仍靠手测
+- 生成仍由登录 / `onResume` 触发，后台 Worker 在 W3
+- 只生成当天任务，不补生成历史（漏了就是漏了）
 
 ---
 

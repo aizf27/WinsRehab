@@ -3,6 +3,7 @@ package com.example.winsrehab.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Index
+import com.example.winsrehab.data.model.TaskStatus
 
 /**
  * 任务实例实体类
@@ -17,8 +18,9 @@ import androidx.room.Index
 @Entity(
     tableName = "task_instance",
     indices = [
+        // 同一任务、同一患者、同一天只能有一条实例，重复生成由数据库兜底
+        Index(value = ["taskId", "patientId", "scheduledDate"], unique = true),
         Index(value = ["patientId", "scheduledDate"]),
-        Index(value = ["taskId"]),
         Index(value = ["status"])
     ]
 )
@@ -32,7 +34,7 @@ data class TaskInstance(
     val scheduledDate: String,                             // 计划日期（yyyy-MM-dd）
     val scheduledTime: String = "",                        // 计划时间（HH:mm，可选）
     
-    val status: String = "pending",                        // 状态：pending/completed/skipped/waiting_review
+    val status: String = TaskStatus.PENDING,               // 状态：pending/completed/skipped/waiting_review/rejected
     
     val completedAt: Long? = null,                         // 完成时间戳
     val actualDuration: Int? = null,                       // 实际时长（分钟）

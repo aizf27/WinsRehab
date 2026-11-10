@@ -6,14 +6,15 @@ WinsRehab 是一个本地优先的 Android 康复管理应用：医生制定康�
 
 ## 当前进度
 
-约 **45%**（2026-11-09）。代码基线停在 2026-09-07：任务自动生成已完成，患者任务列表、视频录制与审核、放松中心待开发。详细计划见 [docs/开发计划.md](docs/开发计划.md)。
+约 **48%**（2026-11-10）。代码基线停在 2026-09-07：任务自动生成已完成，患者任务列表、视频录制与审核、放松中心待开发。详细计划见 [docs/开发计划.md](docs/开发计划.md)。
 
 ### 已实现
 
 - 医生/患者双端登录注册、医患绑定（申请、确认、拒绝）
 - 医生端患者管理、创建/激活康复计划、计划列表
-- 康复计划数据层：Room 9 张表（计划、任务模板、任务实例、调整记录等）
+- 康复计划数据层：Room 10 张表（计划、任务模板、任务实例、调整记录等）
 - 任务自动生成：`daily` / `weekly` / `interval`，登录与 `onResume` 触发，自动去重
+- 数据库 v8 + `TaskSchedule` 纯函数：任务唯一索引、视频审核/上传字段、轻量反馈表，频率规则有单测
 - AI 心理助手（DeepSeek）
 - 示范视频列表与播放
 
@@ -28,7 +29,7 @@ WinsRehab 是一个本地优先的 Android 康复管理应用：医生制定康�
 ## 技术栈
 
 - **语言/架构**：Kotlin，MVVM + Repository
-- **数据**：Room v7（9 张表），Coroutines + Flow
+- **数据**：Room v8（10 张表），Coroutines + Flow
 - **UI**：ViewBinding + Navigation Component + BottomNavigationView
 - **SDK**：minSdk 26 / targetSdk 34 / compileSdk 36，Java 11
 - **网络**：OkHttp + Gson，DeepSeek Chat API

@@ -95,12 +95,6 @@ interface TaskInstanceDao {
     suspend fun isInstanceExists(patientId: String, taskId: Long, date: String): Boolean
 
     /**
-     * 获取任务的最后生成日期（用于interval频率判断）
-     */
-    @Query("SELECT MAX(scheduledDate) FROM task_instance WHERE taskId = :taskId AND patientId = :patientId")
-    suspend fun getLastScheduledDate(taskId: Long, patientId: String): String?
-    
-    /**
      * 获取患者今日任务总数
      */
     @Query("SELECT COUNT(*) FROM task_instance WHERE patientId = :patientId AND scheduledDate = :date")

@@ -3,6 +3,7 @@ package com.example.winsrehab.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Index
+import com.example.winsrehab.data.model.PlanStatus
 
 /**
  * 康复计划实体类
@@ -30,7 +31,7 @@ data class RehabPlan(
     val startDate: String,                                 // 开始日期（yyyy-MM-dd）
     val endDate: String,                                   // 结束日期（yyyy-MM-dd）
     
-    val status: String = "draft",                          // 状态：draft/active/completed/cancelled
+    val status: String = PlanStatus.DRAFT,                 // 状态：draft/active/completed/cancelled
     val progress: Int = 0,                                 // 完成进度（0-100）
     
     val createdAt: Long = System.currentTimeMillis(),      // 创建时间戳

@@ -5,7 +5,8 @@ import com.example.winsrehab.data.dao.TaskInstanceDao
 import com.example.winsrehab.data.dao.RehabPlanDao
 import com.example.winsrehab.data.dao.TrainingTaskDao
 import com.example.winsrehab.data.entity.TaskInstance
-import com.example.winsrehab.utils.TaskGenerationHelper
+import com.example.winsrehab.data.model.TaskStatus
+import com.example.winsrehab.utils.TaskSchedule
 import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
 import java.util.*
@@ -134,6 +135,14 @@ class TaskInstanceRepository(
         try {
             Log.i(TAG, "开始生成任务: patientId=$patientId, date=$date")
 
+            // 目标日期解析失败就没法判断频率，直接返回
+            val targetDate = TaskSchedule.parseDate(date)
+            if (targetDate == null) {
+                Log.e(TAG, "生成日期格式非法: $date")
+                return 0
+            }
+            val dateKey = targetDate.toString()  // 统一成 yyyy-MM-dd 再入库，避免日期字符串带空格
+
             // 1. 获取患者的所有活跃康复计划
             val activePlans = rehabPlanDao.getActivePlansByPatientOnce(patientId)
             if (activePlans.isEmpty()) {
@@ -150,35 +159,39 @@ class TaskInstanceRepository(
 
             // 3. 遍历每个计划的任务模板
             for (plan in activePlans) {
+                // 计划开始日期非法，整个计划跳过，避免 interval 从错误起点算
+                val planStartDate = TaskSchedule.parseDate(plan.startDate)
+                if (planStartDate == null) {
+                    Log.e(TAG, "计划[${plan.planName}]开始日期非法: ${plan.startDate}，跳过")
+                    continue
+                }
+
                 val tasks = trainingTaskDao.getTasksByPlanOnce(plan.planId)
                 totalTasks += tasks.size
                 Log.i(TAG, "计划[${plan.planName}]有${tasks.size}个任务模板")
 
                 for (task in tasks) {
                     // 4. 检查是否已存在（去重）
-                    if (dao.isInstanceExists(patientId, task.taskId, date)) {
+                    if (dao.isInstanceExists(patientId, task.taskId, dateKey)) {
                         skippedExists++
                         Log.d(TAG, "任务[${task.taskName}]已存在，跳过")
                         continue
                     }
 
-                    // 5. 获取上次生成日期（用于interval频率）
-                    val lastScheduledDate = dao.getLastScheduledDate(task.taskId, patientId)
-
-                    // 6. 判断是否满足频率规则
-                    val shouldGenerate = TaskGenerationHelper.shouldGenerateToday(
+                    // 5. 判断频率：只依赖任务模板、计划开始日期、目标日期，不查历史
+                    val shouldGenerate = TaskSchedule.shouldGenerate(
                         task = task,
-                        date = date,
-                        lastScheduledDate = lastScheduledDate
+                        planStartDate = planStartDate,
+                        date = targetDate
                     )
 
                     if (shouldGenerate) {
-                        // 7. 构建TaskInstance对象
+                        // 6. 构建TaskInstance对象
                         val instance = TaskInstance(
                             taskId = task.taskId,
                             patientId = patientId,
-                            scheduledDate = date,
-                            status = "pending"
+                            scheduledDate = dateKey,
+                            status = TaskStatus.PENDING
                         )
                         instancesToGenerate.add(instance)
                         Log.i(TAG, "任务[${task.taskName}]满足频率规则，准备生成")
@@ -189,7 +202,7 @@ class TaskInstanceRepository(
                 }
             }
 
-            // 8. 批量插入
+            // 7. 批量插入
             val generatedCount = if (instancesToGenerate.isNotEmpty()) {
                 val insertedIds = dao.insertInstances(instancesToGenerate)
                 // 统计实际插入的数量（IGNORE策略下，冲突的会返回-1）
@@ -201,7 +214,7 @@ class TaskInstanceRepository(
                 0
             }
 
-            // 9. 性能统计
+            // 8. 性能统计
             val elapsed = System.currentTimeMillis() - startTime
             Log.i(TAG, "任务生成完成: 总计${totalTasks}个任务模板, 已存在${skippedExists}个, 频率不符${skippedFrequency}个, 新生成${generatedCount}个, 耗时${elapsed}ms")
 
@@ -272,21 +285,21 @@ class TaskInstanceRepository(
      * 标记任务为已完成
      */
     suspend fun completeInstance(instanceId: Long) {
-        dao.updateInstanceStatus(instanceId, "completed", System.currentTimeMillis())
+        dao.updateInstanceStatus(instanceId, TaskStatus.COMPLETED, System.currentTimeMillis())
     }
     
     /**
      * 标记任务为跳过
      */
     suspend fun skipInstance(instanceId: Long) {
-        dao.updateInstanceStatus(instanceId, "skipped", System.currentTimeMillis())
+        dao.updateInstanceStatus(instanceId, TaskStatus.SKIPPED, System.currentTimeMillis())
     }
     
     /**
      * 关联训练视频
      */
     suspend fun attachVideo(instanceId: Long, videoId: Long) {
-        dao.updateInstanceVideo(instanceId, videoId, "waiting_review")
+        dao.updateInstanceVideo(instanceId, videoId, TaskStatus.WAITING_REVIEW)
     }
     
     /**

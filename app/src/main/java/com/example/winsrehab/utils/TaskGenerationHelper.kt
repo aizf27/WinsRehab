@@ -23,6 +23,7 @@ object TaskGenerationHelper {
      * @param lastScheduledDate 上次生成日期（用于interval频率，可为null）
      * @return true表示应该生成，false表示不生成
      */
+    @Deprecated("频率判断改用 TaskSchedule.shouldGenerate：只依赖计划和日期，不再依赖数据库历史")
     fun shouldGenerateToday(
         task: TrainingTask,
         date: String,

@@ -2,6 +2,7 @@ package com.example.winsrehab.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.winsrehab.data.model.BindingStatus
 
 @Entity(tableName = "patient")
 data class Patient(
@@ -34,7 +35,7 @@ data class Patient(
     val hasAlert: Boolean = false,                         // 是否有异常预警
     val hasNewFeedback: Boolean = false,                   // 是否有新反馈
     val lastActiveTime: Long = 0L,                         // 最后活跃时间戳
-    val bindingStatus: String = "unbound",                 // 绑定状态（unbound/pending/active/rejected）
+    val bindingStatus: String = BindingStatus.UNBOUND,      // 绑定状态（unbound/pending/active/rejected）
     val joinRanking: Boolean = true,                       // 是否参与排行榜
     val createdAt: Long = 0L,                              // 创建时间戳
     val updatedAt: Long = 0L                               // 更新时间戳

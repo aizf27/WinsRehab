@@ -15,9 +15,10 @@ import com.example.winsrehab.data.entity.*
         RehabPlan::class,
         TrainingTask::class,
         TaskInstance::class,
-        PlanAdjustment::class
+        PlanAdjustment::class,
+        Feedback::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
