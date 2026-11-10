@@ -32,15 +32,16 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
             android:hint="说说你的心情吧"/>
 
         <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/brand_patient_primary"
+            android:backgroundTint="@color/brand_patient_primary_dark"
             style="@style/MyRoundButton"
-
+            android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
             android:text="发送"/>
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 小号操作按钮底（「处理」「开始」类）：主色实心，白字 5.17:1 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/info"/>
+    <solid android:color="@color/primary"/>
     <corners android:radius="@dimen/radius_8"/>
 </shape>

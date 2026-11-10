@@ -73,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:text="拒绝"
                 android:backgroundTint="@color/danger"
+                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                 android:layout_marginEnd="@dimen/space_8"
 
                 />
@@ -82,7 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="确认"
-                android:backgroundTint="@color/success"
+                android:backgroundTint="@color/brand_patient_primary_dark"
+                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
 
                 />
 

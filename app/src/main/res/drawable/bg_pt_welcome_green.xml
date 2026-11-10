@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 患者端欢迎卡底：深绿渐变，两档都过白字门槛（7.13:1 → 5.02:1） -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="@color/brand_patient_primary_light"
-        android:endColor="@color/brand_patient_primary"
+        android:startColor="@color/brand_patient_primary_deep"
+        android:endColor="@color/brand_patient_primary_dark"
         android:angle="0"/>
     <corners android:radius="@dimen/radius_16"/>
 </shape>

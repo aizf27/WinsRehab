@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 患者消息气泡底：患者端深绿，白字 5.02:1 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/success"/> <!-- 绿色 -->
+    <solid android:color="@color/brand_patient_primary_dark"/>
     <corners android:radius="@dimen/radius_16"/>
     <padding
         android:left="@dimen/space_8"

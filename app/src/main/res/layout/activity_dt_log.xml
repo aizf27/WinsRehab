@@ -80,6 +80,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:text="@string/dotlog_theme"
+                    android:background="@drawable/bg_chip"
+                    android:backgroundTint="@color/on_surface"
+                    android:paddingHorizontal="@dimen/space_8"
+                    android:paddingVertical="@dimen/space_4"
                     android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                     android:textStyle="bold" />
             </FrameLayout>
@@ -123,6 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="记住密码"
+                    android:textColor="@color/on_surface"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     android:layout_marginTop="@dimen/space_4"
                     android:theme="@style/MyCheckBox"
                     />

@@ -41,8 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_4"
                 android:text="康复目标" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-                android:textColor="@color/on_primary"
-                android:alpha="0.9"/>
+                android:textColor="@color/on_primary"/>
         </LinearLayout>
 
         <!-- 计划详情 -->

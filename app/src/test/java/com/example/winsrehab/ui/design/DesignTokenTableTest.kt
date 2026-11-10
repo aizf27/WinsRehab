@@ -4,6 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
+import kotlin.math.pow
 
 // 界面取值表断言：颜色、字号、间距、圆角、阴影只能来自 res/values 下的取值表
 class DesignTokenTableTest {
@@ -17,12 +18,15 @@ class DesignTokenTableTest {
     // 启动图标美术不是界面取值，排除在令牌断言之外（显式列出，避免隐藏问题）
     private val artAllowList = setOf("ic_launcher_background.xml", "ic_launcher_foreground.xml")
 
-    // 设计约定的颜色定义：24 个语义色 + 7 个浅色容器底
+    // 设计约定的颜色定义：26 个语义色 + 7 个浅色容器底
     private val expectedColors = mapOf(
         "brand_doctor_primary" to "#FF2563EB",
         "brand_doctor_primary_dark" to "#FF1D4ED8",
         "brand_patient_primary" to "#FF16A34A",
         "brand_patient_primary_light" to "#FF22C55E",
+        // 患者端深绿两档：主色与辅绿的绿底白字都过不了 4.5:1，绿底按钮与欢迎卡靠它们
+        "brand_patient_primary_dark" to "#FF15803D",
+        "brand_patient_primary_deep" to "#FF166534",
         "surface" to "#FFFFFFFF",
         "surface_variant" to "#FFF9FAFB",
         "on_surface" to "#FF1F2937",
@@ -108,6 +112,12 @@ class DesignTokenTableTest {
         file.name !in artAllowList && relative != "values/colors.xml"
     }
 
+    // 只有布局里才有「文字落在什么底上」这回事
+    private fun layoutXml(): List<File> = uiXml().filter { it.parentFile.name == "layout" }
+
+    // 字号来源豁免清单：登记一条就必须在注释里写清为什么不能走文本外观（当前无豁免）
+    private val typographyExemptions = emptySet<String>()
+
     // 去掉 xml 注释，避免注释文字被当成取值扫描
     private fun stripComments(text: String): String =
         text.replace(Regex("<!--.*?-->", setOf(RegexOption.DOT_MATCHES_ALL)), "")
@@ -154,9 +164,158 @@ class DesignTokenTableTest {
             .toList()
     }
 
+    // 一个 xml 元素：标签、位置、属性表、祖先属性链（由近到远）
+    private data class Element(
+        val tag: String,
+        val where: String,
+        val attrs: Map<String, String>,
+        val ancestors: List<Map<String, String>>
+    )
+
+    // 按出现顺序解析元素并维护祖先栈，用于向上找「最近的不透明底」
+    private fun elementsOf(file: File): List<Element> {
+        val raw = stripComments(readText(file))
+        val relative = file.relativeTo(resDir).path.replace('\\', '/')
+        val result = mutableListOf<Element>()
+        val stack = mutableListOf<Map<String, String>>()
+        Regex("<(/)?([A-Za-z][A-Za-z0-9_.]*)([^>]*)>").findAll(raw).forEach { match ->
+            val body = match.groupValues[3]
+            if (match.groupValues[1] == "/") {
+                if (stack.isNotEmpty()) stack.removeAt(stack.size - 1)
+                return@forEach
+            }
+            val attrs = Regex("([A-Za-z]+:[A-Za-z]+)=\"([^\"]*)\"").findAll(body)
+                .associate { it.groupValues[1] to it.groupValues[2].trim() }.toMutableMap()
+            // style="..." 没有命名空间前缀，普通属性正则收不到，单独补上（字号与底常常写在样式里）
+            Regex("(?:^|\\s)style=\"([^\"]*)\"").find(body)?.let { attrs["style"] = it.groupValues[1].trim() }
+            result += Element(match.groupValues[2], "$relative:${lineOf(raw, match.range.first)}", attrs, stack.reversed().toList())
+            // 自闭合标签不入栈，否则后面的兄弟元素会被算成它的子元素
+            if (!body.trimEnd().endsWith("/")) stack += attrs
+        }
+        return result
+    }
+
+    // style 定义：父样式名 + 自身写的 android 属性（跟 textAppearance / textSize / textStyle 用）
+    private data class StyleDef(val parent: String?, val attrs: Map<String, String>)
+
+    // styles.xml 与 themes.xml 必须一起解析：SectionTitle 这类样式定义在 themes.xml 里
+    private val styleDefs: Map<String, StyleDef> by lazy {
+        val defs = mutableMapOf<String, StyleDef>()
+        listOf("styles.xml", "themes.xml").forEach { fileName ->
+            val file = resDir.resolve("values/$fileName")
+            if (!file.isFile) return@forEach
+            val raw = stripComments(readText(file))
+            Regex(
+                "<style name=\"([A-Za-z0-9_.]+)\"(?:\\s+parent=\"([A-Za-z0-9_.]+)\")?[^>]*>(.*?)</style>",
+                setOf(RegexOption.DOT_MATCHES_ALL)
+            ).findAll(raw).forEach { match ->
+                val styleName = match.groupValues[1]
+                val explicitParent = match.groupValues[2].ifEmpty { null }
+                // 点号隐式继承：Theme.WinsRehab.Doctor 的父样式是 Theme.WinsRehab
+                val implicitParent = if (explicitParent == null && styleName.contains('.')) styleName.substringBeforeLast('.') else null
+                val attrs = Regex("<item name=\"android:([A-Za-z]+)\">([^<]*)</item>").findAll(match.groupValues[3])
+                    .associate { "android:${it.groupValues[1]}" to it.groupValues[2].trim() }
+                defs[styleName] = StyleDef(explicitParent ?: implicitParent, attrs)
+            }
+        }
+        defs
+    }
+
+    // 沿 style 链找一个属性的取值（自身写的最优先）
+    private fun attrFromStyleChain(attrs: Map<String, String>, key: String): String? {
+        var style = attrs["style"]?.removePrefix("@style/")
+        var hops = 0
+        while (style != null && hops < 12) {
+            val def = styleDefs[style] ?: return null
+            def.attrs[key]?.let { return it }
+            style = def.parent
+            hops++
+        }
+        return null
+    }
+
+    // 取属性：元素自身优先，没有再跟 style 链
+    private fun resolveAttr(element: Element, key: String): String? =
+        element.attrs[key] ?: attrFromStyleChain(element.attrs, key)
+
+    // 字号来源：文本外观或直接字号都算「声明了字号」，裸字号的档位由另一条测试兜住
+    private fun hasFontSource(element: Element): Boolean =
+        resolveAttr(element, "android:textAppearance") != null || resolveAttr(element, "android:textSize") != null
+
+    // 字号档位：文本外观查 6 档取值，直接字号取数字，都找不到按正文 14sp 保守判
+    private fun fontSizeOf(element: Element): Int {
+        resolveAttr(element, "android:textAppearance")?.let { ref ->
+            val name = ref.removePrefix("@style/TextAppearance.WinsRehab.")
+            expectedTextAppearances[name]?.let { return it.removeSuffix("sp").toInt() }
+        }
+        resolveAttr(element, "android:textSize")?.let { raw ->
+            raw.removeSuffix("sp").removeSuffix("dp").toIntOrNull()?.let { return it }
+        }
+        return 14
+    }
+
+    // drawable 里的底色候选：solid 与 gradient 各档都要收（渐变按最差一端算）
+    private val drawableBottoms: Map<String, List<String>> by lazy {
+        resDir.resolve("drawable").listFiles().orEmpty()
+            .filter { it.isFile && it.name.endsWith(".xml") }
+            .associate { file ->
+                val raw = stripComments(readText(file))
+                val refs = Regex("android:(?:color|startColor|endColor|centerColor)=\"(@color/[A-Za-z0-9_]+)\"")
+                    .findAll(raw).map { it.groupValues[1].removePrefix("@color/") }.toList()
+                file.nameWithoutExtension to refs
+            }
+    }
+
+    // 由近到远找最近的不透明底，返回底色名列表（渐变返回多端）；null 表示整条祖先链都没写底
+    private fun bottomColorsOf(element: Element): List<String>? {
+        for (attrs in listOf(element.attrs) + element.ancestors) {
+            // backgroundTint 会覆盖 shape 自带的填充色，所以优先取 tint
+            attrs["android:backgroundTint"]?.takeIf { it.startsWith("@color/") }
+                ?.let { return listOf(it.removePrefix("@color/")) }
+            attrs["android:background"]?.let { background ->
+                if (background.startsWith("@color/")) return listOf(background.removePrefix("@color/"))
+                if (background.startsWith("@drawable/")) {
+                    val ends = drawableBottoms[background.removePrefix("@drawable/")].orEmpty()
+                    if (ends.isNotEmpty()) return ends
+                }
+            }
+            attrs["app:cardBackgroundColor"]?.takeIf { it.startsWith("@color/") }
+                ?.let { return listOf(it.removePrefix("@color/")) }
+        }
+        return null
+    }
+
+    // #AARRGGBB / #RRGGBB → 0..1 的 ARGB 四通道
+    private fun argb(hex: String): DoubleArray {
+        val value = hex.removePrefix("#").uppercase()
+        val full = when (value.length) {
+            6 -> "FF$value"
+            8 -> value
+            else -> throw IllegalArgumentException("颜色格式不认识: $hex")
+        }
+        return DoubleArray(4) { full.substring(it * 2, it * 2 + 2).toInt(16) / 255.0 }
+    }
+
+    // WCAG 相对亮度
+    private fun relativeLuminance(color: DoubleArray): Double {
+        fun channel(c: Double) = if (c <= 0.03928) c / 12.92 else ((c + 0.055) / 1.055).pow(2.4)
+        return 0.2126 * channel(color[1]) + 0.7152 * channel(color[2]) + 0.0722 * channel(color[3])
+    }
+
+    // 两色对比度（WCAG 公式，1.0 ~ 21.0）
+    private fun contrastRatio(foreground: DoubleArray, background: DoubleArray): Double {
+        val a = relativeLuminance(foreground)
+        val b = relativeLuminance(background)
+        return (maxOf(a, b) + 0.05) / (minOf(a, b) + 0.05)
+    }
+
+    // 半透明前景叠到实底上：视图 alpha 与颜色 alpha 同一套算法
+    private fun overlay(foreground: DoubleArray, background: DoubleArray, alpha: Double): DoubleArray =
+        DoubleArray(4) { i -> if (i == 0) 1.0 else foreground[i] * alpha + background[i] * (1 - alpha) }
+
     @Test
-    fun `颜色表只保留 31 个语义色`() {
-        assertEquals("颜色定义必须为 31 个（24 语义色 + 7 容器底），实际=${colorDefs.keys.sorted()}", 31, colorDefs.size)
+    fun `颜色表只保留 33 个语义色`() {
+        assertEquals("颜色定义必须为 33 个（26 语义色 + 7 容器底），实际=${colorDefs.keys.sorted()}", 33, colorDefs.size)
         assertEquals("颜色名必须与设计一致", expectedColors.keys.sorted(), colorDefs.keys.sorted())
     }
 
@@ -342,5 +501,60 @@ class DesignTokenTableTest {
             "row_trailing_reserve 必须与 space_48 同值，否则视觉留白会错位",
             dimenDefs["space_48"], dimenDefs["row_trailing_reserve"]
         )
+    }
+
+    @Test
+    fun `文本控件必须声明字号来源`() {
+        val violations = mutableListOf<String>()
+        layoutXml().forEach { file ->
+            elementsOf(file).forEach { element ->
+                // 有文字或提示的控件才有字号需求，空串与纯装饰元素跳过
+                val hasText = !element.attrs["android:text"].isNullOrBlank() || !element.attrs["android:hint"].isNullOrBlank()
+                if (!hasText) return@forEach
+                val label = "${element.where} <${element.tag}>"
+                if (label in typographyExemptions) return@forEach
+                if (!hasFontSource(element)) violations += label
+            }
+        }
+        assertTrue("有文字/提示的控件必须声明文本外观（或明确的字号档），缺少: $violations", violations.isEmpty())
+    }
+
+    @Test
+    fun `白字必须落在达标底上`() {
+        val violations = mutableListOf<String>()
+        val white = argb(colorDefs["on_primary"] ?: "#FFFFFFFF")
+        layoutXml().forEach { file ->
+            elementsOf(file).forEach { element ->
+                // 白字与白图标同一套判据：都要跟最近的底达到门槛
+                val isWhiteText = element.attrs["android:textColor"] == "@color/on_primary"
+                val isWhiteIcon = element.attrs["app:tint"] == "@color/on_primary"
+                if (!isWhiteText && !isWhiteIcon) return@forEach
+                val size = fontSizeOf(element)
+                val bold = resolveAttr(element, "android:textStyle") == "bold"
+                // 正文 4.5:1；大字（≥18sp 或 ≥14sp bold）允许 3.0:1
+                val threshold = if (size >= 18 || (bold && size >= 14)) 3.0 else 4.5
+                val viewAlpha = element.attrs["android:alpha"]?.toDoubleOrNull()
+                val label = "${element.where} <${element.tag}> ${if (isWhiteText) "白字" else "白图标"} ${size}sp${if (bold) " bold" else ""}"
+                val bottoms = bottomColorsOf(element)
+                if (bottoms == null) {
+                    violations += "$label 找不到不透明底（页面默认 surface 本身就过不了白字门槛）"
+                    return@forEach
+                }
+                bottoms.forEach { name ->
+                    val bottom = argb(colorDefs[name] ?: "#FFFFFFFF")
+                    if (bottom[0] < 1.0) {
+                        violations += "$label 落在半透明底 $name 上，半透明底不承载白字"
+                        return@forEach
+                    }
+                    // 视图 alpha 会把白字调成浅灰，等于自降对比度，要按混合后的实际颜色判
+                    val foreground = if (viewAlpha == null) white else overlay(white, bottom, viewAlpha)
+                    val ratio = contrastRatio(foreground, bottom)
+                    if (ratio < threshold) {
+                        violations += "$label 落在 $name 上仅 %.2f:1（门槛 %.1f:1）".format(ratio, threshold)
+                    }
+                }
+            }
+        }
+        assertTrue("白字/白图标必须落在达标底色上，违规: $violations", violations.isEmpty())
     }
 }

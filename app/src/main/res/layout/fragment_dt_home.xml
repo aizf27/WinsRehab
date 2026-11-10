@@ -131,7 +131,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_dt_welcome_card"
+                android:background="@drawable/bg_brand_gradient"
                 android:padding="@dimen/space_16">
 
                 <TextView
@@ -224,7 +224,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="管理患者"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -278,7 +278,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="审核视频"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -315,7 +315,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="制定计划"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -368,7 +368,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="患者反馈"
-                        android:textColor="@color/on_surface"
+                        android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"

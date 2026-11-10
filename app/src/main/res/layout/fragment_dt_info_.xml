@@ -74,7 +74,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_dt_welcome_card"
+                    android:background="@drawable/bg_brand_gradient"
                     android:padding="@dimen/space_24">
 
                     <!-- 头像圆底：白色正圆 + 品牌色图标，圆形用 oval 表达不占圆角档 -->
@@ -118,7 +118,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/space_4"
-                            android:alpha="0.9"
                             android:text="性别 · 年龄 · 科室"
                             android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
 
@@ -126,7 +125,6 @@
                             android:id="@+id/tvDoctorCode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.9"
                             android:text="工号：未设置"
                             android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
                     </LinearLayout>
@@ -207,7 +205,7 @@
                         android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="本月完成" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
-                        <TextView 
+                        <TextView
                             android:id="@+id/tvMonthlyPlans"
                             android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="0" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold"/>
@@ -230,7 +228,7 @@
                         android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="患者满意度" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
-                        <TextView 
+                        <TextView
                             android:id="@+id/tvSatisfaction"
                             android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="0%" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold"/>

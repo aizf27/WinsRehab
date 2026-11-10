@@ -36,17 +36,32 @@
 
 ### D1 取值表组织方式：语义色 + 固定档位 + 文本外观
 
-**选择**：颜色落 `res/values/colors.xml`，收敛为约 24 个语义色 + 7 个浅色容器底（见下）；间距/圆角/阴影/尺寸落 `res/values/dimens.xml`（`space_4/8/12/16/24/32/48` + `row_trailing_reserve`、`radius_8/12/16`、`elevation_0/1`；`0dp` 表示无间距、`1dp` 是描边线宽，两者都不计入间距档；`space_48` 只用于页面底部与列表底部的统一留白，列表行右侧的 48dp 固定留白单独走 `row_trailing_reserve`——数值与 `space_48` 同源但语义不同，测试同时锁定两者取值相等；这两档都不允许当普通内外边距用；现状里 56dp 这类单点留白就近并入 `space_48`）；字号不落 `dimen`，落 `res/values/styles.xml` 的文本外观（`TextAppearance.WinsRehab.Caption11 / Body12 / Body14 / Title16 / Headline20 / Display24`）。
+**选择**：颜色落 `res/values/colors.xml`，收敛为 26 个语义色 + 7 个浅色容器底（见下，合计 33 个）；间距/圆角/阴影/尺寸落 `res/values/dimens.xml`（`space_4/8/12/16/24/32/48` + `row_trailing_reserve`、`radius_8/12/16`、`elevation_0/1`；`0dp` 表示无间距、`1dp` 是描边线宽，两者都不计入间距档；`space_48` 只用于页面底部与列表底部的统一留白，列表行右侧的 48dp 固定留白单独走 `row_trailing_reserve`——数值与 `space_48` 同源但语义不同，测试同时锁定两者取值相等；这两档都不允许当普通内外边距用；现状里 56dp 这类单点留白就近并入 `space_48`）；字号不落 `dimen`，落 `res/values/styles.xml` 的文本外观（`TextAppearance.WinsRehab.Caption11 / Body12 / Body14 / Title16 / Headline20 / Display24`）。
 
 **理由**：字号写成 `dimen` 会被当成尺寸滥用（有人拿它做 margin），文本外观能同时锁住字号、字重与行距，且在布局里语义明确；用 `textAppearance` 后「6 档」这条约束可被静态检查（grep `android:textSize` 应为零命中）。
 
 **备选**：全部塞 `colors.xml` + 裸 `dimen`（放弃——管不住字重与行距，也管不住「6 档」）；引入设计令牌代码生成（放弃——本轮 XML 路线，生成器成本高于收益）。
 
-**语义色清单（约 24 个）**：`brand_doctor_primary`、`brand_doctor_primary_dark`、`brand_patient_primary`、`brand_patient_primary_light`、`surface`、`surface_variant`、`on_surface`、`on_surface_secondary`、`on_surface_tertiary`、`outline`、`divider`、`primary`、`on_primary`、`success`、`warning`、`danger`、`info`、`disabled_bg`、`disabled_fg`、`scrim`、`status_pending`、`status_completed`、`status_skipped_rejected`、`status_review`。计划状态色复用 `status_*` 族，不另开一组。
+**语义色清单（26 个）**：`brand_doctor_primary`、`brand_doctor_primary_dark`、`brand_patient_primary`、`brand_patient_primary_light`、`brand_patient_primary_dark`(#15803D)、`brand_patient_primary_deep`(#166534)、`surface`、`surface_variant`、`on_surface`、`on_surface_secondary`、`on_surface_tertiary`、`outline`、`divider`、`primary`、`on_primary`、`success`、`warning`、`danger`、`info`、`disabled_bg`、`disabled_fg`、`scrim`、`status_pending`、`status_completed`、`status_skipped_rejected`、`status_review`。计划状态色复用 `status_*` 族，不另开一组。患者端之所以要两档深绿：品牌主色 `brand_patient_primary`(3.30:1) 与辅绿 `brand_patient_primary_light`(2.28:1) 都过不了白字门槛，绿底按钮与绿底欢迎卡必须换 `brand_patient_primary_dark`(5.02:1) / `brand_patient_primary_deep`(7.13:1)，原两档保留做装饰填充与浅底上的文字色。
 
-**浅色容器底档（7 个）**：`primary_container`(#DBEAFE)、`success_container`(#DCFCE7)、`warning_container`(#FFEDD5)、`info_container`(#CCFBF1)、`accent_container`(#FAE8FF，紫粉强调)、`notice_container`(#FEF9C3，黄)、`on_primary_overlay`(#33FFFFFF，品牌深色底上的半透明容器层)。这 7 个是「彩色卡片 / 图标圆底 / 标签底」的唯一来源，合计 24 + 7 = 31 个颜色定义。
+**浅色容器底档（7 个）**：`primary_container`(#DBEAFE)、`success_container`(#DCFCE7)、`warning_container`(#FFEDD5)、`info_container`(#CCFBF1)、`accent_container`(#FAE8FF，紫粉强调)、`notice_container`(#FEF9C3，黄)、`on_primary_overlay`(#33FFFFFF，品牌深色底上的半透明容器层)。这 7 个是「彩色卡片 / 图标圆底 / 标签底」的唯一来源，合计 26 + 7 = 33 个颜色定义。
 
-**容器底与 `on_primary` 的搭配约束**：容器底一律配 `on_surface` / `on_surface_secondary` / 对应语义前景色（如 `primary_container` 配 `status_pending` 文字）；`on_primary`（白）只允许落在深色实底上——`primary`、`brand_doctor_primary`、`brand_patient_primary`、`status_*`、`bg_brand_gradient`、`bg_dt_welcome_card` / `bg_pt_welcome_green` 这类品牌渐变。白字压在容器底或 `surface_variant` 上属于对比度故障（1.05:1），不允许。
+**容器底与 `on_primary` 的搭配约束**：容器底一律配 `on_surface` / `on_surface_secondary` / 对应语义前景色（如 `primary_container` 配 `status_pending` 文字）；`on_primary`（白）只允许落在下表实测达标的实底上。白字压在容器底或 `surface_variant` 上属于对比度故障（1.05:1），不允许。
+
+**量化对比度门槛（可被测试执行）**：文字与其最近的不透明底的对比度按 WCAG 相对亮度公式计算——`L = 0.2126R + 0.7152G + 0.0722B`（R/G/B 先做 `c/255`，≤0.03928 取 `c/12.92`，否则取 `((c+0.055)/1.055)^2.4`），对比度 `(L_亮 + 0.05) / (L_暗 + 0.05)`。门槛分两档：
+
+- **正文（任意字号 ≤16sp，以及所有非 bold 文本）≥ 4.5:1**；
+- **大字（≥18sp 常规，或 ≥14sp bold）允许 ≥ 3.0:1**。
+
+底色的解析口径固定为三类来源：`android:background` 指向的 `@color`，或指向的 `@drawable` 里 `<solid android:color>` / `<gradient>` 的各档色值（渐变按**最差一端**算），以及 `android:backgroundTint` 与 `app:cardBackgroundColor`；`backgroundTint` 存在时以 tint 为准（tint 会覆盖 shape 自带填充色）。半透明底（`scrim`、`on_primary_overlay`、`#33FFFFFF` 这类 alpha < 255 的值）、图片底、以及向上找不到任何底的控件，一律判定不合格——要白字就先铺不透明底板（如 `bg_chip` + `backgroundTint="@color/on_surface"`）。`android:alpha` 会按与白色的混合结果重算，靠 0.9 透明度「调浅」白字等于自降对比度，不视为达标手段。
+
+**白字可用性实测清单（写入 `colors.xml` 逐个注释）**：
+
+| 白字可用（≥4.5:1） | 白字不可用（<4.5:1） |
+| --- | --- |
+| `on_surface` 14.68:1、`on_surface_secondary` 7.56:1、`brand_patient_primary_deep` 7.13:1、`brand_doctor_primary_dark` 6.70:1、`primary` = `brand_doctor_primary` = `status_pending` 5.17:1、`brand_patient_primary_dark` 5.02:1、`danger` = `status_skipped_rejected` 4.83:1 | `info` 3.68:1、`warning` = `status_review` 3.56:1、`brand_patient_primary` = `success` = `status_completed` 3.30:1、`brand_patient_primary_light` 2.28:1、`on_surface_tertiary` 2.54:1、`outline` 1.47:1、`divider` = `disabled_bg` 1.24:1、`surface_variant` 1.05:1、`surface` 1.00:1、6 个浅色容器底 1.07–1.22:1 |
+
+3.0–4.5 之间的那几档（`info` / `warning` / `brand_patient_primary` / `success`）理论上只够承载大字，本轮一律不用它们兜白字：`bg_rounded_btn_blue` 改 `primary`，`bg_btn_green_small` / `bg_btn_green_rounded` / `bg_user_bubble` 改 `brand_patient_primary_dark`，`bg_pt_welcome_green` 改 `brand_patient_primary_deep → brand_patient_primary_dark` 渐变，登录页与心理助手按钮的 `backgroundTint` 同理换深绿；`bg_dt_welcome_card`(`info → primary`) 与品牌渐变同色后已无区分意义，删除并统一用 `bg_brand_gradient`(`primary → brand_doctor_primary_dark`，两档 5.17/6.70:1)。
 
 **彩色底不降级为中性灰**：基线里被压成 `surface_variant` 的 11 类自绘彩色底（`#DBEAFE`/`#DCFCE7`/`#FFEDD5`/`#F3E8FF`/`#CCFBF1`/`#FEF9C3`/`#FAE8FF`/`#E3F2FD` + 4 组 3D 卡渐变 + 4 组功能卡渐变 + `#33FFFFFF` 白叠层）逐一对齐到上面 6 个容器档：卡片之间、图标圆底之间靠容器档区分语义，不再整站变灰。渐变形态保留，但只允许两端都是取值表里的颜色——「`surface` → 容器档」（3D 卡、功能卡）；原先靠 `#203B82F6` 这类字面量做的彩色投影与高光层删除，改用 1dp 同色描边。主 CTA 与品牌页头改走 `primary` → `brand_doctor_primary_dark` 的品牌渐变（`bg_brand_gradient` / `bg_button_primary`），不再借用 `warning` 暖色当主按钮色——暖色白字对比度只有 2.5:1，且 `warning` 语义是「警示/待处理」。
 
