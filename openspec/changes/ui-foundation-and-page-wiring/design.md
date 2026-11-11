@@ -56,7 +56,7 @@
 | `brand_patient_primary_deep` | 5.84:1 | 6.49:1 | 6.22:1 | 6.33:1 | 6.13:1 | 6.64:1 |
 | `brand_doctor_primary_dark` | 5.49:1 | 6.10:1 | 5.85:1 | 5.95:1 | 5.76:1 | 6.24:1 |
 
-容器底上**禁止作文字**（全都不稳定过 4.5，用了就是对比度缺陷）：`primary` = `brand_doctor_primary` = `status_pending`（4.24–4.81，`primary_container` 4.24 / `accent_container` 4.44 直接不足）、`danger` = `status_skipped_rejected` = `on_surface_tertiary`（3.96–4.50）、`brand_patient_primary_dark`（4.11–4.67，仅 success/notice 两底勉强过）、`info`（3.01–3.42）、`success` = `brand_patient_primary` = `status_completed` = `status_review`（2.70–3.56）、`brand_patient_primary_light`（<3.0）、`on_primary`（1.07–1.22）。容器上要表达「待执行/进行中」这类状态语义时，文字用 `brand_doctor_primary_dark` 而不是 `status_pending`（或反过来把 `status_pending` 当实底、文字配 `on_primary` 白字，见 `item_rehab_plan.xml` 的进行中胶囊）；要表达成功语义时用 `brand_patient_primary_deep` 而不是 `success`。
+容器底上**禁止作文字**（全都不稳定过 4.5，用了就是对比度缺陷）：`primary` = `brand_doctor_primary` = `status_pending`（4.24–4.81，`primary_container` 4.24 / `accent_container` 4.44 直接不足）、`danger` = `status_skipped_rejected` = `on_surface_tertiary`（3.96–4.50）、`brand_patient_primary_dark`（4.11–4.67，仅 success/notice 两底勉强过）、`info`（3.01–3.42）、`success` = `brand_patient_primary` = `status_completed`（2.70–3.07）、`status_review`（2.92–3.31）、`brand_patient_primary_light`（<3.0）、`on_primary`（1.07–1.22）。容器上要表达「待执行/进行中」这类状态语义时，文字用 `brand_doctor_primary_dark` 而不是 `status_pending`（或反过来把 `status_pending` 当实底、文字配 `on_primary` 白字，见 `item_rehab_plan.xml` 的进行中胶囊）；要表达成功语义时用 `brand_patient_primary_deep` 而不是 `success`。
 
 `on_primary`（白字/白图标）只允许落在下表「白字可用」列的实底上。白字压在容器底或 `surface_variant` 上属于对比度故障（1.05:1），不允许。
 
