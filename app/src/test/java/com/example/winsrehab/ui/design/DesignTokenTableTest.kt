@@ -72,6 +72,15 @@ class DesignTokenTableTest {
         "warm_orange_light", "warm_peach", "warm_red"
     )
 
+    // 语义色里暂时还没有页面消费方的令牌：显式登记为后续任务组保留，并写清由谁消费
+    // 登记标准是「已知下一组就要用」，不是「想不出来给谁用」；一旦被消费就必须从本表移除
+    private val reservedColorTokens = mapOf(
+        "disabled_bg" to "按钮与输入框禁用态的底色，第 3 组 3.1/3.2 建组件样式时消费",
+        "disabled_fg" to "按钮与输入框禁用态的前景色，第 3 组 3.1/3.2 建组件样式时消费",
+        "status_review" to "任务「待审核」/计划「进行中」状态徽标色，第 3 组 3.4 建状态映射时消费",
+        "status_skipped_rejected" to "任务「已跳过」/「已驳回」状态徽标色，第 3 组 3.4 建状态映射时消费"
+    )
+
     // 设计约定的 6 档文本外观
     private val expectedTextAppearances = mapOf(
         "Caption11" to "11sp",
@@ -114,6 +123,15 @@ class DesignTokenTableTest {
 
     // 只有布局里才有「文字落在什么底上」这回事
     private fun layoutXml(): List<File> = uiXml().filter { it.parentFile.name == "layout" }
+
+    // 取色方扫描范围：整个 app/src/main（xml 里是 @color/x，Kotlin 里是 R.color.x），不含取值表本身
+    private fun consumerSources(): List<File> {
+        val mainDir = resDir.parentFile ?: return emptyList()
+        return mainDir.walkTopDown().filter { file ->
+            file.isFile && file.extension in setOf("xml", "kt", "java") &&
+                !(file.parentFile?.name == "values" && file.name == "colors.xml")
+        }.toList()
+    }
 
     // 字号来源豁免清单：登记一条就必须在注释里写清为什么不能走文本外观（当前无豁免）
     private val typographyExemptions = emptySet<String>()
@@ -222,8 +240,12 @@ class DesignTokenTableTest {
     }
 
     // 沿 style 链找一个属性的取值（自身写的最优先）
-    private fun attrFromStyleChain(attrs: Map<String, String>, key: String): String? {
-        var style = attrs["style"]?.removePrefix("@style/")
+    private fun attrFromStyleChain(attrs: Map<String, String>, key: String): String? =
+        attrFromStyleName(attrs["style"]?.removePrefix("@style/"), key)
+
+    // 从样式名出发沿父样式链找属性；Material 内置默认值不在 styles.xml 里，查不到就当没写
+    private fun attrFromStyleName(startStyle: String?, key: String): String? {
+        var style = startStyle
         var hops = 0
         while (style != null && hops < 12) {
             val def = styleDefs[style] ?: return null
@@ -242,7 +264,7 @@ class DesignTokenTableTest {
     private fun hasFontSource(element: Element): Boolean =
         resolveAttr(element, "android:textAppearance") != null || resolveAttr(element, "android:textSize") != null
 
-    // 字号档位：文本外观查 6 档取值，直接字号取数字，都找不到按正文 14sp 保守判
+    // 字号档位：文本外观查 6 档取值，直接字号取数字，导航标签看 itemTextAppearance*，都找不到按正文 14sp 保守判
     private fun fontSizeOf(element: Element): Int {
         resolveAttr(element, "android:textAppearance")?.let { ref ->
             val name = ref.removePrefix("@style/TextAppearance.WinsRehab.")
@@ -251,7 +273,26 @@ class DesignTokenTableTest {
         resolveAttr(element, "android:textSize")?.let { raw ->
             raw.removeSuffix("sp").removeSuffix("dp").toIntOrNull()?.let { return it }
         }
+        navLabelTypography(element)?.let { return it.size }
         return 14
+    }
+
+    // 导航标签排版：BottomNavigationView 默认 12sp/常规字重，改写在 itemTextAppearanceActive/Inactive 指向的样式里
+    private data class NavLabelTypography(val size: Int, val bold: Boolean)
+
+    // Active 与 Inactive 两档都取：字号取最小（门槛更严），两档都是 bold 才算 bold
+    private fun navLabelTypography(element: Element): NavLabelTypography? {
+        val isNavLabel = element.attrs.containsKey("app:itemTextColor") || element.attrs.containsKey("app:tabTextColor")
+        if (!isNavLabel) return null
+        // Material 组件标签默认 12sp / 常规字重；外观没被显式声明时按这个默认判，别当正文 14sp 猜
+        val materialDefault = NavLabelTypography(12, false)
+        val styleNames = listOf("app:itemTextAppearanceActive", "app:itemTextAppearanceInactive", "app:tabTextAppearance")
+            .mapNotNull { element.attrs[it]?.removePrefix("@style/") }
+        val sizes = styleNames.mapNotNull { attrFromStyleName(it, "android:textSize") }
+            .mapNotNull { it.removeSuffix("sp").removeSuffix("dp").toIntOrNull() }
+        val size = sizes.minOrNull() ?: return materialDefault
+        val bold = styleNames.all { attrFromStyleName(it, "android:textStyle") == "bold" }
+        return NavLabelTypography(size, bold)
     }
 
     // drawable 里的底色候选：solid 与 gradient 各档都要收（渐变按最差一端算）
@@ -342,6 +383,28 @@ class DesignTokenTableTest {
     fun `旧颜色名已全部删除`() {
         val leftovers = legacyColorNames.filter { colorDefs.containsKey(it) }
         assertTrue("旧的 40 个颜色名必须删除，仍有: $leftovers", leftovers.isEmpty())
+    }
+
+    // 零引用令牌要么在本轮被消费掉，要么在 reservedColorTokens 里登记「下一组谁来用」，不留无主令牌
+    @Test
+    fun `零引用语义色必须登记为后续组保留`() {
+        val texts = consumerSources().map { readText(it) }
+        assertTrue("扫不到 app/src/main 源码，无法判定消费方", texts.isNotEmpty())
+        val unused = expectedColors.keys.filter { name ->
+            val byXml = "@color/$name"
+            val byCode = "R.color.$name"
+            texts.none { text -> text.contains(byXml) || text.contains(byCode) }
+        }
+        val unregistered = unused - reservedColorTokens.keys
+        assertTrue("以下语义色零引用且未登记保留理由（要么消费掉，要么在 reservedColorTokens 登记）: $unregistered", unregistered.isEmpty())
+
+        // 登记了却写不出消费方，等于没登记
+        val blankReasons = reservedColorTokens.filterValues { it.isBlank() }.keys
+        assertTrue("保留登记必须写清由谁消费: $blankReasons", blankReasons.isEmpty())
+
+        // 已被消费的令牌要从登记表移除，避免保留清单长期漂移
+        val stale = reservedColorTokens.keys - unused
+        assertTrue("以下令牌已有页面消费，请从 reservedColorTokens 移除: $stale", stale.isEmpty())
     }
 
     @Test
@@ -531,15 +594,27 @@ class DesignTokenTableTest {
         assertTrue("有文字/提示的控件必须声明文本外观（或明确的字号档），缺少: $violations", violations.isEmpty())
     }
 
-    // 元素上的文字前景色：textColor 与 textColorHint 都算，指向 selector 时逐状态展开
-    private fun textColorsOf(element: Element): List<Pair<String, String>> {
-        val result = mutableListOf<Pair<String, String>>()
+    // 一个前景色：角色（报错用）+ 颜色名 + 是否为导航标签（Material 组件的标签底由控件自身背景决定）
+    private data class TextForeground(val role: String, val colorName: String, val navLabel: Boolean = false)
+
+    // 元素上的文字前景色：textColor / textColorHint / 导航标签色都算，指向 selector 时逐状态展开
+    private fun textColorsOf(element: Element): List<TextForeground> {
+        val result = mutableListOf<TextForeground>()
         listOf("android:textColor" to "文字", "android:textColorHint" to "提示").forEach { (key, role) ->
             val raw = resolveAttr(element, key) ?: return@forEach
             if (!raw.startsWith("@color/")) return@forEach
             val name = raw.removePrefix("@color/")
             val states = selectorDefs[name]
-            if (states != null) states.forEach { result += role to it } else result += role to name
+            if (states != null) states.forEach { result += TextForeground(role, it) } else result += TextForeground(role, name)
+        }
+        // 底部导航/标签页的选中与未选中标签色走 app 命名空间，选中态常低于 4.5:1，必须纳入考核
+        listOf("app:itemTextColor", "app:tabTextColor").forEach { key ->
+            resolveAttr(element, key)?.takeIf { it.startsWith("@color/") }?.let { raw ->
+                val name = raw.removePrefix("@color/")
+                val states = selectorDefs[name]
+                if (states != null) states.forEach { result += TextForeground("导航标签", it, navLabel = true) }
+                else result += TextForeground("导航标签", name, navLabel = true)
+            }
         }
         return result
     }
@@ -551,22 +626,26 @@ class DesignTokenTableTest {
         layoutXml().forEach { file ->
             elementsOf(file).forEach { element ->
                 val size = fontSizeOf(element)
-                val bold = resolveAttr(element, "android:textStyle") == "bold"
+                // 导航标签的字重写在 itemTextAppearance* 里，元素身上查不到
+                val bold = resolveAttr(element, "android:textStyle") == "bold" || navLabelTypography(element)?.bold == true
                 // 正文（≤16sp 或非 bold）4.5:1；大字（≥18sp 或 ≥14sp bold）允许 3.0:1
                 val threshold = if (size >= 18 || (bold && size >= 14)) 3.0 else 4.5
                 val viewAlpha = element.attrs["android:alpha"]?.toDoubleOrNull()
                 val label = "${element.where} <${element.tag}> ${size}sp${if (bold) " bold" else ""}（门槛 %.1f:1）".format(threshold)
 
-                // 前景清单：文字色 / 提示色（经 style 链与 selector 展开）+ 白图标
-                val foregrounds = mutableListOf<Pair<String, String>>()
-                textColorsOf(element).forEach { (role, name) -> foregrounds += "$role @color/$name" to name }
-                if (element.attrs["app:tint"] == "@color/on_primary") foregrounds += "白图标" to "on_primary"
+                // 前景清单：文字色 / 提示色 / 导航标签色（经 style 链与 selector 展开）+ 白图标
+                val foregrounds = textColorsOf(element).toMutableList()
+                if (element.attrs["app:tint"] == "@color/on_primary") {
+                    foregrounds += TextForeground("白图标", "on_primary")
+                }
                 if (foregrounds.isEmpty()) return@forEach
 
                 // 白字/白图标必须显式铺底：页面默认面就是 surface（1.00:1），找不到底即判不合格
                 val declared = bottomColorsOf(element)
-                if (declared == null && foregrounds.any { it.second == "on_primary" }) {
-                    violations += "$label ${foregrounds.joinToString("、") { it.first }} 找不到不透明底"
+                // 导航标签的底由宿主控件自己的 android:background 决定，Material 组件没写背景时按 surface 判
+                val needsExplicitBottom = foregrounds.any { it.colorName == "on_primary" && !it.navLabel }
+                if (declared == null && needsExplicitBottom) {
+                    violations += "$label ${foregrounds.joinToString("、") { it.role }} 找不到不透明底"
                     return@forEach
                 }
                 // 非白字找不到显式底时按页面默认 surface 判（窗口默认底就是白）
@@ -585,7 +664,9 @@ class DesignTokenTableTest {
                         bottom = overlay(bottom, argb(defaultBottom), bottom[0])
                         bottomNote = "$bottomName（叠在 surface 上）"
                     }
-                    for ((role, fgName) in foregrounds) {
+                    for (fgEntry in foregrounds) {
+                        val role = "${fgEntry.role} @color/${fgEntry.colorName}"
+                        val fgName = fgEntry.colorName
                         val fgHex = colorDefs[fgName]
                         if (fgHex == null) {
                             violations += "$label $role 不在取值表"
