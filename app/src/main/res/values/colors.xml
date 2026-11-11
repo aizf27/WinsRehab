@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 界面唯一取色处：只保留语义名，改一处即全站生效 -->
-    <!-- 每色末尾标注与 on_primary（白）的对比度：≥4.5 才可承载白字白图标，<4.5 只能作深底装饰或深底上的文字色 -->
+    <!-- 对比度三档判定（口径见 openspec/changes/ui-foundation-and-page-wiring/design.md D1）：
+         A 档 ≥4.5:1 —— 可承载白字白图标，也可作任意字号文字；
+         B 档 3.0–4.5:1 —— 只能作 ≥18sp 或 ≥14sp bold 的大字，或深底上的文字、图标与装饰填充；
+         C 档 <3.0:1 —— 禁作任何文字与其底，只作描边、分隔线、遮罩与纯装饰。
+         每色注释给两件事：与白字(on_primary)的实测比值；该色作文字时的档位。 -->
 
     <!-- 双端品牌色 -->
-    <color name="brand_doctor_primary">#FF2563EB</color> <!-- 医生端主色；白字 5.17:1 可用 -->
-    <color name="brand_doctor_primary_dark">#FF1D4ED8</color> <!-- 医生端主色深、渐变深端；白字 6.70:1 可用 -->
-    <color name="brand_patient_primary">#FF16A34A</color> <!-- 患者端主色；白字 3.30:1 不足，仅作装饰填充与浅底上的文字 -->
-    <color name="brand_patient_primary_light">#FF22C55E</color> <!-- 患者端辅绿、进度条填充；白字 2.28:1 不足 -->
-    <color name="brand_patient_primary_dark">#FF15803D</color> <!-- 患者端主色深、绿底操作与绿底白字；白字 5.02:1 可用 -->
-    <color name="brand_patient_primary_deep">#FF166534</color> <!-- 患者端主色更深、绿底渐变深端；白字 7.13:1 可用 -->
+    <color name="brand_doctor_primary">#FF2563EB</color> <!-- 医生端主色；白字 5.17:1，作文字 A 档（容器底上仅 4.24–4.81:1 不达标，容器底请用 _dark） -->
+    <color name="brand_doctor_primary_dark">#FF1D4ED8</color> <!-- 医生端主色深、渐变深端；白字 6.70:1，作文字 A 档（浅底与容器底 5.49–6.24:1 全达标） -->
+    <color name="brand_patient_primary">#FF16A34A</color> <!-- 患者端主色；白字 3.30:1，作文字 B 档（只够大字；浅底文字请用 _dark/_deep，填充与图标可用本档） -->
+    <color name="brand_patient_primary_light">#FF22C55E</color> <!-- 患者端辅绿、进度条填充；白字 2.28:1，C 档禁作文字与白字底 -->
+    <color name="brand_patient_primary_dark">#FF15803D</color> <!-- 患者端主色深、绿底操作与绿底白字；白字 5.02:1，作文字 A 档（surface/surface_variant 5.02/4.80，success_container 4.57 达标） -->
+    <color name="brand_patient_primary_deep">#FF166534</color> <!-- 患者端主色更深、绿底渐变深端；白字 7.13:1，作文字 A 档（6 个容器底 5.84–6.64:1 全达标） -->
 
     <!-- 表面与文字 -->
-    <color name="surface">#FFFFFFFF</color> <!-- 卡片与页面底色；白字 1.00:1 不可承载 -->
-    <color name="surface_variant">#FFF9FAFB</color> <!-- 次级表面、浅色底块；白字 1.05:1 不可承载 -->
-    <color name="on_surface">#FF1F2937</color> <!-- 主要文字；白字 14.68:1 可用（深底反白） -->
-    <color name="on_surface_secondary">#FF4B5563</color> <!-- 次要文字；白字 7.56:1 可用 -->
-    <color name="on_surface_tertiary">#FF9CA3AF</color> <!-- 提示文字与占位；白字 2.54:1 不足 -->
-    <color name="outline">#FFD1D5DB</color> <!-- 描边；白字 1.47:1 不可承载 -->
-    <color name="divider">#FFE5E7EB</color> <!-- 分隔线；白字 1.24:1 不可承载 -->
+    <color name="surface">#FFFFFFFF</color> <!-- 卡片与页面底色；白字 1.00:1，C 档禁作文字与白字底 -->
+    <color name="surface_variant">#FFF9FAFB</color> <!-- 次级表面、浅色底块；白字 1.05:1，C 档禁作文字与白字底 -->
+    <color name="on_surface">#FF1F2937</color> <!-- 主要文字、正文与标题；白字 14.68:1，作文字 A 档（容器底 12.03–13.67:1） -->
+    <color name="on_surface_secondary">#FF4B5563</color> <!-- 次要文字、标签与辅助信息；白字 7.56:1，作文字 A 档（容器底 6.19–7.04:1） -->
+    <color name="on_surface_tertiary">#FF6B7280</color> <!-- 三级文字、提示与空态；白字 4.83:1，作文字 A 档（仅 surface/surface_variant 4.83/4.63；容器底 3.96–4.50 不达标） -->
+    <color name="outline">#FFD1D5DB</color> <!-- 描边；白字 1.47:1，C 档禁作文字 -->
+    <color name="divider">#FFE5E7EB</color> <!-- 分隔线；白字 1.24:1，C 档禁作文字 -->
 
     <!-- 通用主色与反色文字 -->
-    <color name="primary">#FF2563EB</color> <!-- 主操作色、蓝底按钮与渐变浅端；白字 5.17:1 可用 -->
-    <color name="on_primary">#FFFFFFFF</color> <!-- 主色上的文字与图标（白） -->
+    <color name="primary">#FF2563EB</color> <!-- 主操作色、蓝底按钮与渐变浅端；白字 5.17:1，作文字 A 档（容器底 4.24–4.81 不达标，容器底请用 brand_doctor_primary_dark） -->
+    <color name="on_primary">#FFFFFFFF</color> <!-- 主色上的文字与图标（白）；只允许落在 A 档实底上 -->
 
     <!-- 语义反馈色 -->
-    <color name="success">#FF16A34A</color> <!-- 成功、已完成；白字 3.30:1 不足，仅作浅底上的文字与装饰 -->
-    <color name="warning">#FFEA580C</color> <!-- 警示、待处理；白字 3.56:1 不足 -->
-    <color name="danger">#FFDC2626</color> <!-- 错误、驳回；白字 4.83:1 可用 -->
-    <color name="info">#FF3B82F6</color> <!-- 信息提示、标签选中色；白字 3.68:1 不足 -->
+    <color name="success">#FF16A34A</color> <!-- 成功、已完成（图标与填充）；白字 3.30:1，作文字 B 档（只够大字；正文字请用 brand_patient_primary_dark/_deep） -->
+    <color name="warning">#FF9A3412</color> <!-- 警示、待处理；白字 7.31:1，作文字 A 档（浅底 7.31、容器底 5.99–6.80:1 全达标） -->
+    <color name="danger">#FFDC2626</color> <!-- 错误、驳回；白字 4.83:1，作文字 A 档（浅底 4.83；容器底 3.96–4.50 不达标） -->
+    <color name="info">#FF3B82F6</color> <!-- 信息提示、标签选中色；白字 3.68:1，作文字 B 档（只够大字；容器底 3.01–3.42 不达标） -->
 
     <!-- 禁用与遮罩 -->
-    <color name="disabled_bg">#FFE5E7EB</color> <!-- 禁用态底色；白字 1.24:1 不可承载 -->
-    <color name="disabled_fg">#FF9CA3AF</color> <!-- 禁用态前景；白字 2.54:1 不足 -->
-    <color name="scrim">#33000000</color> <!-- 半透明遮罩与阴影；半透明不承载白字 -->
+    <color name="disabled_bg">#FFE5E7EB</color> <!-- 禁用态底色；白字 1.24:1，C 档只作底 -->
+    <color name="disabled_fg">#FF9CA3AF</color> <!-- 禁用态前景；白字 2.54:1，C 档；失效控件不受 4.5 门槛约束（WCAG 1.4.3 豁免），仅表示不可操作 -->
+    <color name="scrim">#33000000</color> <!-- 半透明遮罩与阴影；半透明不承载任何文字 -->
 
-    <!-- 浅色容器底：卡片、图标圆底、标签底专用，一律配 on_surface 系文字，不配 on_primary -->
-    <color name="primary_container">#FFDBEAFE</color> <!-- 主色浅底；白字 1.22:1 不可承载 -->
-    <color name="success_container">#FFDCFCE7</color> <!-- 成功浅底；白字 1.10:1 不可承载 -->
-    <color name="warning_container">#FFFFEDD5</color> <!-- 警示浅底；白字 1.15:1 不可承载 -->
-    <color name="info_container">#FFCCFBF1</color> <!-- 信息浅底（青）；白字 1.13:1 不可承载 -->
-    <color name="accent_container">#FFFAE8FF</color> <!-- 强调浅底（紫粉）；白字 1.16:1 不可承载 -->
-    <color name="notice_container">#FFFEF9C3</color> <!-- 提醒浅底（黄）；白字 1.07:1 不可承载 -->
-    <color name="on_primary_overlay">#33FFFFFF</color> <!-- 品牌色底上的半透明容器层；半透明不承载白字 -->
+    <!-- 浅色容器底：卡片、图标圆底、标签底专用；文字只能配 on_surface / on_surface_secondary / brand_doctor_primary_dark / brand_patient_primary_deep / warning，绝不配 on_primary -->
+    <color name="primary_container">#FFDBEAFE</color> <!-- 主色浅底；白字 1.22:1，C 档只作底 -->
+    <color name="success_container">#FFDCFCE7</color> <!-- 成功浅底；白字 1.10:1，C 档只作底 -->
+    <color name="warning_container">#FFFFEDD5</color> <!-- 警示浅底；白字 1.15:1，C 档只作底 -->
+    <color name="info_container">#FFCCFBF1</color> <!-- 信息浅底（青）；白字 1.13:1，C 档只作底 -->
+    <color name="accent_container">#FFFAE8FF</color> <!-- 强调浅底（紫粉）；白字 1.16:1，C 档只作底 -->
+    <color name="notice_container">#FFFEF9C3</color> <!-- 提醒浅底（黄）；白字 1.07:1，C 档只作底 -->
+    <color name="on_primary_overlay">#33FFFFFF</color> <!-- 品牌色底上的半透明容器层；半透明不承载任何文字 -->
 
     <!-- 任务与计划状态 -->
-    <color name="status_pending">#FF2563EB</color> <!-- 待执行；白字 5.17:1 可用 -->
-    <color name="status_completed">#FF16A34A</color> <!-- 已完成；白字 3.30:1 不足 -->
-    <color name="status_skipped_rejected">#FF6B7280</color> <!-- 已跳过、已驳回；白字 4.83:1 可用 -->
-    <color name="status_review">#FFEA580C</color> <!-- 待审核；白字 3.56:1 不足 -->
+    <color name="status_pending">#FF2563EB</color> <!-- 待执行；白字 5.17:1，A 档：可作实底配 on_primary，也可作 surface 上的文字（压容器底 4.24–4.81 不达标，那种场合文字请用 brand_doctor_primary_dark） -->
+    <color name="status_completed">#FF16A34A</color> <!-- 已完成；白字 3.30:1，作文字 B 档（只够大字） -->
+    <color name="status_skipped_rejected">#FF6B7280</color> <!-- 已跳过、已驳回；白字 4.83:1，作文字 A 档（浅底 4.83；容器底 3.96–4.50 不达标） -->
+    <color name="status_review">#FFEA580C</color> <!-- 待审核；白字 3.56:1，作文字 B 档（只够大字） -->
 
 </resources>

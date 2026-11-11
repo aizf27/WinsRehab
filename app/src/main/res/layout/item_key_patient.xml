@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_4"
                 android:text="肌力↑"
-                android:textColor="@color/success" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
+                android:textColor="@color/brand_patient_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
 
             <!-- 异常提醒红点 -->
             <ImageView

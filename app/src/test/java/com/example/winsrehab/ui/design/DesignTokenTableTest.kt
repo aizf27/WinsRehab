@@ -31,13 +31,13 @@ class DesignTokenTableTest {
         "surface_variant" to "#FFF9FAFB",
         "on_surface" to "#FF1F2937",
         "on_surface_secondary" to "#FF4B5563",
-        "on_surface_tertiary" to "#FF9CA3AF",
+        "on_surface_tertiary" to "#FF6B7280",
         "outline" to "#FFD1D5DB",
         "divider" to "#FFE5E7EB",
         "primary" to "#FF2563EB",
         "on_primary" to "#FFFFFFFF",
         "success" to "#FF16A34A",
-        "warning" to "#FFEA580C",
+        "warning" to "#FF9A3412",
         "danger" to "#FFDC2626",
         "info" to "#FF3B82F6",
         "disabled_bg" to "#FFE5E7EB",
@@ -255,14 +255,26 @@ class DesignTokenTableTest {
     }
 
     // drawable 里的底色候选：solid 与 gradient 各档都要收（渐变按最差一端算）
+    // <stroke android:color> 是描边色不是底，必须先剔掉，否则描边会被当成第二个底误报
     private val drawableBottoms: Map<String, List<String>> by lazy {
         resDir.resolve("drawable").listFiles().orEmpty()
             .filter { it.isFile && it.name.endsWith(".xml") }
             .associate { file ->
-                val raw = stripComments(readText(file))
+                val raw = stripComments(readText(file)).replace(Regex("<stroke\\b[^>]*>"), "")
                 val refs = Regex("android:(?:color|startColor|endColor|centerColor)=\"(@color/[A-Za-z0-9_]+)\"")
                     .findAll(raw).map { it.groupValues[1].removePrefix("@color/") }.toList()
                 file.nameWithoutExtension to refs
+            }
+    }
+
+    // 颜色选择器：文字色可能指向 res/color 下的 selector，逐状态取出真实色值
+    private val selectorDefs: Map<String, List<String>> by lazy {
+        resDir.resolve("color").listFiles().orEmpty()
+            .filter { it.isFile && it.name.endsWith(".xml") }
+            .associate { file ->
+                val raw = stripComments(readText(file))
+                file.nameWithoutExtension to Regex("android:color=\"@color/([A-Za-z0-9_]+)\"")
+                    .findAll(raw).map { it.groupValues[1] }.toList()
             }
     }
 
@@ -519,42 +531,85 @@ class DesignTokenTableTest {
         assertTrue("有文字/提示的控件必须声明文本外观（或明确的字号档），缺少: $violations", violations.isEmpty())
     }
 
+    // 元素上的文字前景色：textColor 与 textColorHint 都算，指向 selector 时逐状态展开
+    private fun textColorsOf(element: Element): List<Pair<String, String>> {
+        val result = mutableListOf<Pair<String, String>>()
+        listOf("android:textColor" to "文字", "android:textColorHint" to "提示").forEach { (key, role) ->
+            val raw = resolveAttr(element, key) ?: return@forEach
+            if (!raw.startsWith("@color/")) return@forEach
+            val name = raw.removePrefix("@color/")
+            val states = selectorDefs[name]
+            if (states != null) states.forEach { result += role to it } else result += role to name
+        }
+        return result
+    }
+
     @Test
-    fun `白字必须落在达标底上`() {
+    fun `任意文字必须落在达标底上`() {
         val violations = mutableListOf<String>()
-        val white = argb(colorDefs["on_primary"] ?: "#FFFFFFFF")
+        val defaultBottom = colorDefs["surface"] ?: "#FFFFFFFF"
         layoutXml().forEach { file ->
             elementsOf(file).forEach { element ->
-                // 白字与白图标同一套判据：都要跟最近的底达到门槛
-                val isWhiteText = element.attrs["android:textColor"] == "@color/on_primary"
-                val isWhiteIcon = element.attrs["app:tint"] == "@color/on_primary"
-                if (!isWhiteText && !isWhiteIcon) return@forEach
                 val size = fontSizeOf(element)
                 val bold = resolveAttr(element, "android:textStyle") == "bold"
-                // 正文 4.5:1；大字（≥18sp 或 ≥14sp bold）允许 3.0:1
+                // 正文（≤16sp 或非 bold）4.5:1；大字（≥18sp 或 ≥14sp bold）允许 3.0:1
                 val threshold = if (size >= 18 || (bold && size >= 14)) 3.0 else 4.5
                 val viewAlpha = element.attrs["android:alpha"]?.toDoubleOrNull()
-                val label = "${element.where} <${element.tag}> ${if (isWhiteText) "白字" else "白图标"} ${size}sp${if (bold) " bold" else ""}"
-                val bottoms = bottomColorsOf(element)
-                if (bottoms == null) {
-                    violations += "$label 找不到不透明底（页面默认 surface 本身就过不了白字门槛）"
+                val label = "${element.where} <${element.tag}> ${size}sp${if (bold) " bold" else ""}（门槛 %.1f:1）".format(threshold)
+
+                // 前景清单：文字色 / 提示色（经 style 链与 selector 展开）+ 白图标
+                val foregrounds = mutableListOf<Pair<String, String>>()
+                textColorsOf(element).forEach { (role, name) -> foregrounds += "$role @color/$name" to name }
+                if (element.attrs["app:tint"] == "@color/on_primary") foregrounds += "白图标" to "on_primary"
+                if (foregrounds.isEmpty()) return@forEach
+
+                // 白字/白图标必须显式铺底：页面默认面就是 surface（1.00:1），找不到底即判不合格
+                val declared = bottomColorsOf(element)
+                if (declared == null && foregrounds.any { it.second == "on_primary" }) {
+                    violations += "$label ${foregrounds.joinToString("、") { it.first }} 找不到不透明底"
                     return@forEach
                 }
-                bottoms.forEach { name ->
-                    val bottom = argb(colorDefs[name] ?: "#FFFFFFFF")
-                    if (bottom[0] < 1.0) {
-                        violations += "$label 落在半透明底 $name 上，半透明底不承载白字"
-                        return@forEach
+                // 非白字找不到显式底时按页面默认 surface 判（窗口默认底就是白）
+                val bottoms = declared ?: listOf("surface")
+
+                for (bottomName in bottoms) {
+                    val bottomHex = colorDefs[bottomName]
+                    if (bottomHex == null) {
+                        violations += "$label 底色 $bottomName 不在取值表"
+                        continue
                     }
-                    // 视图 alpha 会把白字调成浅灰，等于自降对比度，要按混合后的实际颜色判
-                    val foreground = if (viewAlpha == null) white else overlay(white, bottom, viewAlpha)
-                    val ratio = contrastRatio(foreground, bottom)
-                    if (ratio < threshold) {
-                        violations += "$label 落在 $name 上仅 %.2f:1（门槛 %.1f:1）".format(ratio, threshold)
+                    var bottom = argb(bottomHex)
+                    var bottomNote = bottomName
+                    if (bottom[0] < 1.0) {
+                        // 半透明底按与页面默认 surface 的混合结果判；白字不给过
+                        bottom = overlay(bottom, argb(defaultBottom), bottom[0])
+                        bottomNote = "$bottomName（叠在 surface 上）"
+                    }
+                    for ((role, fgName) in foregrounds) {
+                        val fgHex = colorDefs[fgName]
+                        if (fgHex == null) {
+                            violations += "$label $role 不在取值表"
+                            continue
+                        }
+                        if (fgName == "on_primary" && rawAlphaOf(bottomHex) < 1.0) {
+                            violations += "$label $role 落在半透明底 $bottomName 上，半透明底不承载白字"
+                            continue
+                        }
+                        // 视图 alpha 与颜色 alpha 都会把字调浅，按混合后的实际颜色判
+                        val fg = argb(fgHex)
+                        val alpha = (viewAlpha ?: 1.0) * fg[0]
+                        val foreground = if (alpha >= 1.0) fg else overlay(fg, bottom, alpha)
+                        val ratio = contrastRatio(foreground, bottom)
+                        if (ratio < threshold) {
+                            violations += "$label $role 落在 $bottomNote 上仅 %.2f:1".format(ratio)
+                        }
                     }
                 }
             }
         }
-        assertTrue("白字/白图标必须落在达标底色上，违规: $violations", violations.isEmpty())
+        assertTrue("文字与图标必须落在达标底色上，违规: $violations", violations.isEmpty())
     }
+
+    // 取色值自身的不透明度，用于判定「半透明底不承载白字」
+    private fun rawAlphaOf(hex: String): Double = argb(hex)[0]
 }

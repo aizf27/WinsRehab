@@ -283,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_4"
                     android:text="点击右上角‘添加任务’开始创建" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                    android:textColor="@color/outline"
+                    android:textColor="@color/on_surface_tertiary"
                 />
             </LinearLayout>
         </LinearLayout>

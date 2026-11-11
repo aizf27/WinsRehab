@@ -230,7 +230,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="15位患者"
-                        android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        android:textColor="@color/brand_doctor_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -284,7 +284,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3个待审核"
-                        android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        android:textColor="@color/brand_doctor_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -321,7 +321,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2个待制定"
-                        android:textColor="@color/brand_patient_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        android:textColor="@color/brand_patient_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
