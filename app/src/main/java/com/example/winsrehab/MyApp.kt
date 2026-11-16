@@ -1,10 +1,15 @@
 package com.example.winsrehab
 
 import android.app.Application
+import android.util.Log
 import androidx.room.Room
 import com.example.winsrehab.data.database.AppDatabase
 import com.example.winsrehab.data.database.DatabaseMigrations
+import com.example.winsrehab.data.repository.PatientBindingRepair
 import com.example.winsrehab.utils.TestDataHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MyApp : Application() {
 
@@ -34,6 +39,15 @@ class MyApp : Application() {
         
         // 初始化测试数据（确保有医生数据）
         TestDataHelper.initTestDoctors()
+
+        // 修一次旧版本的占位医生绑定，修完患者才能重新绑定并把工号显示出来
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                PatientBindingRepair.repair(database.patientDao(), database.doctorTaskDao())
+            } catch (e: Exception) {
+                Log.e("MyApp", "旧绑定数据修复失败，不影响启动", e)
+            }
+        }
     }
 
     companion object {

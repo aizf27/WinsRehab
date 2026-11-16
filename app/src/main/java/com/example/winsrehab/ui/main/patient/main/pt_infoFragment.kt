@@ -144,11 +144,13 @@ class pt_infoFragment : Fragment() {
         setRowValue(binding.rowRecord.root, "查看详情")
         setRowValue(binding.rowTraining.root, "查看详情")
         
-        // 主治医生：显示 "工号  姓名" 格式
-        val doctorInfo = if (patient.doctorCode != "未设置" && patient.doctorName != "未设置") {
-            "${patient.doctorCode}  ${patient.doctorName}"
-        } else {
-            "未绑定"
+        // 主治医生：有工号就显示工号，医生还没填姓名时只显示工号，别把工号一起吞掉
+        val hasDoctorCode = patient.doctorCode.isNotBlank() && patient.doctorCode != "未设置"
+        val doctorName = patient.doctorName
+        val doctorInfo = when {
+            !hasDoctorCode -> "未绑定"
+            doctorName.isBlank() || doctorName == "未设置" -> patient.doctorCode
+            else -> "${patient.doctorCode}  $doctorName"
         }
         setRowValue(binding.rowDoctor.root, doctorInfo)
 
