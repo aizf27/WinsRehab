@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 首页最新患者申请条目：卡片只展示患者与申请时间，点击进入患者申请页 -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.WinsRehab.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/space_12">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/space_16">
+
+        <ImageView
+            android:layout_width="@dimen/space_48"
+            android:layout_height="@dimen/space_48"
+            android:background="@drawable/bg_avatar_circle"
+            android:contentDescription="@null"
+            android:padding="@dimen/space_12"
+            android:src="@drawable/ic_user"
+            app:tint="@color/on_surface_secondary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_16"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvApplicationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                android:textColor="@color/on_surface"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvApplicationAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                android:textColor="@color/on_surface_secondary" />
+
+            <TextView
+                android:id="@+id/tvApplicationTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                android:textColor="@color/on_surface_tertiary" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/space_24"
+            android:layout_height="@dimen/space_24"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/on_surface_tertiary" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

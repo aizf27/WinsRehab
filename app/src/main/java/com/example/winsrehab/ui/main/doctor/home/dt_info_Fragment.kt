@@ -1,4 +1,4 @@
-﻿package com.example.winsrehab.ui.main.doctor.home
+package com.example.winsrehab.ui.main.doctor.home
 
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,7 @@ import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Doctor
 import com.example.winsrehab.databinding.FragmentDtInfoBinding
 import com.example.winsrehab.ui.common.AccountArgs
+import com.example.winsrehab.ui.common.UiTexts
 import com.example.winsrehab.ui.main.doctor.info.DtInfoVM
 
 
@@ -33,18 +34,17 @@ class dt_info_Fragment : Fragment() {
     private val binding get()=_binding!!
     //参数
     private var doctorCode: String=""
-    private var totalCount:Int =0
     //VM
     private val viewModel: DtInfoVM by viewModels()
+    // 患者数改由本页自己观察患者查询，与医生首页同源同口径
+    private val homeViewModel: DtHomeVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 工号解析走 AccountArgs（导航参数优先、宿主 Intent 兜底），总数只有导航参数会带
+        // 工号解析走 AccountArgs（导航参数优先、宿主 Intent 兜底）
         doctorCode = AccountArgs.doctorCode(arguments, activity?.intent).orEmpty()
-        totalCount = arguments?.getInt("totalCount") ?: 0
 
         Log.i("dt_info_Fragment", "doctorCode: $doctorCode")
-        Log.i("dt_info_Fragment", "totalCount: $totalCount")
     }
 
     override fun onCreateView(
@@ -61,6 +61,8 @@ class dt_info_Fragment : Fragment() {
 
         // 初始化信息行
         setupInfoRows()
+        // 患者数不来自 Doctor 表冗余字段，直接数患者查询结果
+        setupPatientCount()
 
         // 观察医生数据
         viewModel.doctor.observe(viewLifecycleOwner) { doctor ->
@@ -188,7 +190,6 @@ class dt_info_Fragment : Fragment() {
         binding.rowLicense.rowValue.text = doctor.licenseNumber.takeIf { it != "未设置" } ?: "未设置"
         binding.rowHospital.rowValue.text = doctor.hospital.takeIf { it != "未设置" } ?: "未设置"
         binding.rowTitle.rowValue.text = doctor.title.takeIf { it != "未设置" } ?: "未设置"
-        binding.rowPatientCount.rowValue.text = "${doctor.patientCount} 人"
         
         // 联系方式 - 使用 include 的 binding
         binding.rowPhone.rowValue.text = doctor.phone.takeIf { it != "未设置" } ?: "未设置"
@@ -203,6 +204,16 @@ class dt_info_Fragment : Fragment() {
         binding.tvSatisfaction.text = "${doctor.satisfactionRate.toInt()}%"
     }
     
+    // 观察患者查询结果，患者数取真实条数（与医生首页同一数据源）
+    private fun setupPatientCount() {
+        binding.rowPatientCount.rowValue.text = UiTexts.placeholderText()
+        homeViewModel.patients.observe(viewLifecycleOwner) { list ->
+            binding.rowPatientCount.rowValue.text = "${list.size} 人"
+            Log.i("dt_info_Fragment", "patient count: ${list.size}")
+        }
+        homeViewModel.loadPatients(doctorCode)
+    }
+
     override fun onResume() {
         super.onResume()
         // 每次返回时重新加载数据，确保显示最新信息

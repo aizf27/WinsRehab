@@ -14,6 +14,10 @@
             android:name="doctorCode"
             app:argType="string"
             android:defaultValue='""' />
+        <!-- 首页「制定计划」四宫格进入计划列表，带上工号 -->
+        <action
+            android:id="@+id/action_dt_homeFragment_to_rehab_plan_list"
+            app:destination="@id/rehab_plan_list" />
     </fragment>
 
     <fragment
@@ -42,12 +46,20 @@
             android:name="doctorCode"
             app:argType="string"
             android:defaultValue='""' />
-        <argument android:name="totalCount"
-            android:defaultValue="0"
-            app:argType="integer" />
         <action
             android:id="@+id/action_dt_info_Fragment_to_dtInfoEditFragment"
             app:destination="@id/dtInfoEditFragment" />
+    </fragment>
+
+    <!-- 康复计划列表：医生首页「制定计划」进入，按患者分组展示计划 -->
+    <fragment
+        android:id="@+id/rehab_plan_list"
+        android:name="com.example.winsrehab.ui.main.doctor.plan.RehabPlanListFragment"
+        android:label="康复计划"
+        tools:layout="@layout/fragment_rehab_plan_list">
+        <argument
+            android:name="doctorCode"
+            app:argType="string" />
     </fragment>
 
     <!-- 医生信息编辑Fragment -->

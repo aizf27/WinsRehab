@@ -10,7 +10,7 @@
 - 分支：`change/ui-foundation-and-page-wiring`；worktree：`.worktree/ui-foundation-and-page-wiring/ws`
 - 进度与规则：读该 worktree 内 `openspec/changes/ui-foundation-and-page-wiring/tasks.md` 顶部「## 0. 执行规则」
 - 技术细节：同目录 `design.md` 的 D1–D8 段
-- 当前：第 1–5 组已完成；下一步第 6 组（医生首页接线与计划列表入口）
+- 当前：第 1–6 组已完成；下一步第 7 组（患者管理页与医生端患者数一致性）
 - 流程：**不走 openspec 编排**，不再派子代理审查。每组 = 开工说明 → 直接改 → 自检（L0 编译 / L1 检索断言 / L2 单测 `--rerun-tasks`）→ 一次中文 commit
 
 ---
