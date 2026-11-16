@@ -74,12 +74,11 @@ class DesignTokenTableTest {
 
     // 语义色里暂时还没有页面消费方的令牌：显式登记为后续任务组保留，并写清由谁消费
     // 登记标准是「已知下一组就要用」，不是「想不出来给谁用」；一旦被消费就必须从本表移除
-    private val reservedColorTokens = mapOf(
-        "disabled_bg" to "按钮与输入框禁用态的底色，第 3 组 3.1/3.2 建组件样式时消费",
-        "disabled_fg" to "按钮与输入框禁用态的前景色，第 3 组 3.1/3.2 建组件样式时消费",
-        "status_review" to "任务「待审核」/计划「进行中」状态徽标色，第 3 组 3.4 建状态映射时消费",
-        "status_skipped_rejected" to "任务「已跳过」/「已驳回」状态徽标色，第 3 组 3.4 建状态映射时消费"
-    )
+    // 第 3 组已把 4 个预留令牌全部消费（禁用态进 res/color/btn_*_bg|text.xml，状态色进 ui/common 状态映射），当前无预留
+    private val reservedColorTokens = mapOf<String, String>()
+
+    // 禁用态配色：WCAG 1.4.3 明确豁免失效控件，disabled_bg / disabled_fg 这对组合不参与对比度考核
+    private val disabledStateColors = setOf("disabled_bg", "disabled_fg")
 
     // 设计约定的 6 档文本外观
     private val expectedTextAppearances = mapOf(
@@ -213,7 +212,7 @@ class DesignTokenTableTest {
         return result
     }
 
-    // style 定义：父样式名 + 自身写的 android 属性（跟 textAppearance / textSize / textStyle 用）
+    // style 定义：父样式名 + 自身写的属性（框架属性带 android: 前缀，app 属性不带前缀，两种都原样收录）
     private data class StyleDef(val parent: String?, val attrs: Map<String, String>)
 
     // styles.xml 与 themes.xml 必须一起解析：SectionTitle 这类样式定义在 themes.xml 里
@@ -231,8 +230,8 @@ class DesignTokenTableTest {
                 val explicitParent = match.groupValues[2].ifEmpty { null }
                 // 点号隐式继承：Theme.WinsRehab.Doctor 的父样式是 Theme.WinsRehab
                 val implicitParent = if (explicitParent == null && styleName.contains('.')) styleName.substringBeforeLast('.') else null
-                val attrs = Regex("<item name=\"android:([A-Za-z]+)\">([^<]*)</item>").findAll(match.groupValues[3])
-                    .associate { "android:${it.groupValues[1]}" to it.groupValues[2].trim() }
+                val attrs = Regex("<item name=\"([A-Za-z0-9_:]+)\">([^<]*)</item>").findAll(match.groupValues[3])
+                    .associate { it.groupValues[1] to it.groupValues[2].trim() }
                 defs[styleName] = StyleDef(explicitParent ?: implicitParent, attrs)
             }
         }
@@ -319,21 +318,60 @@ class DesignTokenTableTest {
             }
     }
 
-    // 由近到远找最近的不透明底，返回底色名列表（渐变返回多端）；null 表示整条祖先链都没写底
-    private fun bottomColorsOf(element: Element): List<String>? {
-        for (attrs in listOf(element.attrs) + element.ancestors) {
-            // backgroundTint 会覆盖 shape 自带的填充色，所以优先取 tint
-            attrs["android:backgroundTint"]?.takeIf { it.startsWith("@color/") }
-                ?.let { return listOf(it.removePrefix("@color/")) }
-            attrs["android:background"]?.let { background ->
-                if (background.startsWith("@color/")) return listOf(background.removePrefix("@color/"))
+    // @color/ 引用 → 真实色名列表；指向 selector 时把每个状态的色都列出来（状态间色差要逐个考核）
+    private fun colorRefToNames(raw: String): List<String>? {
+        if (!raw.startsWith("@color/")) return null
+        val name = raw.removePrefix("@color/")
+        return selectorDefs[name] ?: listOf(name)
+    }
+
+    // ?attr/xxx 引用 → 所有主题里该属性的取值（医生蓝 / 患者深绿各一套，逐个底色都要考核）
+    private fun themeAttrColors(raw: String): List<String>? {
+        if (!raw.startsWith("?attr/")) return null
+        val attr = raw.removePrefix("?attr/")
+        val refs = styleDefs.values.mapNotNull { it.attrs[attr] ?: it.attrs["android:$attr"] }.distinct()
+        val colors = refs.flatMap { colorRefToNames(it).orEmpty() }
+        return colors.ifEmpty { null }
+    }
+
+    // 样式链里写的底：样式内的 app 属性不带前缀（cardBackgroundColor 这类），两种写法都要认
+    private fun bottomFromStyleChain(startStyle: String?): List<String>? {
+        var style = startStyle
+        var hops = 0
+        while (style != null && hops < 12) {
+            val def = styleDefs[style] ?: return null
+            (def.attrs["android:backgroundTint"] ?: def.attrs["backgroundTint"])?.let { tint ->
+                return themeAttrColors(tint) ?: colorRefToNames(tint)
+            }
+            (def.attrs["android:background"] ?: def.attrs["background"])?.let { background ->
+                if (background.startsWith("@color/")) return colorRefToNames(background)
                 if (background.startsWith("@drawable/")) {
                     val ends = drawableBottoms[background.removePrefix("@drawable/")].orEmpty()
                     if (ends.isNotEmpty()) return ends
                 }
             }
-            attrs["app:cardBackgroundColor"]?.takeIf { it.startsWith("@color/") }
-                ?.let { return listOf(it.removePrefix("@color/")) }
+            (def.attrs["app:cardBackgroundColor"] ?: def.attrs["cardBackgroundColor"])?.let { return colorRefToNames(it) }
+            style = def.parent
+            hops++
+        }
+        return null
+    }
+
+    // 由近到远找最近的不透明底，返回底色名列表（渐变返回多端）；null 表示整条祖先链都没写底
+    private fun bottomColorsOf(element: Element): List<String>? {
+        for (attrs in listOf(element.attrs) + element.ancestors) {
+            // backgroundTint 会覆盖 shape 自带的填充色，所以优先取 tint
+            attrs["android:backgroundTint"]?.let { colorRefToNames(it) }?.let { return it }
+            attrs["android:background"]?.let { background ->
+                if (background.startsWith("@color/")) colorRefToNames(background)?.let { return it }
+                if (background.startsWith("@drawable/")) {
+                    val ends = drawableBottoms[background.removePrefix("@drawable/")].orEmpty()
+                    if (ends.isNotEmpty()) return ends
+                }
+            }
+            attrs["app:cardBackgroundColor"]?.let { colorRefToNames(it) }?.let { return it }
+            // 组件样式把底写在 styles.xml 里，样式链不参与就会误判成「找不到不透明底」
+            bottomFromStyleChain(attrs["style"]?.removePrefix("@style/"))?.let { return it }
         }
         return null
     }
@@ -665,6 +703,8 @@ class DesignTokenTableTest {
                         bottomNote = "$bottomName（叠在 surface 上）"
                     }
                     for (fgEntry in foregrounds) {
+                        // 失效控件豁免（WCAG 1.4.3）：selector 展开会把禁用态配色混进来，这组不判对比度
+                        if (bottomName in disabledStateColors || fgEntry.colorName in disabledStateColors) continue
                         val role = "${fgEntry.role} @color/${fgEntry.colorName}"
                         val fgName = fgEntry.colorName
                         val fgHex = colorDefs[fgName]

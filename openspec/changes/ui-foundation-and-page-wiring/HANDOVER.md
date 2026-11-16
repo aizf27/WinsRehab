@@ -69,3 +69,40 @@
 新会话承接顺序：`tasks.md` 顶部 0 节 → 本文件 → `design.md` D3（基础控件）与 D4（状态徽标）。
 
 组 3 交付：主/次/危险/文字四类按钮（含尺寸与禁用态）、统一输入框（标签/必填/错误/辅助文本）、卡片的三种形态、状态徽标（任务五态 + 计划四态，以 `TaskStatusStyle` 为基座整体迁入 `ui/common`，不新建第二套映射，同步改 `TaskInstanceAdapter` 三处调用点与测试路径）。
+
+## 更新（2026-11-16）：组 3 收口（基础控件组件）
+
+**样式层（`styles.xml` 160 行，共 20 个组件样式）**
+- 按钮：`Widget.WinsRehab.Button`（Title16 / 48dp / radius_16）+ `.Primary/.Secondary/.Danger/.Text` + 四个 `.Small`（Body12 / 36dp / radius_8）。
+- 输入框：`Widget.WinsRehab.TextInputLayout`（OutlinedBox，四角 radius_8、boxStrokeColor 走 `@color/input_box_stroke`、error/helper 双开）。
+- 卡片：`Widget.WinsRehab.Card`（surface / radius_12 / elevation_1）+ `.Clickable`（clickable+focusable+`?attr/selectableItemBackground`）+ `.StatusBar`（elevation_0 + clipToOutline）。
+- 徽标：`Widget.WinsRehab.StatusBadge`（`parent=""`，必须显式切断隐式继承，否则 AAPT 报 `resource style/Widget.WinsRehab not found`）。
+
+**两个 AAPT 硬坑（后续写样式必踩）**
+1. style 内 `<item name>` **不能带 `app:` 前缀**，写成裸名（`cornerRadius` / `cardBackgroundColor` / `boxStrokeColor`…）；框架属性才带 `android:`。
+2. 点号命名的样式若不想继承同名父样式，必须写 `parent=""`。
+
+**颜色与选择器（新增 9 个 `res/color/*.xml`）**：`btn_primary_text` / `btn_secondary_bg` / `btn_secondary_text` / `btn_secondary_stroke` / `btn_danger_bg` / `btn_danger_text` / `btn_text_fg` / `input_box_stroke`，全部带 `state_enabled=false → disabled_bg|disabled_fg`；本轮把 `disabled_bg`/`disabled_fg`/`status_review`/`status_skipped_rejected` 四个预留令牌全部消费掉。
+
+**主按钮颜色跟主题走（用户 2026-11-16 拍板）**：`Widget.WinsRehab.Button.Primary` 的 `backgroundTint` 写 `?attr/winsButtonPrimaryTint`，由新增 `res/values/attrs.xml` 声明、三个主题分别赋值 —— 基础主题与 `Theme.WinsRehab.Doctor.WithBar` → `@color/btn_primary_bg_doctor`（品牌蓝），`Theme.WinsRehab.Patient` → `@color/btn_primary_bg_patient`（深绿 #15803D）。理由：患者端主题 `colorPrimary` 本就是深绿，写死 `primary` 蓝会让患者页 CTA 与绿色主题打架（`design.md:95` 也要求患者侧按钮用深绿）。代价是守卫测试 `DesignTokenTableTest` 做了**第 4 处**小改：新增 `themeAttrColors()`，把 `?attr/xxx` 展开成「所有主题里该属性的取值并集」，逐个底色都过对比度（蓝 5.17:1、深绿 5.02:1 均达标）。
+
+**状态映射（唯一归属 `ui/common`）**
+- `ui/common/TaskStatusStyle.kt`：`TaskVisual`（6 值）+ `PlanVisual`（5 值）、`visualOf`/`planVisualOf`/`isActionable`、`labelOf`/`planLabelOf`、`colorOf`/`planColorOf`（语义条色）、`containerColorOf`/`planContainerColorOf`（徽标底）、`labelColorOf`/`planLabelColorOf`（徽标字色，全部落 D1 允许的 5 色白名单：`on_surface` / `on_surface_secondary` / `warning` / `brand_doctor_primary_dark` / `brand_patient_primary_deep`）。
+- `UNKNOWN` 兜底：文案「未知状态」、语义条色 `danger`、`Log.e` 记原值；徽标文字改用 `on_surface`（`danger` 不能压容器底当小字）。
+- `ui/common/StatusBadge.kt`：`bindTask` / `bindPlan` 两入口。
+- 旧 `ui/main/patient/main/TaskStatusStyle.kt` 与其测试**同组删除**（删除与使用点同提交），`TaskInstanceAdapter` 三处调用点改 import 到 `ui/common`，无转发壳。
+
+**输入框组件**：`layout/widget_text_field.xml`（根 `<merge>`：标签行 + 红星 + `TextInputLayout` + `TextInputEditText`）+ `ui/common/TextField.kt`（`setLabel/setRequired/setHelperText/setError/editText()/text()`）。本组只建组件、由契约测试兜住，页面接线在第 9/14/15 组。
+
+**页面验证（3.6「可见」用真机截图）**：只改患者任务卡 `item_task_instance.xml` + `TaskInstanceAdapter`——`CardView` 换 `MaterialCardView(Card.StatusBar)`、顶部 `statusStrip` 语义色条、右挂 `<include layout="@layout/widget_status_badge"/>`、「开始」由 TextView 冒充改为 `MaterialButton(Button.Primary.Small)`。模拟器（AVD `Pixel_4_XL`）实测五态全部渲染正确、色条上两角随卡片圆角（`bg_status_strip.xml` 的 `topLeft/topRightRadius=@dimen/radius_12`）。
+
+**自检结果**
+- L0 `:app:assembleDebug` 通过。
+- L1：旧包 `ui.main.patient.main.TaskStatusStyle` 零引用；`TaskStatusStyle|TaskVisual|PlanVisual` 只出现在 `ui/common/{TaskStatusStyle,StatusBadge}.kt`、`TaskInstanceAdapter.kt`、`TaskStatusStyleTest.kt`；两个旧文件已不存在；`item_task_instance.xml` 无 `bg_btn_green_small` / `imgStatus`（全库仅剩 `fragment_pt_home.xml:257` 一处旧按钮，组外保留）。
+- L2 `:app:testDebugUnitTest --rerun-tasks` 82 用例 0 失败（新增 `ui/common/TaskStatusStyleTest` 9 条、`ui/common/ComponentContractTest` 7 条；`DesignTokenTableTest` 仍 15 条、`ThemeAndDependencyTest` 5 条）。
+- Lint：与基线对照不新增（`PtInfoVM.kt:39/43/46` 三条 NullSafeMutableLiveData 留组 9）。
+
+**模拟器验证小抄（下次要截真机图直接用）**
+- 启动：`& "D:\My AS\Android Studio SDK\emulator\emulator.exe" -avd Pixel_4_XL -no-snapshot-load -gpu swiftshader_indirect`；截图只能 `adb shell screencap -p /sdcard/s.png` + `adb pull`（`adb exec-out screencap -p > file` 在 PowerShell 下产物损坏）。
+- 导航：`SelectLogActivity` → 点头像 `imagePtLog`（点文字无效）→ 患者登录页 → 登录后首页 → 底部第二个 tab「康复中心」。
+- 造数据：设备上 `sqlite3` 可用，`adb push seed.sql /data/local/tmp/` 后 `adb shell "cat /data/local/tmp/seed.sql | run-as com.example.winsrehab sqlite3 databases/rehab.db"`。**坑**：`patient.patientId` 必须等于 `account`（`PtLogVM` 用 `isExist(account)` 判存在，patientId 对不上会直接提示「账号不存在」），`task_instance.patientId` 同理存 account。

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 状态徽标：文案与容器色由 StatusBadge 运行期按状态装配，这里只给默认可视形态（灰档） -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvStatusBadge"
+    style="@style/Widget.WinsRehab.StatusBadge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:text="待完成" />

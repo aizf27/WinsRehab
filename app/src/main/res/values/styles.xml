@@ -29,4 +29,131 @@
         <item name="android:textSize">24sp</item> <!-- 数值强调 -->
     </style>
 
+    <!-- ========== 第 3 组：按钮 ========== -->
+    <!-- 四种语义（主/次/危险/文字）× 两档尺寸（标准 48dp / 小档 36dp），禁用态交给 selector 切 disabled_bg/disabled_fg -->
+
+    <!-- 按钮基座：字号、去全大写、圆角、最小高度与左右内距；语义样式只覆盖配色 -->
+    <style name="Widget.WinsRehab.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Title16</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">@dimen/space_16</item>
+        <item name="android:paddingEnd">@dimen/space_16</item>
+        <item name="cornerRadius">@dimen/radius_16</item>
+    </style>
+
+    <!-- 主按钮：底色跟随主题（医生蓝 / 患者深绿），白字 -->
+    <style name="Widget.WinsRehab.Button.Primary">
+        <item name="android:backgroundTint">?attr/winsButtonPrimaryTint</item>
+        <item name="android:textColor">@color/btn_primary_text</item>
+    </style>
+
+    <!-- 次按钮：白底 + 品牌主色描边 + 主色文字 -->
+    <style name="Widget.WinsRehab.Button.Secondary">
+        <item name="android:backgroundTint">@color/btn_secondary_bg</item>
+        <item name="android:textColor">@color/btn_secondary_text</item>
+        <item name="strokeColor">@color/btn_secondary_stroke</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- 危险按钮：danger 实底（白字 4.83:1），只用于删除/驳回这类不可逆动作 -->
+    <style name="Widget.WinsRehab.Button.Danger">
+        <item name="android:backgroundTint">@color/btn_danger_bg</item>
+        <item name="android:textColor">@color/btn_danger_text</item>
+    </style>
+
+    <!-- 文字按钮：不铺底，只换文字色；用于同级动作里的「取消 / 稍后」 -->
+    <style name="Widget.WinsRehab.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Title16</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">@dimen/space_16</item>
+        <item name="android:paddingEnd">@dimen/space_16</item>
+        <item name="android:textColor">@color/btn_text_fg</item>
+    </style>
+
+    <!-- 小档尺寸：列表行内动作按钮用 12sp 字号 + 36dp 高 + radius_8 -->
+    <style name="Widget.WinsRehab.Button.Primary.Small">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingStart">@dimen/space_12</item>
+        <item name="android:paddingEnd">@dimen/space_12</item>
+        <item name="cornerRadius">@dimen/radius_8</item>
+    </style>
+
+    <style name="Widget.WinsRehab.Button.Secondary.Small">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingStart">@dimen/space_12</item>
+        <item name="android:paddingEnd">@dimen/space_12</item>
+        <item name="cornerRadius">@dimen/radius_8</item>
+    </style>
+
+    <style name="Widget.WinsRehab.Button.Danger.Small">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingStart">@dimen/space_12</item>
+        <item name="android:paddingEnd">@dimen/space_12</item>
+        <item name="cornerRadius">@dimen/radius_8</item>
+    </style>
+
+    <style name="Widget.WinsRehab.Button.Text.Small">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:paddingStart">@dimen/space_12</item>
+        <item name="android:paddingEnd">@dimen/space_12</item>
+    </style>
+
+    <!-- ========== 第 3 组：输入框 ========== -->
+    <!-- 标签/必填标记/错误文案/辅助文案四部分由 layout/widget_text_field.xml 承载，这里只管描边、圆角与状态色 -->
+    <style name="Widget.WinsRehab.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="boxStrokeColor">@color/input_box_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_8</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_8</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_8</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_8</item>
+        <item name="hintTextAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="errorTextAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="errorEnabled">true</item>
+    </style>
+
+    <!-- ========== 第 3 组：卡片 ========== -->
+    <!-- 标准卡片：白底 + radius_12 + elevation_1，全站卡片的统一底子 -->
+    <style name="Widget.WinsRehab.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardCornerRadius">@dimen/radius_12</item>
+        <item name="cardElevation">@dimen/elevation_1</item>
+    </style>
+
+    <!-- 可点击卡片：在标准卡片上加点击态与无障碍焦点 -->
+    <style name="Widget.WinsRehab.Card.Clickable">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- 带状态条卡片：靠顶部 4dp 语义色条区分状态，所以压平阴影；色条自带圆角贴合卡片 -->
+    <style name="Widget.WinsRehab.Card.StatusBar">
+        <item name="cardElevation">@dimen/elevation_0</item>
+    </style>
+
+    <!-- ========== 第 3 组：状态徽标 ========== -->
+    <!-- 状态徽标：容器底 + 12sp 粗体文案，具体颜色由 StatusBadge 运行期按状态装配；parent 置空切断点号隐式继承 -->
+    <style name="Widget.WinsRehab.StatusBadge" parent="">
+        <item name="android:background">@drawable/bg_chip</item>
+        <item name="android:backgroundTint">@color/surface_variant</item>
+        <item name="android:textColor">@color/on_surface_secondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingStart">@dimen/space_8</item>
+        <item name="android:paddingEnd">@dimen/space_8</item>
+        <item name="android:paddingTop">@dimen/space_4</item>
+        <item name="android:paddingBottom">@dimen/space_4</item>
+    </style>
+
 </resources>
