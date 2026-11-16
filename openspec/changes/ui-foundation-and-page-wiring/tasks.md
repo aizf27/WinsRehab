@@ -1,4 +1,4 @@
-# 任务清单：界面基建与页面业务对接
+﻿# 任务清单：界面基建与页面业务对接
 
 > 单个 change，无跨 change 前置依赖；组间依赖用组内说明与组序表达。
 > 每组可独立实施：组内全部完成后代码可编译、可启动、本组测试通过。
@@ -106,14 +106,14 @@
 
 > 依赖：第 1–4 组。本组建立账号/工号的单一解析工具，供第 7、9 组页面调用。
 
-- [ ] 5.1 启动选择页：英文改中文、两个角色入口换成可点击卡片、挂基础主题 [spec:ui-page-wiring#页面入口的去向完整性]
-- [ ] 5.2 医生登录页与患者登录页：输入项换统一输入框（标签 + 必填 + 错误文案）、提交改主按钮、校验失败提示统一 [spec:ui-foundation#按钮与输入框的形态与使用约束]
-- [ ] 5.3 等待绑定页：等待中/已通过/被拒绝三态、状态徽标、主次按钮、顶部栏 [spec:ui-foundation#加载态、空态、错误态与占位口径统一]
-- [ ] 5.4 患者申请页：申请条目换卡片 + 状态徽标、确认/拒绝换主/次按钮、补空态；**补 `widget_top_bar`（标题 + 返回 = `finish()`）——该布局现状无标题与返回控件，全靠唯一一处 `Theme.AppCompat.Light` 的 ActionBar 提供，换主题后必须新增**；该页列表适配器改视图绑定 [spec:ui-page-wiring#界面展示的业务数据必须有真实来源或统一占位]
-- [ ] 5.5 抽出登录与身份相关的中文文案到共享文案资源，删除模板占位字符串与两条英文占位——删 `dotlog_Inspirational_words`、`dotlog_theme` 前必须先删掉 `activity_dt_log.xml:57`、`:84` 引用它们的两个 TextView（否则引用悬空编译失败），`hello_blank_fragment` 直接删 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
-- [ ] 5.6 建立账号与工号的单一解析工具 `ui/common/AccountArgs.kt`（导航参数优先、宿主页面传入兜底、两者皆空返回 null），并改造首批 6 处 Fragment 侧取参：`pt_rehabFragment`、`pt_infoFragment`、`dt_pt_manageFragment`、`RehabPlanListFragment`、`dt_homeFragment`、`dt_info_Fragment`；另 3 处（`DtInfoEditFragment.kt:29,34`、`PtInfoEditFragment.kt:28,33`、`pt_homeFragment.kt:20` 的死声明）随第 8、9 组的页面改造迁走 [spec:ui-page-wiring#跨页面参数只保留一条解析链]
-- [ ] 5.7 测试：界面自动化（启动页文案为中文、登录校验失败显示统一错误文案、患者登录成功进入患者主界面）与解析工具单元测试（导航参数命中、回落宿主、两者皆空三种情形） [spec:ui-page-wiring#页面入口的去向完整性]
-- [ ] 5.8 质量门：编译、单元测试、本组界面测试、Lint 通过 [infra]
+- [x] 5.1 启动选择页：英文改中文、两个角色入口换成可点击卡片、挂基础主题 [spec:ui-page-wiring#页面入口的去向完整性]
+- [x] 5.2 医生登录页与患者登录页：输入项换统一输入框（标签 + 必填 + 错误文案）、提交改主按钮、校验失败提示统一 [spec:ui-foundation#按钮与输入框的形态与使用约束]
+- [x] 5.3 等待绑定页：等待中/已通过/被拒绝三态、状态徽标、主次按钮、顶部栏 [spec:ui-foundation#加载态、空态、错误态与占位口径统一]
+- [x] 5.4 患者申请页：申请条目换卡片 + 状态徽标、确认/拒绝换主/次按钮、补空态；**补 `widget_top_bar`（标题 + 返回 = `finish()`）——该布局现状无标题与返回控件，全靠唯一一处 `Theme.AppCompat.Light` 的 ActionBar 提供，换主题后必须新增**；该页列表适配器改视图绑定 [spec:ui-page-wiring#界面展示的业务数据必须有真实来源或统一占位]
+- [x] 5.5 抽出登录与身份相关的中文文案到共享文案资源，删除模板占位字符串与两条英文占位——删 `dotlog_Inspirational_words`、`dotlog_theme` 前必须先删掉 `activity_dt_log.xml:57`、`:84` 引用它们的两个 TextView（否则引用悬空编译失败），`hello_blank_fragment` 直接删 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
+- [x] 5.6 建立账号与工号的单一解析工具 `ui/common/AccountArgs.kt`（导航参数优先、宿主页面传入兜底、两者皆空返回 null），并改造首批 6 处 Fragment 侧取参：`pt_rehabFragment`、`pt_infoFragment`、`dt_pt_manageFragment`、`RehabPlanListFragment`、`dt_homeFragment`、`dt_info_Fragment`；另 3 处（`DtInfoEditFragment.kt:29,34`、`PtInfoEditFragment.kt:28,33`、`pt_homeFragment.kt:20` 的死声明）随第 8、9 组的页面改造迁走 [spec:ui-page-wiring#跨页面参数只保留一条解析链]
+- [x] 5.7 测试：界面自动化（启动页文案为中文、登录校验失败显示统一错误文案、患者登录成功进入患者主界面）与解析工具单元测试（导航参数命中、回落宿主、两者皆空三种情形） [spec:ui-page-wiring#页面入口的去向完整性]
+- [x] 5.8 质量门：编译、单元测试、本组界面测试、Lint 通过 [infra]
 
 ## 6. 医生首页接线与计划列表入口
 

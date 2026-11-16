@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.example.winsrehab.databinding.FragmentDtHomeBinding
+import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.main.doctor.application.PatientApplicationActivity
 import java.util.Calendar
 
@@ -19,13 +19,13 @@ class dt_homeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: DtHomeViewModel by viewModels()
 
-    private val args by navArgs<dt_homeFragmentArgs>()
     private var doctorCode: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        doctorCode = args.doctorCode
-        Log.d("dt_homeFragment", "doctorCode: $doctorCode")
+        // 工号解析走 AccountArgs：导航参数优先，宿主 Intent 兜底
+        doctorCode = AccountArgs.doctorCode(arguments, activity?.intent).orEmpty()
+        Log.i("dt_homeFragment", "doctorCode: $doctorCode")
     }
 
     override fun onCreateView(

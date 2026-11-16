@@ -106,7 +106,19 @@ class StructureComponentsContractTest {
         val overlay = style("ThemeOverlay.WinsRehab.Dialog")
         assertEquals("@style/Widget.WinsRehab.Dialog", overlay["alertDialogStyle"])
         assertEquals("@style/ShapeAppearance.WinsRehab.Dialog", overlay["shapeAppearanceMediumComponent"])
-        assertEquals("@style/TextAppearance.WinsRehab.Title16", overlay["materialAlertDialogTitleTextStyle"])
+        // 标题样式必须自带宽高：Material 对话框用这个样式 inflate 标题 TextView，裸字号样式会直接崩「找不到 layout_width」
+        val titleStyleName = overlay["materialAlertDialogTitleTextStyle"]
+        assertEquals("@style/Widget.WinsRehab.DialogTitle", titleStyleName)
+        assertEquals(
+            "@style/TextAppearance.WinsRehab.Title16",
+            style("Widget.WinsRehab.DialogTitle")["android:textAppearance"]
+        )
+        assertTrue(
+            "对话框标题样式必须继承 Material 标题样式来拿到宽高",
+            read("values/styles.xml").contains(
+                "<style name=\"Widget.WinsRehab.DialogTitle\" parent=\"MaterialAlertDialog.MaterialComponents.Title.Text\">"
+            )
+        )
         assertEquals("@style/TextAppearance.WinsRehab.Body14", overlay["materialAlertDialogBodyTextStyle"])
         assertEquals("@style/Widget.WinsRehab.Button.Text", overlay["buttonBarPositiveButtonStyle"])
         assertEquals("@style/Widget.WinsRehab.Button.Text", overlay["buttonBarNegativeButtonStyle"])

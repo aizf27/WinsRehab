@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.data.model.TaskInstanceWithTask
 import com.example.winsrehab.databinding.FragmentPtRehabBinding
+import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.common.UiTexts
 import com.example.winsrehab.ui.main.patient.adapter.TaskInstanceAdapter
 import kotlinx.coroutines.launch
@@ -54,12 +55,9 @@ class pt_rehabFragment : Fragment() {
         binding.rvTodayTasks.adapter = adapter
     }
 
-    // 与 pt_infoFragment.resolveAccount 同款兜底链
-    private fun resolveAccount(): String {
-        val navAccount = arguments?.getString("account") ?: ""
-        val intentAccount = requireActivity().intent.getStringExtra("account") ?: ""
-        return navAccount.ifEmpty { intentAccount }
-    }
+    // 账号解析统一走 AccountArgs：先看导航参数，再回落宿主 Intent
+    private fun resolveAccount(): String =
+        AccountArgs.account(arguments, requireActivity().intent).orEmpty()
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {

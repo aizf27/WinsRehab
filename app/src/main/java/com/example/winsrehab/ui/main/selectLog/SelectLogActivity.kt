@@ -29,12 +29,12 @@ class SelectLogActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        //医生和患者登陆界面跳转
-        binding.imageDtLog.setOnClickListener {
+        // 医生与患者两张入口卡片，整卡可点
+        binding.cardDoctorLogin.setOnClickListener {
             viewModel.onDoctorLoginClicked()
         }
 
-        binding.imagePtLog.setOnClickListener {
+        binding.cardPatientLogin.setOnClickListener {
             viewModel.onPatientLoginClicked()
         }
 

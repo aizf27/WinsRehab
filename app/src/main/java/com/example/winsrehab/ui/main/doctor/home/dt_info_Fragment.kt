@@ -1,4 +1,4 @@
-package com.example.winsrehab.ui.main.doctor.home
+﻿package com.example.winsrehab.ui.main.doctor.home
 
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Doctor
 import com.example.winsrehab.databinding.FragmentDtInfoBinding
+import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.main.doctor.info.DtInfoVM
 
 
@@ -32,7 +32,6 @@ class dt_info_Fragment : Fragment() {
     private var _binding: FragmentDtInfoBinding?=null
     private val binding get()=_binding!!
     //参数
-    private val args by navArgs<dt_info_FragmentArgs>()
     private var doctorCode: String=""
     private var totalCount:Int =0
     //VM
@@ -40,12 +39,12 @@ class dt_info_Fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 直接使用导航参数
-        doctorCode = args.doctorCode
-        totalCount = args.totalCount
+        // 工号解析走 AccountArgs（导航参数优先、宿主 Intent 兜底），总数只有导航参数会带
+        doctorCode = AccountArgs.doctorCode(arguments, activity?.intent).orEmpty()
+        totalCount = arguments?.getInt("totalCount") ?: 0
 
-        Log.d("dt_info_Fragment", "doctorCode: $doctorCode")
-        Log.d("dt_info_Fragment", "totalCount: $totalCount")
+        Log.i("dt_info_Fragment", "doctorCode: $doctorCode")
+        Log.i("dt_info_Fragment", "totalCount: $totalCount")
     }
 
     override fun onCreateView(

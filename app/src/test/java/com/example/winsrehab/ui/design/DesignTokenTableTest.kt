@@ -731,6 +731,39 @@ class DesignTokenTableTest {
         assertTrue("文字与图标必须落在达标底色上，违规: $violations", violations.isEmpty())
     }
 
+    // design.md D1 规定「图片底一律判不合格」，但上面的对比度闸门查不到图片底；登录页 banner 文字因此单列例外：
+    // 必须彻底去底（@null）、用深色字 + 白色描边兜住图片暗部，这里把例外固化成断言，防止有人把底板加回来
+    @Test
+    fun `图片底上的文字必须去底并白色描边`() {
+        val violations = mutableListOf<String>()
+        listOf("activity_dt_log.xml", "activity_pt_log.xml").forEach { fileName ->
+            val file = resDir.resolve("layout/$fileName")
+            if (!file.isFile) {
+                violations += "$fileName 不存在"
+                return@forEach
+            }
+            val element = elementsOf(file).firstOrNull { it.attrs["android:id"] == "@+id/tvBannerText" }
+            if (element == null) {
+                violations += "$fileName 缺少 @+id/tvBannerText"
+                return@forEach
+            }
+            if (element.attrs["android:background"] != "@null") {
+                violations += "$fileName 的 banner 文字必须去底（android:background=\"@null\"）"
+            }
+            if (element.attrs["android:textColor"] != "@color/on_surface") {
+                violations += "$fileName 的 banner 文字必须用 on_surface 深色"
+            }
+            if (element.attrs["android:shadowColor"] != "@color/on_primary") {
+                violations += "$fileName 的 banner 文字必须声明白色描边（@color/on_primary）"
+            }
+            val radius = element.attrs["android:shadowRadius"]?.removeSuffix("dp")?.toIntOrNull() ?: 0
+            if (radius < 3) {
+                violations += "$fileName 的 banner 文字描边半径不足 3dp（当前 $radius）"
+            }
+        }
+        assertTrue("图片底文字必须去底并描边，违规: $violations", violations.isEmpty())
+    }
+
     // 取色值自身的不透明度，用于判定「半透明底不承载白字」
     private fun rawAlphaOf(hex: String): Double = argb(hex)[0]
 }

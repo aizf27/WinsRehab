@@ -52,11 +52,11 @@
             android:exported="false"
             android:launchMode="singleTask"
             android:theme="@style/Theme.WinsRehab.Patient" />
-        <!--医生端患者申请列表页面（第 5 组补顶部栏后改挂 Theme.WinsRehab.Doctor）-->
+        <!--医生端患者申请列表页面：自带顶部栏，不再依赖 ActionBar-->
         <activity android:name=".ui.main.doctor.application.PatientApplicationActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.WinsRehab.Doctor.WithBar" />
+            android:theme="@style/Theme.WinsRehab.Doctor" />
         <!--创建康复计划页面-->
         <activity android:name=".ui.main.doctor.plan.CreateRehabPlanActivity"
             android:exported="false"

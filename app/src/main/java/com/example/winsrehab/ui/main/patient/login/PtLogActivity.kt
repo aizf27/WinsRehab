@@ -3,23 +3,31 @@ package com.example.winsrehab.ui.main.patient.login
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Html
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.winsrehab.R
+import com.example.winsrehab.data.model.BindingStatus
 import com.example.winsrehab.databinding.ActivityPtLogBinding
+import com.example.winsrehab.ui.common.BindDoctorDialog
+import com.example.winsrehab.ui.common.TextField
 import com.example.winsrehab.ui.main.patient.binding.WaitingBindingActivity
 import com.example.winsrehab.ui.main.patient.main.PtMainActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class PtLogActivity: AppCompatActivity () {
-    private lateinit var binding : ActivityPtLogBinding
+// 患者登录页：手机号 + 密码登录，登录后按绑定状态分流（未绑定 / 待确认 / 已绑定 / 被拒绝）
+class PtLogActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityPtLogBinding
     private lateinit var preferences: SharedPreferences
+
     private val viewModel: PtLogVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,189 +36,190 @@ class PtLogActivity: AppCompatActivity () {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        preferences=getSharedPreferences("patient_prefs", MODE_PRIVATE)
+        preferences = getSharedPreferences("patient_prefs", MODE_PRIVATE)
 
-        //给患者登陆设置下划线
-        val titleText = "<u>患者登录</u>"
-        binding.tvPtLoginTitle.text = Html.fromHtml(titleText, Html.FROM_HTML_MODE_LEGACY)
-
-        //回复账号密码
-        val saveAccount=preferences.getString("PtAccount", "")
-        val savePassword=preferences.getString("PtPassword", "")
-        val remember=preferences.getBoolean("remember", false)
-
-        binding.etPtAccount.setText(saveAccount)
-        if (remember){
-            binding.etPtPassword.setText(savePassword)
-            binding.cbRememberPassword.isChecked=true
-        }
-
-        //登陆结果观察
-        viewModel.loginResult.observe(this){result->
-            when(result){
-                0-> Toast.makeText(this, "账号不存在，请先注册", Toast.LENGTH_SHORT).show()
-                1->{
-                    Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show()
-                    saveLogInfo()
-                    // 检查绑定状态
-                    viewModel.checkBindingStatus(binding.etPtAccount.text.toString())
-                }
-                2-> Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show()
-            }
-        }
-        
-        //绑定状态观察
-        viewModel.bindingStatus.observe(this) { status ->
-            val account = binding.etPtAccount.text.toString()
-            Log.d("PtLogActivity", "bindingStatus observed: status=$status, account=$account")
-            when(status) {
-                "unbound" -> {
-                    // 未绑定，显示绑定对话框
-                    Log.d("PtLogActivity", "Status is unbound, showing bind dialog")
-                    showBindDoctorDialog(account)
-                }
-                "pending" -> {
-                    // 待确认，跳转到等待页面
-                    Log.d("PtLogActivity", "Status is pending, navigating to waiting page")
-                    val intent = Intent(this, WaitingBindingActivity::class.java)
-                    intent.putExtra("account", account)
-                    startActivity(intent)
-                    finish()
-                }
-                "active" -> {
-                    // 已绑定，检查信息完整性
-                    Log.d("PtLogActivity", "Status is active, checking info complete")
-                    viewModel.checkInfoComplete(account)
-                }
-                "rejected" -> {
-                    // 被拒绝，提示并允许重新绑定
-                    Log.d("PtLogActivity", "Status is rejected, showing dialog")
-                    AlertDialog.Builder(this)
-                        .setTitle("绑定被拒绝")
-                        .setMessage("医生已拒绝您的绑定申请，请重新绑定其他医生")
-                        .setPositiveButton("重新绑定") { _, _ ->
-                            showBindDoctorDialog(account)
-                        }
-                        .setCancelable(false)
-                        .show()
-                }
-                else -> {
-                    Log.e("PtLogActivity", "Unknown binding status: $status")
-                }
-            }
-        }
-        
-        //绑定结果观察
-        viewModel.bindingResult.observe(this) { result ->
-            when(result) {
-                0 -> Toast.makeText(this, "医生工号不存在，请检查后重试", Toast.LENGTH_SHORT).show()
-                1 -> {
-                    Toast.makeText(this, "绑定申请已发送，等待医生确认", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, WaitingBindingActivity::class.java)
-                    intent.putExtra("account", binding.etPtAccount.text.toString())
-                    startActivity(intent)
-                    finish()
-                }
-                2 -> Toast.makeText(this, "绑定失败，请稍后重试", Toast.LENGTH_SHORT).show()
-            }
-        }
-        //注册结果观察
-        viewModel.registerResult.observe(this){success->
-            if (success) Toast.makeText(this, "注册成功,请登录", Toast.LENGTH_SHORT).show()
-            else Toast.makeText(this, "注册失败或账号已存在", Toast.LENGTH_SHORT).show()
-
-        }
-        //信息完善结果观察
-        viewModel.infoComplete.observe(this){complete->
-            val account=binding.etPtAccount.text.toString()
-
-            // 统一跳转到新的主界面
-            val intent = Intent(this, PtMainActivity::class.java)
-            intent.putExtra("account", account) //传递账号
-
-            Log.i("PtLogActivity", "account: $account")
-
-            startActivity(intent)
-            finish()
-        }
-        //登陆按钮
-        binding.btnPtLogin.setOnClickListener {
-            val account=binding.etPtAccount.text.toString()
-            val password=binding.etPtPassword.text.toString()
-
-            Log.i("PtLogActivity", "account: $account")
-            Log.i("PtLogActivity", "password: $password")
-
-            if (account.isEmpty() || password.isEmpty()){
-                Toast.makeText(this, "手机号或密码不能为空", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-                viewModel.loginPatient(account, password)
-
-
-
-        }
-    //注册按钮
-    binding.btnPtRegister.setOnClickListener {
-        val account=binding.etPtAccount.text.toString()
-        val password=binding.etPtPassword.text.toString()
-
-        if (account.isEmpty() || password.isEmpty()){
-            Toast.makeText(this, "手机号或密码不能为空", Toast.LENGTH_SHORT).show()
-            return@setOnClickListener
-        }
-        viewModel.registerPatient(account, password)
-
-    }
+        setupFields()
+        restoreSavedAccount()
+        observeResults()
+        setupButtons()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-
         }
     }
-    private fun PtLogActivity.saveLogInfo() {
+
+    // 输入项的标签、必填标记、占位与密码可见性统一配置
+    private fun setupFields() {
+        binding.fieldAccount.setLabel(getString(R.string.field_account))
+        binding.fieldAccount.setRequired(true)
+        binding.fieldAccount.setHint(getString(R.string.hint_account))
+        binding.fieldAccount.editText().inputType = InputType.TYPE_CLASS_PHONE
+
+        binding.fieldPassword.setLabel(getString(R.string.field_password))
+        binding.fieldPassword.setRequired(true)
+        binding.fieldPassword.setHint(getString(R.string.hint_password))
+        binding.fieldPassword.setPasswordToggle(true)
+        binding.fieldPassword.editText().inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+
+        // 输入即清除上一次的错误提示
+        clearErrorWhileTyping(binding.fieldAccount)
+        clearErrorWhileTyping(binding.fieldPassword)
+    }
+
+    // 恢复上次记住的账号密码
+    private fun restoreSavedAccount() {
+        val saveAccount = preferences.getString("PtAccount", "")
+        val savePassword = preferences.getString("PtPassword", "")
+        val remember = preferences.getBoolean("remember", false)
+
+        binding.fieldAccount.editText().setText(saveAccount)
+        if (remember) {
+            binding.fieldPassword.editText().setText(savePassword)
+            binding.cbRememberPassword.isChecked = true
+        }
+    }
+
+    // 登录 / 绑定状态 / 绑定结果 / 注册 / 信息完整五类结果统一观察
+    private fun observeResults() {
+        viewModel.loginResult.observe(this) { result ->
+            when (result) {
+                0 -> binding.fieldAccount.setError(getString(R.string.error_account_not_found))
+                1 -> {
+                    Toast.makeText(this, R.string.toast_login_success, Toast.LENGTH_SHORT).show()
+                    saveLogInfo()
+                    // 登录成功后先查绑定状态，再决定下一步去哪
+                    viewModel.checkBindingStatus(binding.fieldAccount.text())
+                }
+                2 -> binding.fieldPassword.setError(getString(R.string.error_password_wrong))
+            }
+        }
+
+        viewModel.bindingStatus.observe(this) { status ->
+            val account = binding.fieldAccount.text()
+            Log.i("PtLogActivity", "绑定状态返回: status=$status, account=$account")
+            when (status) {
+                // 未绑定：弹框让患者输入医生工号
+                BindingStatus.UNBOUND -> showBindDoctorDialog(account)
+                // 待确认：进等待页，等待页自己轮询并展示三态
+                BindingStatus.PENDING -> gotoWaiting(account)
+                // 已绑定：检查资料是否完整后进主界面
+                BindingStatus.ACTIVE -> viewModel.checkInfoComplete(account)
+                // 被拒绝：提示后可重新申请
+                BindingStatus.REJECTED -> showRejectedDialog(account)
+                else -> Log.e("PtLogActivity", "未登记的绑定状态: $status")
+            }
+        }
+
+        viewModel.bindingResult.observe(this) { result ->
+            when (result) {
+                0 -> Toast.makeText(this, R.string.error_doctor_code_not_found, Toast.LENGTH_SHORT).show()
+                1 -> {
+                    Toast.makeText(this, R.string.toast_bind_sent, Toast.LENGTH_SHORT).show()
+                    gotoWaiting(binding.fieldAccount.text())
+                }
+                2 -> Toast.makeText(this, R.string.toast_bind_failed, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.registerResult.observe(this) { success ->
+            val message = if (success) R.string.toast_register_success else R.string.toast_register_failed
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.infoComplete.observe(this) {
+            val account = binding.fieldAccount.text()
+            Log.i("PtLogActivity", "资料完整，跳转患者主界面: account=$account")
+            val intent = Intent(this, PtMainActivity::class.java)
+            intent.putExtra("account", account)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    // 登录与注册共用同一套校验，失败统一标红在输入框上
+    private fun setupButtons() {
+        binding.btnPtLogin.setOnClickListener {
+            if (!validateFields()) return@setOnClickListener
+            viewModel.loginPatient(binding.fieldAccount.text(), binding.fieldPassword.text())
+        }
+
+        binding.btnPtRegister.setOnClickListener {
+            if (!validateFields()) return@setOnClickListener
+            viewModel.registerPatient(binding.fieldAccount.text(), binding.fieldPassword.text())
+        }
+    }
+
+    // 手机号与密码都必填，缺哪个标哪个，文案统一
+    private fun validateFields(): Boolean {
+        val accountEmpty = binding.fieldAccount.text().isBlank()
+        val passwordEmpty = binding.fieldPassword.text().isBlank()
+        val message = getString(R.string.error_login_fields_empty)
+
+        binding.fieldAccount.setError(if (accountEmpty) message else null)
+        binding.fieldPassword.setError(if (passwordEmpty) message else null)
+        return !accountEmpty && !passwordEmpty
+    }
+
+    // 输入变化即清除该字段的错误提示
+    private fun clearErrorWhileTyping(field: TextField) {
+        field.editText().addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                field.setError(null)
+            }
+        })
+    }
+
+    // 记住密码与账号一起落到本地偏好里
+    private fun saveLogInfo() {
         val editor = preferences.edit()
-        val account=binding.etPtAccount.text.toString()
-        val password=binding.etPtPassword.text.toString()
-        //获取是否记住密码
-             val remember = binding.cbRememberPassword.isChecked
+        val account = binding.fieldAccount.text()
+        val password = binding.fieldPassword.text()
+        val remember = binding.cbRememberPassword.isChecked
 
         editor.putString("PtAccount", account)
         editor.putBoolean("remember", remember)
 
-        if (remember) {editor.putString("PtPassword",password)}
-        else {editor.remove("PtPassword")}
+        if (remember) editor.putString("PtPassword", password) else editor.remove("PtPassword")
         editor.apply()
     }
-    
+
+    // 进等待页并把账号带过去，等待页负责轮询与三态展示
+    private fun gotoWaiting(account: String) {
+        val intent = Intent(this, WaitingBindingActivity::class.java)
+        intent.putExtra("account", account)
+        startActivity(intent)
+        finish()
+    }
+
+    // 绑定申请对话框：输入医生工号，必填校验失败不关闭弹窗
     private fun showBindDoctorDialog(account: String) {
-        val input = EditText(this)
-        input.hint = "请输入医生工号"
-        input.setPadding(50, 30, 50, 30)
-        
-        AlertDialog.Builder(this)
-            .setTitle("绑定医生")
-            .setMessage("首次登录需要绑定医生才能使用")
-            .setView(input)
-            .setPositiveButton("确定") { _, _ ->
-                val doctorCode = input.text.toString().trim()
-                if (doctorCode.isEmpty()) {
-                    Toast.makeText(this, "医生工号不能为空", Toast.LENGTH_SHORT).show()
-                    showBindDoctorDialog(account) // 重新显示对话框
-                } else {
-                    viewModel.bindDoctor(account, doctorCode)
-                }
-            }
-            .setNegativeButton("取消") { _, _ ->
-                Toast.makeText(this, "必须绑定医生才能使用", Toast.LENGTH_SHORT).show()
+        BindDoctorDialog.show(
+            context = this,
+            account = account,
+            onBind = { patientAccount, doctorCode ->
+                viewModel.bindDoctor(patientAccount, doctorCode)
+            },
+            onCancel = {
+                Toast.makeText(this, R.string.bind_required_message, Toast.LENGTH_SHORT).show()
                 finish()
+            }
+        )
+    }
+
+    // 绑定被拒绝提示：可以直接重新申请
+    private fun showRejectedDialog(account: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.bind_rejected_title)
+            .setMessage(R.string.bind_rejected_message)
+            .setPositiveButton(R.string.bind_rejected_action) { _, _ ->
+                showBindDoctorDialog(account)
             }
             .setCancelable(false)
             .show()
     }
-
 }
-
-

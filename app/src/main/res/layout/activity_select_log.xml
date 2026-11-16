@@ -1,95 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<!-- 启动页：应用欢迎语 + 医生/患者两张可点击卡片，文案全部来自共享字符串资源 -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-<!--    tools:context=".ui.main.selectLog.selectLogActivity"-->
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageLogo"-->
-    <!--        android:layout_width="120dp"-->
-    <!--        android:layout_height="120dp"-->
-    <!--        android:layout_marginTop="@dimen/space_32"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:src="@drawable/ic_launcher_foreground"-->
-    <!--        />-->
-    <TextView
-        android:id="@+id/textWelcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome To You!" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/space_32"
-        android:layout_marginBottom="@dimen/space_8"
-        />
-    <TextView
-        android:id="@+id/textSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select the login method" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/space_8"
-        android:layout_marginBottom="@dimen/space_16"
-        />
+    android:background="@color/surface_variant"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space_16"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/space_24">
 
-        >
+        <!-- 图标圆底 + 品牌色图标，统一用卡片自身承载点击 -->
+        <ImageView
+            android:layout_width="@dimen/space_48"
+            android:layout_height="@dimen/space_48"
+            android:layout_marginTop="@dimen/space_32"
+            android:background="@drawable/bg_circle"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/space_12"
+            android:src="@drawable/ic_heart_beat"
+            app:tint="@color/brand_doctor_primary_dark" />
 
-        <ImageButton
-            android:id="@+id/imageDtLog"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/space_8"
-            android:background="@drawable/shape_logmap"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_dtlog"
-
-            />
-
-        <ImageButton
-            android:id="@+id/imagePtLog"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/space_8"
-            android:background="@drawable/shape_logmap"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_userlog"
-
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
         <TextView
-            android:id="@+id/textDtLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Doctor Log " android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/space_32"
+            android:layout_marginTop="@dimen/space_16"
+            android:gravity="center"
+            android:text="@string/select_log_title"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Display24"
+            android:textColor="@color/on_surface"
+            android:textStyle="bold" />
 
-            />
         <TextView
-            android:id="@+id/PtLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Patient Log " android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/space_32"
-            />
-    </LinearLayout>
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="center"
+            android:text="@string/select_log_subtitle"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+            android:textColor="@color/on_surface_secondary" />
 
-</LinearLayout>
+        <!-- 医生入口：整卡可点，图标 + 标题 + 说明 + 右箭头 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDoctorLogin"
+            style="@style/Widget.WinsRehab.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_32">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_16">
+
+                <ImageView
+                    android:layout_width="@dimen/space_48"
+                    android:layout_height="@dimen/space_48"
+                    android:background="@drawable/bg_circle"
+                    android:contentDescription="@null"
+                    android:padding="@dimen/space_12"
+                    android:src="@drawable/ic_stethoscope"
+                    app:tint="@color/brand_doctor_primary_dark" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_16"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_log_doctor"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                        android:textColor="@color/on_surface"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:text="@string/select_log_doctor_desc"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        android:textColor="@color/on_surface_secondary" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/space_24"
+                    android:layout_height="@dimen/space_24"
+                    android:layout_marginStart="@dimen/space_8"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/on_surface_tertiary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 患者入口：与医生卡同结构，只换图标与文案 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPatientLogin"
+            style="@style/Widget.WinsRehab.Card.Clickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_16">
+
+                <ImageView
+                    android:layout_width="@dimen/space_48"
+                    android:layout_height="@dimen/space_48"
+                    android:background="@drawable/bg_circle"
+                    android:backgroundTint="@color/success_container"
+                    android:contentDescription="@null"
+                    android:padding="@dimen/space_12"
+                    android:src="@drawable/ic_activity"
+                    app:tint="@color/brand_patient_primary_deep" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_16"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_log_patient"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                        android:textColor="@color/on_surface"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_4"
+                        android:text="@string/select_log_patient_desc"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        android:textColor="@color/on_surface_secondary" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/space_24"
+                    android:layout_height="@dimen/space_24"
+                    android:layout_marginStart="@dimen/space_8"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/on_surface_tertiary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 底部留白：让两张卡片在整屏上偏上居中 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_48" />
+    </LinearLayout>
+</ScrollView>

@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 患者申请页：顶部栏 + 申请列表，无数据时显示统一空态 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/surface_variant">
+    android:background="@color/surface_variant"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!-- 顶部栏：标题「患者申请」，返回关闭页面 -->
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/widget_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/space_16"
-        android:clipToPadding="false"/>
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tvEmpty"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="暂无患者申请" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-        android:textColor="@color/on_surface_tertiary"
-        android:gravity="center"
-        android:visibility="gone"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/space_16" />
+
+        <!-- 空态：没有待处理的绑定申请时占位 -->
+        <include
+            android:id="@+id/stateEmpty"
+            layout="@layout/widget_state_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>
-
-
-
-
-

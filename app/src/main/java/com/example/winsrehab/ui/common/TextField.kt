@@ -54,6 +54,16 @@ class TextField @JvmOverloads constructor(
     // 输入控件本体：inputType、密码可见性这类细节由页面直接拿控件设置
     fun editText(): TextInputEditText = etField
 
+    // 占位文案：框内灰字提示，标签已经说明字段含义时用来给示例
+    fun setHint(text: CharSequence?) {
+        etField.hint = text
+    }
+
+    // 密码可见性开关：开启后框右侧出现眼睛图标，页面不用自己拼图标
+    fun setPasswordToggle(enabled: Boolean) {
+        tilField.endIconMode = if (enabled) TextInputLayout.END_ICON_PASSWORD_TOGGLE else TextInputLayout.END_ICON_NONE
+    }
+
     // 当前输入值
     fun text(): String = etField.text?.toString().orEmpty()
 }

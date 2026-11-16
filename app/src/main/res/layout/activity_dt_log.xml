@@ -1,160 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- 医生登录页：标题 + 副标题 + 横幅图（图上文案透明底）+ 卡片式表单，输入项统一走 TextField -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/surface">
 
-    <!-- 背景图片 -->
+    <!-- 装饰底图：只做背景，不承载任何文字 -->
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/bg_dtlog"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 滚动内容 -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="@dimen/space_24"
-            android:gravity="center_horizontal">
+            android:padding="@dimen/space_24">
 
-            <!-- 顶部标题：医生登录 -->
-
-
-            <!-- 副标题 -->
             <TextView
                 android:id="@+id/tvDoctorLoginTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
                 android:layout_marginTop="@dimen/space_32"
-                android:text="@string/title_dotlog"
-                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Display24"
+                android:text="@string/doctor_login_title"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Display24"
+                android:textColor="@color/on_surface"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDoctorLoginSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="@string/dotlog_Inspirational_words" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                android:textStyle="bold"
-                android:textColor="@color/on_surface"
-                android:layout_marginTop="@dimen/space_8"/>
+                android:layout_marginTop="@dimen/space_8"
+                android:text="@string/doctor_login_subtitle"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                android:textColor="@color/on_surface_secondary" />
 
+            <!-- 横幅图：图片本身圆角裁切，图上文案不放底板，直接压在图上 -->
             <FrameLayout
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="@dimen/space_24"
-                android:layout_gravity="left">
+                android:layout_marginTop="@dimen/space_24">
 
-                <!-- 图片 -->
                 <ImageView
                     android:id="@+id/imgDoctorLoginBanner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
                     android:background="@drawable/shape_round_image"
                     android:clipToOutline="true"
-                    android:src="@drawable/img_dtlook"/>
-                <!-- 叠加文字 -->
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_dtlook" />
+
+                <!-- 透明底图文案：无背景、深色粗体，配浅色描边阴影保证压到深色画面也读得清 -->
                 <TextView
                     android:id="@+id/tvBannerText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:text="@string/dotlog_theme"
-                    android:background="@drawable/bg_chip"
-                    android:backgroundTint="@color/on_surface"
-                    android:paddingHorizontal="@dimen/space_8"
-                    android:paddingVertical="@dimen/space_4"
-                    android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="@dimen/space_12"
+                    android:background="@null"
+                    android:shadowColor="@color/on_primary"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="3"
+                    android:text="@string/doctor_login_banner"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    android:textColor="@color/on_surface"
                     android:textStyle="bold" />
             </FrameLayout>
-            <!-- 输入框容器 -->
-            <LinearLayout
+
+            <!-- 表单卡：输入项与按钮都在卡内，底色为 surface -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.WinsRehab.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_24">
 
-                android:orientation="vertical"
-
-                android:layout_marginTop="@dimen/space_32">
-
-                <!-- 工号输入 -->
-                <EditText
-                    android:id="@+id/etDoctorId"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="@dimen/space_8"
-                    android:hint="工号"
-                    android:drawableStart="@drawable/baseline_account_box_24"
-                    android:drawablePadding="@dimen/space_12"
-                    android:background="@drawable/shape_edittext_bg"
-                    android:paddingStart="@dimen/space_12"
-                    android:paddingEnd="@dimen/space_12" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"/>
-
-                <!-- 密码输入 -->
-                <EditText
-                    android:id="@+id/etDoctorPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:hint="密码"
-                    android:drawableStart="@drawable/baseline_lock_24"
-                    android:drawablePadding="@dimen/space_12"
-                    android:background="@drawable/shape_edittext_bg"
-                    android:paddingStart="@dimen/space_12"
-                    android:paddingEnd="@dimen/space_12"
-                    android:inputType="textPassword" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                    android:layout_marginTop="@dimen/space_16"/>
-                <CheckBox
-                    android:id="@+id/cbRememberPassword"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="记住密码"
-                    android:textColor="@color/on_surface"
-                    android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-                    android:layout_marginTop="@dimen/space_4"
-                    android:theme="@style/MyCheckBox"
-                    />
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_16">
 
-            </LinearLayout>
+                    <com.example.winsrehab.ui.common.TextField
+                        android:id="@+id/fieldDoctorId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="MissingPrefix" />
 
-            <!-- 登录按钮 -->
-            <Button
-                android:id="@+id/btnDoctorLogin"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="登录"
-                android:backgroundTint="@color/brand_doctor_primary"
-                style="@style/MyRoundButton"
-                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                android:layout_marginTop="@dimen/space_24"/>
+                    <com.example.winsrehab.ui.common.TextField
+                        android:id="@+id/fieldDoctorPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_16" />
 
-            <Button
-                android:id="@+id/btnDoctorRegister"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="注册"
-                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                android:layout_marginTop="@dimen/space_16"
-                android:backgroundTint="@color/outline"
-                style="@style/MyRoundButton"/>
+                    <CheckBox
+                        android:id="@+id/cbRememberPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_8"
+                        android:minHeight="@dimen/space_48"
+                        android:text="@string/action_remember_password"
+                        android:textColor="@color/on_surface"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                        android:theme="@style/MyCheckBox" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDoctorLogin"
+                        style="@style/Widget.WinsRehab.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_8"
+                        android:text="@string/action_login" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDoctorRegister"
+                        style="@style/Widget.WinsRehab.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_12"
+                        android:text="@string/action_register" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

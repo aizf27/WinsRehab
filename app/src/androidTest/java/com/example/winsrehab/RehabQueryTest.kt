@@ -91,7 +91,8 @@ class RehabQueryTest {
         assertEquals(2, data.tasks.size)
         assertNotNull(data.tasks.first().taskName)
         assertEquals("important", data.tasks.first().priority)
-        assertEquals(2, data.tasks.first().suggestedDuration + data.tasks.last().suggestedDuration - 20)
+        // 两个任务时长分别是 10 与 20 分钟，合计 30 用来确认查询把时长字段带出来了
+        assertEquals(30, data.tasks.first().suggestedDuration + data.tasks.last().suggestedDuration)
         assertTrue(data.weekStart <= today.toString())
         assertTrue(data.weekEnd >= today.toString())
     }
