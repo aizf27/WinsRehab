@@ -60,6 +60,14 @@ class dt_homeFragment : Fragment() {
         viewModel.loadPendingApplications(doctorCode)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // 工号可能晚到（页面先建、Intent 后补齐），回前台再对一次；同工号在 VM 内部不会重复订阅
+        doctorCode = AccountArgs.doctorCode(arguments, activity?.intent).orEmpty()
+        viewModel.loadPatients(doctorCode)
+        viewModel.loadPendingApplications(doctorCode)
+    }
+
     // 欢迎卡三列统计：患者数接患者查询，待处理接待办计数
     private fun setupSummary() {
         // 只统计已绑定患者，和患者管理列表同一口径

@@ -10,6 +10,7 @@ import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.data.model.BindingStatus
 import com.example.winsrehab.data.repository.DoctorTaskRepository
 import com.example.winsrehab.data.repository.PatientRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 // 医生端首页与患者管理共用的数据控制器：患者列表 + 待处理申请
@@ -33,14 +34,21 @@ class DtHomeVM : ViewModel() {
     private val _pendingCount = MutableLiveData<Int>()
     val pendingCount: LiveData<Int> = _pendingCount
 
-    // 患者查询只订阅一次：Flow 会随表变更自动重发，页面反复进回收不到第二条数据流
-    private var patientsLoaded = false
+    // 当前订阅的是哪个工号：同一工号不重复订阅，工号变了就换订阅，空白工号直接不查
+    private var loadedDoctorCode: String? = null
+    private var loadedPendingCode: String? = null
+    private var patientsJob: Job? = null
+    private var pendingJob: Job? = null
 
     fun loadPatients(doctorCode: String) {
-        if (patientsLoaded) return
-        patientsLoaded = true
-        viewModelScope.launch {
-            patientRepository.getPatientsByDoctor(doctorCode)
+        val code = doctorCode.trim()
+        // 空工号查不出任何患者，还会把订阅位置占掉，必须直接返回
+        if (code.isEmpty()) return
+        if (code == loadedDoctorCode) return
+        loadedDoctorCode = code
+        patientsJob?.cancel()
+        patientsJob = viewModelScope.launch {
+            patientRepository.getPatientsByDoctor(code)
                 .collect { list ->
                     _patients.postValue(list)
                     // 待确认 / 已拒绝的申请不算「管理患者」，统一在这里过滤
@@ -51,8 +59,13 @@ class DtHomeVM : ViewModel() {
 
     // 首页专用：一次性把待处理申请与计数都读出来
     fun loadPendingApplications(doctorCode: String) {
-        viewModelScope.launch {
-            taskRepository.getPendingBindingTasks(doctorCode)
+        val code = doctorCode.trim()
+        if (code.isEmpty()) return
+        if (code == loadedPendingCode) return
+        loadedPendingCode = code
+        pendingJob?.cancel()
+        pendingJob = viewModelScope.launch {
+            taskRepository.getPendingBindingTasks(code)
                 .collect { list ->
                     val sorted = list.sortedByDescending { it.createdAt }
                     _pendingApplications.postValue(sorted)
