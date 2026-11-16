@@ -14,6 +14,7 @@ import com.example.winsrehab.MyApp
 import com.example.winsrehab.R
 import com.example.winsrehab.databinding.ActivityPtMainBinding
 import com.example.winsrehab.data.repository.TaskInstanceRepository
+import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.main.patient.info.PtInfoVM
 import com.example.winsrehab.utils.TaskGenerationHelper
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 class PtMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPtMainBinding
     private val infoViewModel: PtInfoVM by viewModels()
+    private val rehabViewModel: PtRehabViewModel by viewModels()
     private var account: String = ""
 
     private val taskInstanceRepository: TaskInstanceRepository by lazy {
@@ -41,25 +43,17 @@ class PtMainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //从Intent获取account
-        account = intent.getStringExtra("account") ?: ""
-        Log.d("PtMainActivity", "account: $account")
+        account = AccountArgs.account(null, intent).orEmpty()
+        Log.i(TAG, "解析患者账号: $account")
+        rehabViewModel.load(account)
 
         //设置Fragment容器和导航
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
 
-        //设置导航图并传递参数（导航图默认参数）
-        val navGraph = navController.navInflater.inflate(R.navigation.pt_bot_nav).apply {
-            addArgument(
-                "account",
-                NavArgument.Builder()
-                    .setType(NavType.StringType)
-                    .setDefaultValue(account)
-                    .build()
-            )
-        }
-        //绑定导航图并把 account 作为启动参数传给 startDestination
+        // 导航参数保持可空，页面统一从导航参数或宿主 Intent 解析账号
+        val navGraph = navController.navInflater.inflate(R.navigation.pt_bot_nav)
         val startArgs = Bundle().apply { putString("account", account) }
         navController.setGraph(navGraph, startArgs)
 

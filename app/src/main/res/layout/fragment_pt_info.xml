@@ -146,16 +146,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_phone" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_phone" />
                     <View style="@style/Divider" />
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_email" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_email" />
                     <View style="@style/Divider" />
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_dob" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_dob" />
                     <View style="@style/Divider" />
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_address" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_address" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -171,12 +171,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_doctor" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_doctor" />
                     <View style="@style/Divider" />
-                    <include layout="@layout/item_info_row" android:id="@+id/row_record" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_record" />
                     <View style="@style/Divider" />
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_training" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_training" />
 
 
 
@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_system" />
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_system" />
                     <View style="@style/Divider" />
 
                     <!-- 切换账户 (红色特殊样式) -->

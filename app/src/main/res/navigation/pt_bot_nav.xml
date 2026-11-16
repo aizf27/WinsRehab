@@ -38,7 +38,6 @@
         <argument
             android:name="account"
             app:argType="string"
-            android:defaultValue=""
             app:nullable="true" />
         <argument
             android:name="mode"
@@ -57,7 +56,8 @@
         tools:layout="@layout/fragment_pt_info_edit">
         <argument
             android:name="account"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

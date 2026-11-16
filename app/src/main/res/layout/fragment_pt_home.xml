@@ -1,74 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_page_gradient_green">
+    android:background="@color/surface_variant">
 
-    <!-- 1. 顶部 Header -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
         android:elevation="@dimen/elevation_1"
-        android:padding="@dimen/space_16"
         android:gravity="center_vertical"
+        android:padding="@dimen/space_16"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="康复助手"
-            android:textColor="@color/success" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-            android:textStyle="bold" />
-
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-
-            <!-- 铃铛 + 红点 -->
-<!--            <FrameLayout-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--                android:clickable="true">-->
-
-<!--                <ImageView-->
-<!--                    android:layout_width="24dp"-->
-<!--                    android:layout_height="24dp"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:src="@drawable/ic_bell"-->
-<!--                    app:tint="@color/on_surface_secondary" />-->
-
-<!--                &lt;!&ndash; 红点 &ndash;&gt;-->
-<!--                <View-->
-<!--                    android:layout_width="8dp"-->
-<!--                    android:layout_height="8dp"-->
-<!--                    android:background="@drawable/shape_circle_red"-->
-<!--                    android:layout_gravity="top|end"-->
-<!--                    android:layout_marginTop="@dimen/space_8"-->
-<!--                    android:layout_marginEnd="@dimen/space_8"/>-->
-<!--            </FrameLayout>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/space_8"-->
-<!--                android:background="@drawable/btn_outline_gray"-->
-<!--                android:paddingHorizontal="@dimen/space_12"-->
-<!--                android:paddingVertical="@dimen/space_4"-->
-<!--                android:text="切换账户"-->
-<!--                android:textColor="@color/on_surface_secondary"-->
-<!-- android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>-->
-        </LinearLayout>
+            android:text="康复助手"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
+            android:textColor="@color/success"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- 2. 滚动内容 -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -83,502 +37,79 @@
             android:orientation="vertical"
             android:padding="@dimen/space_16">
 
-            <!-- A. 欢迎卡片 (绿色渐变) -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_24"
                 app:cardCornerRadius="@dimen/radius_16"
                 app:cardElevation="@dimen/elevation_1">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_pt_welcome_green"
                     android:orientation="vertical"
                     android:padding="@dimen/space_16">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/tvGreeting"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="早上好"
-                                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
-                            <TextView
-                                android:id="@+id/tvUserName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="张先生"
-                                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-                                android:textStyle="bold"/>
-                            <TextView
-                                android:id="@+id/tvRehabDay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="今天是康复训练的第 28 天，继续加油！"
-                                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                                android:layout_marginTop="@dimen/space_4"/>
+                    <TextView android:id="@+id/tvGreeting" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_primary" />
+                    <TextView android:id="@+id/tvUserName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20" android:textColor="@color/on_primary" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvRehabDay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_primary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:orientation="horizontal">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="本周完成" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_primary" />
+                            <TextView android:id="@+id/tvWeekPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_primary" android:textStyle="bold" />
                         </LinearLayout>
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_activity"
-                            app:tint="@color/on_primary"/>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/surface_variant"
-                        android:layout_marginVertical="@dimen/space_12"/>
-
-                    <!-- 3列数据 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="本周完成" android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="85%" android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="累计天数" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_primary" />
+                            <TextView android:id="@+id/tvTotalDays" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_primary" android:textStyle="bold" />
                         </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="累计天数" android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="28天" android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="今日任务" android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2/4" android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="今日任务" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_primary" />
+                            <TextView android:id="@+id/tvTodayTasks" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_primary" android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- B. 今日任务 Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/space_12">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="今日任务"
-                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="查看全部"
-                    android:textColor="@color/brand_patient_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="@dimen/space_8">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="今日任务" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_surface" android:textStyle="bold" />
+                <TextView android:id="@+id/tvViewAllTasks" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="查看全部" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/brand_patient_primary_dark" />
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvHomeTasks" android:layout_width="match_parent" android:layout_height="wrap_content" android:nestedScrollingEnabled="false" />
+            <TextView android:id="@+id/tvHomeEmpty" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:padding="@dimen/space_24" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface_secondary" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:layout_marginBottom="@dimen/space_8" android:text="服务" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_surface" android:textStyle="bold" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardTraining" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="@dimen/space_8" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardCornerRadius="@dimen/radius_12"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_16"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="训练视频" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="查看示范训练" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_surface_secondary"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardPsychology" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardCornerRadius="@dimen/radius_12"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_16"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="心理助手" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AI 陪伴，倾听心声" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_surface_secondary"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:orientation="horizontal">
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="@dimen/space_8" android:layout_weight="1" android:alpha="0.5" android:enabled="false" app:cardCornerRadius="@dimen/radius_12"><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/space_16" android:text="病友社区\n即将开放" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface_secondary" /></com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:alpha="0.5" android:enabled="false" app:cardCornerRadius="@dimen/radius_12"><TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/space_16" android:text="医生反馈\n即将开放" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface_secondary" /></com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- 任务 1 (绿色) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_12"
-                app:cardCornerRadius="@dimen/radius_12"
-                app:cardElevation="@dimen/elevation_1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- 模拟 border-l-4 (绿色条) -->
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/brand_patient_primary_light"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/space_16">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/space_12">
-
-                            <!-- 图标背景 -->
-                            <FrameLayout
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/shape_circle_green_light">
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_activity"
-                                    app:tint="@color/brand_patient_primary"/>
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="@dimen/space_12"
-                                android:orientation="vertical">
-                                <TextView android:text="上肢功能训练" android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                                <TextView android:text="建议时长：30分钟" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="开始"
-                                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                                android:paddingHorizontal="@dimen/space_12"
-                                android:paddingVertical="@dimen/space_4"
-                                android:background="@drawable/bg_btn_green_small"/>
-                        </LinearLayout>
-
-                        <!-- 时间 -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-                            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_clock" app:tint="@color/on_surface_secondary"/>
-                            <TextView android:text="上午 10:00 - 10:30" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:layout_marginStart="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        </LinearLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:layout_marginBottom="@dimen/space_8" android:text="本周康复进度" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_surface" android:textStyle="bold" />
+            <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="@dimen/radius_12">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_16">
+                    <TextView android:id="@+id/tvWeekProgressPercent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textColor="@color/brand_patient_primary" android:textStyle="bold" />
+                    <ProgressBar android:id="@+id/progressWeek" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="12dp" android:layout_marginTop="@dimen/space_8" android:progressDrawable="@drawable/custom_progress_bar_green" />
+                    <TextView android:id="@+id/tvWeekCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_surface_secondary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:baselineAligned="false" android:orientation="horizontal">
+                        <include android:id="@+id/homeWeekBar1" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                        <include android:id="@+id/homeWeekBar2" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                        <include android:id="@+id/homeWeekBar3" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                        <include android:id="@+id/homeWeekBar4" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                        <include android:id="@+id/homeWeekBar5" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                        <include android:id="@+id/homeWeekBar6" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                        <include android:id="@+id/homeWeekBar7" layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- 任务 2 (黄色) - 可以复用上面的结构，只需改颜色 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_24"
-                app:cardCornerRadius="@dimen/radius_12"
-                app:cardElevation="@dimen/elevation_1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- 模拟 border-l-4 (黄色条) -->
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/warning"/> <!-- yellow-400 -->
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/space_16">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/space_12">
-
-                            <!-- 黄色背景圆圈 -->
-                            <FrameLayout
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/shape_circle_yellow_light"> <!-- 需新建 yellow_light -->
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_activity"
-                                    app:tint="@color/warning"/> <!-- yellow-600 -->
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="@dimen/space_12"
-                                android:orientation="vertical">
-                                <TextView android:text="下肢平衡练习" android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                                <TextView android:text="建议时长：20分钟" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="待完成"
-                                android:textColor="@color/warning" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                                android:paddingHorizontal="@dimen/space_12"
-                                android:paddingVertical="@dimen/space_4"
-                                android:background="@drawable/bg_btn_outline_yellow"/> <!-- 需新建 -->
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-                            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_clock" app:tint="@color/on_surface_secondary"/>
-                            <TextView android:text="下午 14:00 - 14:20" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:layout_marginStart="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- C. 功能卡片网格 (2x2) -->
-            <!-- 行 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/space_16">
-
-                <!-- 心理助手 (紫) -->
-                <LinearLayout
-                    android:id="@+id/cardPsychology"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/space_8"
-                    android:background="@drawable/bg_gradient_pink"
-                    android:orientation="vertical"
-                    android:padding="@dimen/space_16"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_purple_light">
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_psychology" android:layout_gravity="center" app:tint="@color/primary"/>
-                        </FrameLayout>
-                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" app:tint="@color/primary"/>
-                    </LinearLayout>
-
-                    <TextView android:text="心理助手" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:text="AI陪伴，倾听心声" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_surface_secondary" android:layout_marginBottom="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_message" app:tint="@color/primary"/>
-                        <TextView android:text="随时可用" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/brand_doctor_primary_dark" android:layout_marginStart="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- 视频库 (蓝) -->
-                <LinearLayout
-                    android:id="@+id/cardTraining"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/space_8"
-                    android:background="@drawable/bg_gradient_blue"
-                    android:orientation="vertical"
-                    android:padding="@dimen/space_16"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_blue_light">
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_video" android:layout_gravity="center" app:tint="@color/primary"/>
-                        </FrameLayout>
-                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" app:tint="@color/info"/>
-                    </LinearLayout>
-
-                    <TextView android:text="训练视频库" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:text="专业指导视频" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_surface_secondary" android:layout_marginBottom="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_play" app:tint="@color/primary"/>
-                        <TextView android:text="120+ 视频" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/brand_doctor_primary_dark" android:layout_marginStart="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:layout_marginBottom="@dimen/space_8" android:text="快捷功能" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textColor="@color/on_surface" android:textStyle="bold" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="@dimen/space_8" android:layout_weight="1" android:alpha="0.65" android:enabled="false" android:gravity="center" android:padding="@dimen/space_16" android:text="训练日历\n即将开放" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_surface" />
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="@dimen/space_8" android:layout_weight="1" android:alpha="0.65" android:enabled="false" android:gravity="center" android:padding="@dimen/space_16" android:text="健康数据\n即将开放" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_surface" />
+                <TextView android:id="@+id/cardRehab" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="?attr/selectableItemBackground" android:clickable="true" android:focusable="true" android:gravity="center" android:padding="@dimen/space_16" android:text="康复中心" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/brand_patient_primary_dark" />
             </LinearLayout>
-
-            <!-- 行 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/space_24">
-
-                <!-- 病友社区 (橙) -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/space_8"
-                    android:background="@drawable/bg_gradient_yellow"
-                    android:orientation="vertical"
-                    android:padding="@dimen/space_16">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_orange_light">
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_users" android:layout_gravity="center" app:tint="@color/warning"/>
-                        </FrameLayout>
-                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_chevron_right" app:tint="@color/warning"/>
-                    </LinearLayout>
-                    <TextView android:text="病友社区" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:text="分享经验，互相鼓励" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_surface_secondary" android:layout_marginBottom="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_trophy" app:tint="@color/warning"/>
-                        <TextView android:text="排行榜" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/warning" android:layout_marginStart="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- 医生反馈 (青) -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/space_8"
-                    android:background="@drawable/bg_gradient_teal"
-                    android:orientation="vertical"
-                    android:padding="@dimen/space_16">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <FrameLayout android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/shape_circle_teal_light">
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_stethoscope" android:layout_gravity="center" app:tint="@color/success"/>
-                        </FrameLayout>
-                        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                        <!-- 红色徽标 -->
-                        <TextView android:text="3" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_primary" android:background="@drawable/shape_circle_red" android:paddingHorizontal="@dimen/space_4" android:paddingVertical="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                    <TextView android:text="医生反馈" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:text="李医生的专业建议" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/on_surface_secondary" android:layout_marginBottom="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical">
-                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_message" app:tint="@color/success"/>
-                        <TextView android:text="3条新消息" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" android:textColor="@color/brand_patient_primary_deep" android:layout_marginStart="@dimen/space_4" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- D. 康复进度 (图表) -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="本周康复进度"
-                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/space_16"/>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_24"
-                app:cardCornerRadius="@dimen/radius_12"
-                app:cardElevation="@dimen/elevation_1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/space_24">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="@dimen/space_16">
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <TextView android:text="本周完成率" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                            <TextView android:text="85%" android:textColor="@color/brand_patient_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                        </LinearLayout>
-                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/ic_trending_up" app:tint="@color/brand_patient_primary_light"/>
-                    </LinearLayout>
-
-                    <!-- 水平进度条 -->
-                    <ProgressBar
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="12dp"
-                        android:progress="85"
-                        android:progressDrawable="@drawable/custom_progress_bar_green"
-                        android:layout_marginBottom="@dimen/space_12"/>
-
-                    <TextView android:text="已完成 6/7 项训练任务" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/surface_variant" android:layout_marginVertical="@dimen/space_16"/>
-
-                    <!-- 周柱状图 (复用之前的 item_week_bar) -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                        <include layout="@layout/item_week_bar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- E. 快捷功能 -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="快捷功能"
-                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/space_16"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- 按钮 1 -->
-                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/elevation_1" android:layout_marginEnd="@dimen/space_8">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="@dimen/space_16">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_calendar" app:tint="@color/brand_patient_primary_light"/>
-                        <TextView android:text="训练日历" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- 按钮 2 -->
-                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/elevation_1" android:layout_marginEnd="@dimen/space_8">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="@dimen/space_16">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_activity" app:tint="@color/brand_patient_primary_light"/>
-                        <TextView android:text="健康数据" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- 按钮 3 -->
-                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" app:cardCornerRadius="@dimen/radius_12" app:cardElevation="@dimen/elevation_1">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="@dimen/space_16">
-                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_video" app:tint="@color/brand_patient_primary_light"/>
-                        <TextView android:text="康复中心" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" android:textColor="@color/on_surface" android:layout_marginTop="@dimen/space_8" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
