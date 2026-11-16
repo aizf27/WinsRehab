@@ -153,7 +153,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:layout_marginTop="@dimen/space_24"
                 android:layout_marginBottom="@dimen/space_12"
                 android:text="核心功能" />
@@ -335,7 +335,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/SectionTitle"
+                    style="@style/Widget.WinsRehab.SectionTitle"
                     android:layout_weight="1"
                     android:text="今日任务"
                     android:layout_marginBottom="0dp"/>

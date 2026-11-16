@@ -136,7 +136,7 @@
 
             <!-- ================= 基本信息板块 ================= -->
             <TextView
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:text="基本信息" />
 
             <androidx.cardview.widget.CardView
@@ -161,7 +161,7 @@
 
             <!-- ================= 康复信息板块 ================= -->
             <TextView
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:text="康复信息" />
 
             <androidx.cardview.widget.CardView
@@ -185,7 +185,7 @@
 
             <!-- ================= 设置板块 ================= -->
             <TextView
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:text="设置" />
 
             <androidx.cardview.widget.CardView

@@ -94,13 +94,13 @@
 
 > 依赖：第 1–3 组（对话框内的按钮需第 3 组就绪）。
 
-- [ ] 4.1 建立加载态、空态、错误态三个共享布局；把占位与三态文案上收到 `ui/common/UiTexts.kt`（`placeholderText`/`emptyText`/`errorText` 从 `ui/main/patient/main/RehabFormatter.kt` 迁出，`RehabFormatter` 只留康复页格式化），`RehabFormatterTest` 中这三项断言迁到 `app/src/test/.../ui/common/UiTextsTest.kt` [spec:ui-foundation#加载态、空态、错误态与占位口径统一]
-- [ ] 4.2 建立分区标题样式与「标签 + 值」信息行布局 [spec:ui-foundation#结构化信息与导航容器的统一形态]
-- [ ] 4.3 建立确认式、三选一式、底部弹层三种对话框封装，统一由主题渲染 [spec:ui-foundation#结构化信息与导航容器的统一形态]
-- [ ] 4.4 建立共享顶部栏布局并统一底部导航的结构、图标与选中态取值 [spec:ui-foundation#结构化信息与导航容器的统一形态]
-- [ ] 4.5 测试：三态与占位文案映射单元测试（空态文案、错误文案带原因、占位符唯一且定义在 `ui/common`），并断言 `RehabFormatter` 内不再出现 `--` 字面量 [spec:ui-foundation#加载态、空态、错误态与占位口径统一]
-- [ ] 4.6 测试：结构组件冒烟（三态布局、信息行、三种对话框、顶部栏均可渲染且关键元素可见）[spec:ui-foundation#结构化信息与导航容器的统一形态]
-- [ ] 4.7 质量门：编译、单元测试、结构组件冒烟、Lint 通过 [infra]
+- [x] 4.1 建立加载态、空态、错误态三个共享布局；把占位与三态文案上收到 `ui/common/UiTexts.kt`（`placeholderText`/`emptyText`/`errorText` 从 `ui/main/patient/main/RehabFormatter.kt` 迁出，`RehabFormatter` 只留康复页格式化），`RehabFormatterTest` 中这三项断言迁到 `app/src/test/.../ui/common/UiTextsTest.kt` [spec:ui-foundation#加载态、空态、错误态与占位口径统一]
+- [x] 4.2 建立分区标题样式与「标签 + 值」信息行布局 [spec:ui-foundation#结构化信息与导航容器的统一形态]
+- [x] 4.3 建立确认式、三选一式、底部弹层三种对话框封装，统一由主题渲染 [spec:ui-foundation#结构化信息与导航容器的统一形态]
+- [x] 4.4 建立共享顶部栏布局并统一底部导航的结构、图标与选中态取值 [spec:ui-foundation#结构化信息与导航容器的统一形态]
+- [x] 4.5 测试：三态与占位文案映射单元测试（空态文案、错误文案带原因、占位符唯一且定义在 `ui/common`），并断言 `RehabFormatter` 内不再出现 `--` 字面量 [spec:ui-foundation#加载态、空态、错误态与占位口径统一]
+- [x] 4.6 测试：结构组件冒烟（三态布局、信息行、三种对话框、顶部栏均可渲染且关键元素可见）[spec:ui-foundation#结构化信息与导航容器的统一形态]
+- [x] 4.7 质量门：编译、单元测试、结构组件冒烟、Lint 通过 [infra]
 
 ## 5. 入口与身份页改造（5 页 + 中文文案 + 账号工号解析）
 

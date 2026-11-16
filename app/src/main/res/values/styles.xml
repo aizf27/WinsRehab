@@ -156,4 +156,62 @@
         <item name="android:paddingBottom">@dimen/space_4</item>
     </style>
 
+    <!-- ========== 第 4 组：分区标题与信息行 ========== -->
+    <!-- 分区标题：16sp 粗体 + on_surface，8 处旧 SectionTitle 引用统一改用本样式 -->
+    <style name="Widget.WinsRehab.SectionTitle" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Title16</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">@dimen/space_12</item>
+    </style>
+
+    <!-- ========== 第 4 组：对话框 ========== -->
+    <!-- 对话框本体：surface 实底，底板形状由下面的 ShapeAppearance 统一成 radius_16 -->
+    <style name="Widget.WinsRehab.Dialog" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="backgroundTint">@color/surface</item>
+    </style>
+
+    <!-- 对话框圆角：Material 对话框读 shapeAppearanceMediumComponent，覆盖成 radius_16 -->
+    <style name="ShapeAppearance.WinsRehab.Dialog" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">@dimen/radius_16</item>
+    </style>
+
+    <!-- 对话框主题覆盖：MaterialAlertDialogBuilder 自动套用，圆角/标题/正文/按钮一处生效 -->
+    <style name="ThemeOverlay.WinsRehab.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="alertDialogStyle">@style/Widget.WinsRehab.Dialog</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.WinsRehab.Dialog</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.WinsRehab.Title16</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.WinsRehab.Body14</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.WinsRehab.Button.Text</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.WinsRehab.Button.Text</item>
+    </style>
+
+    <!-- 底部弹层圆角：四角统一 radius_16（下沿在屏幕外，视觉上只看到上沿） -->
+    <style name="ShapeAppearance.WinsRehab.BottomSheet" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerSize">@dimen/radius_16</item>
+    </style>
+
+    <!-- 底部弹层本体：surface 实底 + 统一圆角，去掉 Material 默认的角部叠加 -->
+    <style name="Widget.WinsRehab.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.WinsRehab.BottomSheet</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+    </style>
+
+    <!-- 底部弹层主题覆盖：BottomSheetDialog(context, 本样式) 一处套用 -->
+    <style name="ThemeOverlay.WinsRehab.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.WinsRehab.BottomSheet</item>
+    </style>
+
+    <!-- ========== 第 4 组：底部导航 ========== -->
+    <!-- 双端底部导航共用结构：surface 底、1dp 阴影、24dp 图标、12sp 标签；选中色仍由各端 selector 提供 -->
+    <style name="Widget.WinsRehab.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="android:elevation">@dimen/elevation_1</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.WinsRehab.Body12</item>
+        <item name="itemRippleColor">?attr/colorPrimary</item>
+    </style>
+
 </resources>

@@ -20,6 +20,8 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- 主按钮底色默认走医生端蓝，患者端主题自行覆盖成深绿 -->
         <item name="winsButtonPrimaryTint">@color/btn_primary_bg_doctor</item>
+        <!-- 所有 Material 对话框统一走这套覆盖，圆角/按钮/字号一处生效 -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.WinsRehab.Dialog</item>
     </style>
 
     <!-- 医生端：蓝 -->
@@ -66,16 +68,6 @@
         <item name="android:background">@drawable/shape_btn_round</item>
 
     </style>
-
-        <!-- 板块标题样式 -->
-        <style name="SectionTitle">
-            <item name="android:layout_width">wrap_content</item>
-            <item name="android:layout_height">wrap_content</item>
-            <item name="android:layout_marginBottom">@dimen/space_12</item>
-            <item name="android:textColor">@color/on_surface</item>
-            <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Title16</item>
-            <item name="android:textStyle">bold</item>
-        </style>
 
         <!-- 白色卡片容器样式 -->
         <style name="InfoCardStyle">

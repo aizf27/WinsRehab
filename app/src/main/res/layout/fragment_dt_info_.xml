@@ -133,7 +133,7 @@
 
             <!-- === 执业信息 === -->
             <TextView
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:text="执业信息" />
 
             <androidx.cardview.widget.CardView
@@ -158,7 +158,7 @@
 
             <!-- === 联系方式 === -->
             <TextView
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:text="联系方式" />
 
             <androidx.cardview.widget.CardView
@@ -240,7 +240,7 @@
 
             <!-- === 设置 === -->
             <TextView
-                style="@style/SectionTitle"
+                style="@style/Widget.WinsRehab.SectionTitle"
                 android:text="设置" />
 
             <androidx.cardview.widget.CardView
