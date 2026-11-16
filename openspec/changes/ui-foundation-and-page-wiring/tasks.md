@@ -4,6 +4,52 @@
 > 每组可独立实施：组内全部完成后代码可编译、可启动、本组测试通过。
 > 每个源文件在本文档中只出现一次，避免跨组并行修改同一文件。
 
+---
+
+## 0. 执行规则（开工前必读）
+
+> 本文件是**唯一执行清单**。`design.md` 是唯一技术手册（只查对应 D 段）；`clarify.md`、`proposal.md`、`.review/issues.md`、三份 `specs/` 已冻结，不再更新、不再依据。
+> **不再走 openspec 编排流程**（无 implement/review 步骤、无必做项申报、无子代理）。每组：开工说明 5 行 → 直接实施 → 自检 → 一次中文 commit。
+
+### 0.1 三条硬红线（不可越）
+
+- **零 DDL**：不改数据库 schema、实体字段、DAO 查询语义。
+- **零业务规则变更**：`TaskStatus` / `PlanStatus` / `VideoReviewStatus` / `UploadStatus` / `BindingStatus` 的取值与流转一个字都不动。
+- **删除必须与使用点同组同提交**：Compose 与模板页、坏样式与其引用点、字符串与其最后引用布局。这是唯一会让中途编译崩的操作类型。
+
+### 0.2 执行边界（每组的目录 / 包白名单）
+
+- **组 1**：`res/{values,layout,color,drawable}`；包 `ui/**`、`test/**/ui/**`
+- **组 2**：`app/src/main`（含 AndroidManifest）、`res/{values,color}`、`gradle/`；包 `com.example.winsrehab` 根、`ui/**`、`test/**`
+- **组 3**：`res/{layout,values,drawable}`；包 `ui/common/**`、`ui/main/patient/adapter/**`、`test/**/ui/common/**`
+- **组 4**：同上目录；包 `ui/common/**`、`ui/main/patient/main/**`（RehabFormatter 拆分）
+- **组 5**：`res/{layout,values,navigation}`、`app/src/androidTest`；包 `selectLog`、`doctor/login`、`patient/login`、`patient/binding`、`doctor/application`、`doctor/home`、`doctor/plan`、`ui/common`
+- **组 6**：`res/{navigation,layout,values}`、`app/src/androidTest`；包 `doctor/home`、`doctor/plan`、`doctor/adapter`、`ui/common`
+- **组 7**：`res/{layout,values}`、`app/src/androidTest`；包 `doctor/home`、`doctor/adapter`、`patient/info`、`ui/common`
+- **组 8**：`res/{layout,navigation,values}`、`app/src/androidTest`；包 `doctor/home`、`doctor/info`、`doctor/plan`、`doctor/adapter`、`ui/common`
+- **组 9**：`res/{layout,navigation,values}`、`app/src/androidTest`；包 `patient/main`、`patient/adapter`、`patient/info`、`ui/common`
+- **组 10**：`app/src/main`、`res/**`；包 `patient/psychology`、`patient/Video`、`com.example.winsrehab` 根、`patient/adapter`、`app/src/androidTest`
+
+越界必须先说明理由并取得同意，不得默默改边界外文件。
+
+### 0.3 人工审查前的自检（按顺序，能省则省）
+
+- **L0 编译**（必做）：`gradlew assembleDebug`
+- **L1 检索断言**（必做，每组 2–4 条）：用 grep 证明「本组该消失的东西真的消失了」，断言与结果写进 commit 正文
+- **L2 单测**（必做）：`gradlew testDebugUnitTest --rerun-tasks`。**不加 `--rerun-tasks` 会出现假绿**（测试不把 `res` 当输入，改资源后直接 UP-TO-DATE）
+- **L3 按需**：lint（对照基线 4 条 error 判新增）、手工起模拟器看页面
+- **不做**：必做项申报、覆盖率、e2e、深扫
+
+### 0.4 提交约定
+
+每组一次中文 commit，正文包含：改动文件（按页面归类）＋ L0/L1/L2 结果 ＋ 「人工只需看哪几处」。
+
+### 0.5 新会话如何承接
+
+新会话上下文不继承。开工前依次读：**本文件顶部 0 节** → `HANDOVER.md`（进度与坑） → `design.md` 对应 D 段。读完即可直接实施当前组，无需重建上下文。
+
+---
+
 ## 1. 界面取值表
 
 > 依赖：无（本组是全部后续组的底座）。
