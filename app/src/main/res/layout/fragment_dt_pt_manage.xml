@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 患者管理页：标题 + 患者总数 + 已绑定患者列表，搜索框（无数据支撑）已移除 -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_page_gradient_blue">
 
-    <!-- === 顶部固定区域 (Header) === -->
+    <!-- 顶部固定区：标题 + 与首页同口径的患者总数 -->
     <LinearLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
@@ -18,418 +19,48 @@
         android:padding="@dimen/space_16"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 标题行 -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:text="患者管理"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
+            android:textColor="@color/brand_doctor_primary_dark"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="患者管理"
-                android:textColor="@color/brand_doctor_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- 搜索栏 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="@dimen/space_12"
-            android:background="@drawable/bg_search_bar"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/space_12">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_search"
-                app:tint="@color/on_surface_tertiary" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="搜索患者姓名、诊断..."
-                android:paddingStart="@dimen/space_8"
-                android:textColor="@color/on_surface"
-                android:textColorHint="@color/on_surface_tertiary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_patient_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+            android:textColor="@color/on_surface_secondary"
+            tools:text="共 0 位患者" />
     </LinearLayout>
 
-    <!-- === 患者列表 === -->
+    <!-- 患者列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_patients"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:padding="@dimen/space_8"
-        app:layout_constraintTop_toBottomOf="@id/header_layout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <!-- 空状态提示 -->
-    <LinearLayout
-        android:id="@+id/empty_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/header_layout"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_users"
-            android:alpha="0.3"
-            app:tint="@color/on_surface_tertiary"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_16"
-            android:text="还没有患者" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-            android:textColor="@color/on_surface_secondary"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_8"
-            android:text="等待患者申请绑定" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-            android:textColor="@color/on_surface_tertiary"/>
-    </LinearLayout>
-
-    <!-- 加载中 -->
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/header_layout" />
 
-    <!-- ========================================
-         以下是UI参考示例（已注释，保留作为开发参考）
-         ======================================== -->
-
-    <!--
-    <androidx.core.widget.NestedScrollView
+    <!-- 三态：加载中 / 空态，两个都换成统一组件 -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/space_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_layout">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/space_16">
+        <include
+            android:id="@+id/state_patients_loading"
+            layout="@layout/widget_state_loading" />
 
-            <!- 1. 数据概览 Grid (4列) ->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <!- 块1: 总患者 ->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/space_4"
-                    app:cardCornerRadius="@dimen/radius_12"
-                    app:cardElevation="@dimen/elevation_1"
-                    app:contentPadding="@dimen/space_12">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_users" app:tint="@color/primary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="15" android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="总患者" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!- 块2: 待审核 ->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/space_4"
-                    app:cardCornerRadius="@dimen/radius_12"
-                    app:cardElevation="@dimen/elevation_1"
-                    app:contentPadding="@dimen/space_12">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_play_circle" app:tint="@color/primary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="6" android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="待审核" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!- 块3: 新反馈 ->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/space_4"
-                    app:cardCornerRadius="@dimen/radius_12"
-                    app:cardElevation="@dimen/elevation_1"
-                    app:contentPadding="@dimen/space_12">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_message_square" app:tint="@color/warning" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8" android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="新反馈" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!- 块4: 待制定 ->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/space_4"
-                    app:cardCornerRadius="@dimen/radius_12"
-                    app:cardElevation="@dimen/elevation_1"
-                    app:contentPadding="@dimen/space_12">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_clipboard_list" app:tint="@color/brand_patient_primary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="待制定" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!- 2. 标签切换 ->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_24"
-                android:layout_marginBottom="@dimen/space_16"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_tab_active"
-                        android:paddingHorizontal="@dimen/space_16"
-                        android:paddingVertical="@dimen/space_8"
-                        android:text="全部患者"
-                        android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/space_8"
-                        android:background="@drawable/bg_tab_inactive"
-                        android:paddingHorizontal="@dimen/space_16"
-                        android:paddingVertical="@dimen/space_8"
-                        android:text="待审核视频 (3)"
-                        android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/space_8"
-                        android:background="@drawable/bg_tab_inactive"
-                        android:paddingHorizontal="@dimen/space_16"
-                        android:paddingVertical="@dimen/space_8"
-                        android:text="患者反馈 (2)"
-                        android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!- 示例 A: 普通患者卡片 - UI参考样式 ->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/space_12"
-                app:cardCornerRadius="@dimen/radius_12"
-                app:cardElevation="@dimen/elevation_1"
-                app:cardBackgroundColor="@color/surface"
-                app:contentPadding="@dimen/space_16">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <FrameLayout
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:background="@drawable/bg_chip"
-                            android:backgroundTint="@color/primary_container">
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_user"
-                                app:tint="@color/primary" />
-                        </FrameLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="@dimen/space_12"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="张先生"
-                                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/space_8"
-                                    android:text="58岁"
-                                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="脑卒中康复"
-                                android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="最后活跃：2小时前"
-                                android:textColor="@color/on_surface_tertiary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:rotation="90"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="@color/on_surface_tertiary" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space_12"
-                        android:layout_marginBottom="@dimen/space_4"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="康复进度" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                            android:textColor="@color/on_surface_secondary"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="85%" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                            android:textColor="@color/primary"/>
-                    </LinearLayout>
-
-                    <ProgressBar
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:progress="85"
-                        android:progressTint="@color/info"
-                        android:backgroundTint="@color/divider"
-                        android:progressBackgroundTint="@color/divider"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/space_12"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_chip"
-                            android:backgroundTint="@color/primary_container"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="@dimen/space_8"
-                            android:paddingVertical="@dimen/space_4">
-                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_play_circle" app:tint="@color/primary"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_4" android:text="2个新视频" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_8"
-                            android:background="@drawable/bg_chip"
-                            android:backgroundTint="@color/notice_container"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="@dimen/space_8"
-                            android:paddingVertical="@dimen/space_4">
-                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_message_square" app:tint="@color/warning"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_4" android:text="1条新反馈" android:textColor="@color/warning" android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!- 分割线 ->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/surface_variant"
-                        android:layout_marginTop="@dimen/space_12"
-                        android:layout_marginBottom="@dimen/space_12"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="查看计划" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                            android:backgroundTint="@color/info"
-                            android:textColor="@color/on_primary"
-                            android:layout_marginEnd="@dimen/space_4"/>
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="审核视频" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                            android:backgroundTint="@color/primary"
-                            android:textColor="@color/on_primary"
-                            android:layout_marginHorizontal="@dimen/space_4"/>
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="回复反馈" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                            android:backgroundTint="@color/warning"
-                            android:textColor="@color/on_primary"
-                            android:layout_marginStart="@dimen/space_4"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-    -->
-
+        <include
+            android:id="@+id/state_patients_empty"
+            layout="@layout/widget_state_empty"
+            android:visibility="gone" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

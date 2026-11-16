@@ -107,4 +107,11 @@
     <string name="doctor_home_feedback">患者反馈</string>
     <string name="doctor_home_coming_soon">即将开放</string>
     <string name="doctor_home_applications_empty">暂无新的患者申请</string>
+    <string name="doctor_patient_manage_total">共 %1$d 位患者</string>
+    <string name="doctor_patient_manage_empty">还没有已绑定的患者，患者确认绑定后会出现在这里</string>
+    <string name="doctor_patient_manage_missing_code">医生账号缺失，请重新登录后再试</string>
+    <string name="patient_card_progress_label">康复进度</string>
+    <string name="patient_card_progress_value">%1$d%%</string>
+    <string name="patient_card_avatar_desc">患者头像</string>
+    <string name="patient_card_alert_desc">异常提醒</string>
 </resources>

@@ -1,117 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--    卡片布局-->
-<androidx.cardview.widget.CardView
+<!-- 患者卡：姓名 + 康复阶段徽标 + 诊断 + 总体进度，字段全部来自 Patient 表 -->
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.WinsRehab.Card.Clickable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/space_4"
-    app:cardCornerRadius="@dimen/radius_12"
-    app:cardElevation="@dimen/elevation_1"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_margin="@dimen/space_4">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="@dimen/space_12">
 
-        <!-- 左边：头像  居中裁剪-->
-<!--        对齐父容器左边-->
+        <!-- 左：头像 -->
         <ImageView
             android:id="@+id/img_avatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_alignParentStart="true"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/shape_rounded_card_light"
-            android:contentDescription="患者头像"
+            android:contentDescription="@string/patient_card_avatar_desc"
             android:scaleType="centerCrop"
-            android:src="@android:drawable/sym_def_app_icon" />
+            android:src="@drawable/img_tx" />
 
-        <!-- 中间：姓名 + 分期 + 进度条 -->
+        <!-- 中：姓名 + 阶段徽标 / 诊断 / 进度 -->
         <LinearLayout
-            android:id="@+id/mid_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_12"
-            android:layout_marginEnd="@dimen/space_8"
-            android:layout_toStartOf="@id/right_container"
-            android:layout_toEndOf="@id/img_avatar"
+            android:layout_weight="1"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="张三" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_stage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="康复阶段：痉挛期"
-                android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_4"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    android:textColor="@color/on_surface"
+                    android:textStyle="bold"
+                    tools:text="张三" />
+
+                <include
+                    android:id="@+id/badge_stage"
+                    layout="@layout/widget_status_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_8" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_diagnosis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                android:textColor="@color/on_surface_secondary"
+                tools:text="脑卒中后遗症" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_card_progress_label"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Caption11"
+                    android:textColor="@color/on_surface_secondary" />
 
                 <ProgressBar
                     android:id="@+id/progress_training"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
-                    android:layout_height="8dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="@dimen/space_8"
                     android:layout_weight="1"
-                    android:progress="60"
+                    android:max="100"
+                    android:progress="0"
                     android:progressTint="@color/success" />
 
                 <TextView
                     android:id="@+id/tv_progress_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_4"
-                    android:text="60%" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
+                    android:layout_marginStart="@dimen/space_8"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface"
+                    android:textStyle="bold"
+                    tools:text="60%" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 右边：AI 评估 + 异常提醒 -->
-        <LinearLayout
-            android:id="@+id/right_container"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/img_ai_eval"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:contentDescription="最新AI评估"
-                android:src="@android:drawable/ic_menu_info_details" />
-
-            <TextView
-                android:id="@+id/tv_ai_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_4"
-                android:text="肌力↑"
-                android:textColor="@color/brand_patient_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Body12" />
-
-            <!-- 异常提醒红点 -->
-            <ImageView
-                android:id="@+id/img_alert"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="@dimen/space_8"
-                android:contentDescription="异常提醒"
-                android:src="@drawable/shape_red_dot"
-                android:visibility="gone" />
-        </LinearLayout>
-
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+        <!-- 右：异常提醒红点，无提醒时不占位 -->
+        <ImageView
+            android:id="@+id/img_alert"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="@dimen/space_8"
+            android:contentDescription="@string/patient_card_alert_desc"
+            android:src="@drawable/shape_red_dot"
+            android:visibility="gone" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

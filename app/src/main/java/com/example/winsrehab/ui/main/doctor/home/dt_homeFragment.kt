@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.R
@@ -23,7 +23,8 @@ class dt_homeFragment : Fragment() {
 
     private var _binding: FragmentDtHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DtHomeVM by viewModels()
+    // 与患者管理页共用同一个 VM，患者数只有一份来源
+    private val viewModel: DtHomeVM by activityViewModels()
 
     private lateinit var applicationAdapter: HomeApplicationAdapter
     private var doctorCode: String = ""
@@ -61,7 +62,8 @@ class dt_homeFragment : Fragment() {
 
     // 欢迎卡三列统计：患者数接患者查询，待处理接待办计数
     private fun setupSummary() {
-        viewModel.patients.observe(viewLifecycleOwner) { list ->
+        // 只统计已绑定患者，和患者管理列表同一口径
+        viewModel.activePatients.observe(viewLifecycleOwner) { list ->
             binding.tvPatientCount.text = list.size.toString()
             binding.tvManagePatientsSubtitle.text =
                 getString(R.string.doctor_home_manage_patients_subtitle, list.size)

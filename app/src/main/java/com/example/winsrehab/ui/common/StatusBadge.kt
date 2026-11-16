@@ -38,6 +38,18 @@ object StatusBadge {
         )
     }
 
+    // 康复阶段徽标：三档阶段配语义色，未设置 / 脏值各走中性兜底，脏值只在这里落日志
+    fun bindStage(badge: TextView, stage: String) {
+        val visual = PatientStageStyle.visualOf(stage)
+        if (visual == StageVisual.UNKNOWN) Log.e(TAG, "未登记的康复阶段，按待核对徽标渲染: $stage")
+        apply(
+            badge,
+            PatientStageStyle.labelOf(visual),
+            PatientStageStyle.labelColorOf(visual),
+            PatientStageStyle.containerColorOf(visual)
+        )
+    }
+
     // 绑定状态徽标：等待确认 / 已通过 / 已拒绝 / 未绑定，配色沿用容器档
     fun bindBinding(badge: TextView, status: String) {
         when (status) {
