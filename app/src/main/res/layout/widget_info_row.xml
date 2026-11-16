@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 信息行：左侧标签 + 右侧值，值为空时由页面写入 UiTexts.placeholderText()，不出现空值留白 -->
+<!-- 信息行：可选图标 + 左侧标签 + 右侧值，值为空时由页面写入 UiTexts.placeholderText()，不出现空值留白 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/infoRow"
     android:layout_width="match_parent"
@@ -8,8 +9,21 @@
     android:gravity="center_vertical"
     android:minHeight="48dp"
     android:orientation="horizontal"
+    android:paddingStart="@dimen/space_16"
     android:paddingTop="@dimen/space_12"
+    android:paddingEnd="@dimen/space_16"
     android:paddingBottom="@dimen/space_12">
+
+    <!-- 行首图标：默认隐藏，需要图标的页面在代码里设图并显示（配色随端不同） -->
+    <ImageView
+        android:id="@+id/ivInfoIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/space_12"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        tools:src="@drawable/ic_phone"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tvInfoLabel"
@@ -33,4 +47,16 @@
         android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
         android:textColor="@color/on_surface"
         tools:text="--" />
+
+    <!-- 行尾指示箭头：默认隐藏，可编辑的页面在代码里显示，提示整行可点 -->
+    <ImageView
+        android:id="@+id/ivInfoChevron"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/space_8"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_chevron_right"
+        android:visibility="gone"
+        app:tint="@color/on_surface_tertiary"
+        tools:visibility="visible" />
 </LinearLayout>
