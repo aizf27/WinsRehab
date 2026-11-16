@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 状态条：卡片顶部的语义色横条，使用处用 backgroundTint 换成语义色（默认灰档） -->
+<!-- 上两角对齐卡片圆角，避免在卡片直角处露出方块 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/surface_variant" />
+    <corners
+        android:topLeftRadius="@dimen/radius_12"
+        android:topRightRadius="@dimen/radius_12" />
+</shape>

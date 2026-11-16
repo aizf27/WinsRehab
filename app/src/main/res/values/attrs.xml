@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主按钮底色：由主题决定品牌色，医生端蓝、患者端深绿；两套 selector 都带禁用态 -->
+    <attr name="winsButtonPrimaryTint" format="reference|color" />
+</resources>

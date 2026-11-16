@@ -18,6 +18,8 @@
         <item name="android:textColorSecondary">@color/on_surface_secondary</item>
         <item name="android:statusBarColor">@color/surface</item>
         <item name="android:windowLightStatusBar">true</item>
+        <!-- 主按钮底色默认走医生端蓝，患者端主题自行覆盖成深绿 -->
+        <item name="winsButtonPrimaryTint">@color/btn_primary_bg_doctor</item>
     </style>
 
     <!-- 医生端：蓝 -->
@@ -34,6 +36,8 @@
         <item name="colorPrimaryVariant">@color/brand_patient_primary_deep</item>
         <item name="colorSecondary">@color/brand_patient_primary_dark</item>
         <item name="colorSecondaryVariant">@color/brand_patient_primary_deep</item>
+        <!-- 患者端主按钮：深绿实底 -->
+        <item name="winsButtonPrimaryTint">@color/btn_primary_bg_patient</item>
     </style>
 
     <!-- 过渡主题：仍需系统标题栏与返回箭头的二级页，第 5 组补顶部栏后切换回 Doctor -->
@@ -50,6 +54,7 @@
         <item name="android:colorBackground">@color/surface</item>
         <item name="android:textColorPrimary">@color/on_surface</item>
         <item name="android:textColorSecondary">@color/on_surface_secondary</item>
+        <item name="winsButtonPrimaryTint">@color/btn_primary_bg_doctor</item>
     </style>
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 统一输入框：标签 + 必填标记 + 输入控件 + 错误/辅助文案，四部分都在这一份布局里，页面不再直接堆裸 EditText -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 标签行：标签文案 + 必填红星（非必填时由 TextField 隐藏） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvFieldLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/on_surface"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+            tools:text="工号" />
+
+        <TextView
+            android:id="@+id/tvFieldRequired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_4"
+            android:text="*"
+            android:textColor="@color/danger"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body14" />
+    </LinearLayout>
+
+    <!-- 输入区：描边、圆角、错误态与辅助文案都由 Widget.WinsRehab.TextInputLayout 统一 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilField"
+        style="@style/Widget.WinsRehab.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_8"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        tools:hint="请输入工号">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/on_surface"
+            android:textColorHint="@color/on_surface_tertiary"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Title16" />
+    </com.google.android.material.textfield.TextInputLayout>
+</merge>

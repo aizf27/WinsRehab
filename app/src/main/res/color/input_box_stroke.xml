@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 输入框描边色：聚焦用品牌主色，其余用 divider，错误态由 TextInputLayout 自己覆盖 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="@color/primary" />
+    <item android:color="@color/divider" />
+</selector>

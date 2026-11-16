@@ -1,83 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<!-- 任务卡：带状态条卡片 + 状态徽标 + 小档主按钮，状态视觉全部来自 ui/common 的状态映射 -->
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.WinsRehab.Card.StatusBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/space_12"
-    app:cardCornerRadius="@dimen/radius_12"
-    app:cardElevation="@dimen/elevation_1"
-    app:cardBackgroundColor="@color/surface">
+    android:layout_marginBottom="@dimen/space_12">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/space_16"
-        android:gravity="center_vertical">
+        android:orientation="vertical">
 
-        <!-- 状态图标：完成绿勾 / 其余灰圈 -->
-        <ImageView
-            android:id="@+id/imgStatus"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_circle_outline"
-            app:tint="@color/outline" />
+        <!-- 状态条：颜色由 TaskStatusStyle.colorOf 在运行期 tint 成对应语义色 -->
+        <View
+            android:id="@+id/statusStrip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_4"
+            android:background="@drawable/bg_status_strip"
+            android:backgroundTint="@color/status_pending" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/space_12"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvTaskName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="肩关节外展训练"
-                android:textColor="@color/on_surface"
-                android:textStyle="bold" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"/>
+            android:orientation="horizontal"
+            android:padding="@dimen/space_16"
+            android:gravity="center_vertical">
 
             <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTaskName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/on_surface"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    tools:text="肩关节外展训练" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_4"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_clock"
+                        app:tint="@color/on_surface_secondary" />
+
+                    <TextView
+                        android:id="@+id/tvDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_4"
+                        android:textColor="@color/on_surface_secondary"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        tools:text="15 分钟" />
+
+                    <TextView
+                        android:id="@+id/tvPriority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_12"
+                        android:textColor="@color/danger"
+                        android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                        tools:text="重要" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 状态徽标：待完成/已完成/已跳过/待审核/已驳回 -->
+            <include
+                layout="@layout/widget_status_badge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/space_4">
+                android:layout_marginStart="@dimen/space_12" />
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_clock"
-                    app:tint="@color/on_surface_secondary"/>
-                <TextView
-                    android:id="@+id/tvDuration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="15 分钟"
-                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                    android:layout_marginStart="@dimen/space_4"/>
-                <TextView
-                    android:id="@+id/tvPriority"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="重要"
-                    android:textColor="@color/danger" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                    android:layout_marginStart="@dimen/space_12"/>
-            </LinearLayout>
+            <!-- 只有待完成任务显示「开始」 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStartTask"
+                style="@style/Widget.WinsRehab.Button.Primary.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_12"
+                android:text="开始" />
         </LinearLayout>
-
-        <!-- 只有待完成任务显示「开始」 -->
-        <TextView
-            android:id="@+id/btnStartTask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="开始"
-            android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-            android:background="@drawable/bg_btn_green_small"
-            android:paddingHorizontal="@dimen/space_12"
-            android:paddingVertical="@dimen/space_4"/>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
