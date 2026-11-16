@@ -1,12 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.WinsRehab" parent="Theme.MaterialComponents.DayNight.NoActionBar" >
-        <item name="buttonStyle">@style/MyRoundButton</item>
-<!--        <item name="materialButtonStyle">@style/MyRoundButton</item>-->
-
-
+    <!-- 基础主题：Material 组件、无 ActionBar、锁定浅色（不随系统深色） -->
+    <style name="Theme.WinsRehab" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/brand_doctor_primary_dark</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorSecondaryVariant">@color/brand_doctor_primary_dark</item>
+        <item name="colorOnSecondary">@color/on_primary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorError">@color/danger</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorOnBackground">@color/on_surface</item>
+        <item name="android:colorBackground">@color/surface</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_secondary</item>
+        <item name="android:statusBarColor">@color/surface</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <!-- 医生端：蓝 -->
+    <style name="Theme.WinsRehab.Doctor">
+        <item name="colorPrimary">@color/brand_doctor_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_doctor_primary_dark</item>
+        <item name="colorSecondary">@color/brand_doctor_primary</item>
+        <item name="colorSecondaryVariant">@color/brand_doctor_primary_dark</item>
+    </style>
+
+    <!-- 患者端：绿（作主色时用深一档，保证白字过 AA） -->
+    <style name="Theme.WinsRehab.Patient">
+        <item name="colorPrimary">@color/brand_patient_primary_dark</item>
+        <item name="colorPrimaryVariant">@color/brand_patient_primary_deep</item>
+        <item name="colorSecondary">@color/brand_patient_primary_dark</item>
+        <item name="colorSecondaryVariant">@color/brand_patient_primary_deep</item>
+    </style>
+
+    <!-- 过渡主题：仍需系统标题栏与返回箭头的二级页，第 5 组补顶部栏后切换回 Doctor -->
+    <style name="Theme.WinsRehab.Doctor.WithBar" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/brand_doctor_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_doctor_primary_dark</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSecondary">@color/brand_doctor_primary</item>
+        <item name="colorSecondaryVariant">@color/brand_doctor_primary_dark</item>
+        <item name="colorOnSecondary">@color/on_primary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorError">@color/danger</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="android:colorBackground">@color/surface</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_secondary</item>
+    </style>
+
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/outline</item>
         <item name="colorControlActivated">@color/on_surface</item>

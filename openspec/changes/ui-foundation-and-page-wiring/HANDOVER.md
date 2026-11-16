@@ -29,17 +29,14 @@
 1. 重新派一名 `openspec-reviewer` 复核这 4 条（导航标签对比度、`app:` 命名空间守卫、预留令牌登记、`fragment_dt_home.xml` 注释死布局），通过后 `implement` 与 `quality_review` 双双 passed，即可推进任务组 2。
 2. 人工确认这 4 条已修（见上表 `96b8203`），直接以豁免/裁定方式推进。
 
-## 下一步：任务组 2（风险最高的一组）
+## 任务组 2 已完成（双端主题与依赖收敛）
 
-「双端主题与依赖收敛」。**必须同组完成**，否则中间任一提交都会编译失败：
-
-- `Theme.WinsRehab` 的 parent 由 `DayNight` 改 `Theme.MaterialComponents.Light.NoActionBar`（锁浅色）
-- 删 `MainActivity.kt` + `ui/theme/{Color,Type,Theme}.kt` + `AndroidManifest.xml:15-19` 声明
-- 删 Compose 构建项：`compose = true`、整个 `composeOptions` 块、8 条依赖、9 条库条目、4 个版本条目
-- 版本目录加 `material = "1.12.0"` + `libs.material`
-- 删 `AndroidManifest.xml:42-45` 的 `DtInfoActivity` 幽灵声明（组 1 已申请豁免、排期在此）
-- 11 个在用 Activity 改挂新主题，去掉 `Theme.AppCompat.*` 覆盖
-- 修 `MyRoundButton` 坏样式体（只删 `Theme.WinsRehab` 的 `buttonStyle` 默认指向；样式本体留到 10.5 再删，因仍有 5 处按钮 + 2 处 `android:theme` 引用）
+- `Theme.WinsRehab` parent 改 `Theme.MaterialComponents.Light.NoActionBar`（锁浅色）；新增 `Theme.WinsRehab.Doctor`（蓝）与 `Theme.WinsRehab.Patient`（绿）两个 overlay，只换品牌主色。
+- 过渡主题 `Theme.WinsRehab.Doctor.WithBar`（parent `Theme.MaterialComponents.Light`）：`PatientApplicationActivity` 目前仍靠系统标题栏提供标题+返回，第 5 组补 `widget_top_bar` 后改挂 `Theme.WinsRehab.Doctor` 并删掉这个过渡主题。
+- 删 `MainActivity.kt` + `ui/theme/{Color,Type,Theme}.kt` + Manifest 里那条声明；删 Compose 构建项（`compose = true`、`composeOptions` 块、8 条依赖、9 条库条目、4 个版本条目）；版本目录加 `material = "1.12.0"` 与 `implementation(libs.material)`。
+- Manifest：删 `DtInfoActivity` 幽灵声明；activity 声明 11 条，`Theme.AppCompat.*` 计数 0。
+- 坏样式：只删了 `Theme.WinsRehab` 的 `buttonStyle` 默认指向；`MyRoundButton` / `MyCheckBox` 本体仍留着（还有 5 处按钮 + 2 处 `android:theme` 引用），等第 5、10 组替换完再删。
+- 守卫测试 `app/src/test/java/com/example/winsrehab/ui/design/ThemeAndDependencyTest.kt`（5 条：基础主题锁浅色、双端主色不同且取自品牌色、界面主题只指向双端主题且声明 11 条、Compose 零痕迹、material 固定版本）。
 
 ## 已知坑（后续每组都会遇到）
 

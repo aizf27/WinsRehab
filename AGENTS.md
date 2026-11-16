@@ -4,6 +4,17 @@
 
 ---
 
+## 进行中的变更（新会话先看这里）
+
+- 变更名：`ui-foundation-and-page-wiring`（UI 基建 + 页面接线）
+- 分支：`change/ui-foundation-and-page-wiring`；worktree：`.worktree/ui-foundation-and-page-wiring/ws`
+- 进度与规则：读该 worktree 内 `openspec/changes/ui-foundation-and-page-wiring/tasks.md` 顶部「## 0. 执行规则」
+- 技术细节：同目录 `design.md` 的 D1–D8 段
+- 当前：第 1–2 组已完成；下一步第 3 组（基础控件组件）
+- 流程：**不走 openspec 编排**，不再派子代理审查。每组 = 开工说明 → 直接改 → 自检（L0 编译 / L1 检索断言 / L2 单测 `--rerun-tasks`）→ 一次中文 commit
+
+---
+
 ## 项目核心
 
 WinsRehab 是**医患双端康复管理系统**：医生制定康复计划，系统按频率自动生成训练任务，患者执行并上传视频，医生审核反馈，形成康复闭环。

@@ -65,11 +65,11 @@
 
 > 依赖：第 1 组（取值表）。本组结束后双端主题生效，是所有页面改造的前提。
 
-- [ ] 2.1 建立 Material 基础主题（parent 换 `Theme.MaterialComponents.Light.NoActionBar`，**锁定浅色**，不随系统深色），派生医生端（蓝）与患者端（绿）两个子主题，仅覆盖主题色与按钮默认样式 [spec:ui-foundation#双端主题共用取值、仅换主题色]
-- [ ] 2.2 处置 Manifest 里 12 处 `Theme.AppCompat.*` 覆盖：删除 `AndroidManifest.xml:42-45` 指向不存在类的 `DtInfoActivity` 声明，其余 11 个在用 Activity 改挂医生端/患者端主题；4 个底部导航选中态 selector 改引用两端主色 [spec:ui-foundation#双端主题共用取值、仅换主题色]
-- [ ] 2.3 显式声明 Material 组件库（版本目录加 `material = "1.12.0"` 与对应库条目，构建文件加 `implementation(libs.material)`）；同组移除 Compose：删 `buildFeatures` 里的 `compose = true`、整个 `composeOptions` 块、8 条 Compose 依赖声明、版本目录里 9 条 Compose 库条目与 4 个 Compose 版本条目，并删 `MainActivity.kt`、`ui/theme/{Color,Type,Theme}.kt` 与 Manifest 的 `MainActivity` 声明；主题层面只做一步可编译的修正：删掉 `Theme.WinsRehab` 里指向坏样式的 `buttonStyle` 默认值（改由 Material 默认按钮样式承接）。坏样式本体 `MyRoundButton`（样式体是裸文本）与挂在另一主题家族的 `MyCheckBox`（`parent="Theme.AppCompat.Light"` 是主题不是样式）本组**不能删**——它们仍被 5 处按钮与 2 处 `android:theme` 引用着，删了 AAPT 直接失败；改由第 5 组替换 `activity_dt_log.xml:144,158`、`activity_pt_log.xml:146,160` 与两处 `android:theme`（:132、:133），第 10 组替换 `activity_psychology.xml:43`，最后由 10.5 收尾删除这两个样式定义 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
-- [ ] 2.4 测试：主题断言（两端主色不同且取自取值表、每个已声明的界面都解析到双端主题之一、勾选与按钮样式可正常解析）＋检索断言（`grep -r "androidx.compose\|setContent\|@Composable\|WinsRehabTheme" app/src` 零命中、Manifest 中引用 `Theme.AppCompat.*` 的 activity 数为 0、activity 声明为 11 条）[spec:ui-foundation#双端主题共用取值、仅换主题色]
-- [ ] 2.5 质量门：编译、单元测试、主题断言测试、Lint 通过 [infra]
+- [x] 2.1 建立 Material 基础主题（parent 换 `Theme.MaterialComponents.Light.NoActionBar`，**锁定浅色**，不随系统深色），派生医生端（蓝）与患者端（绿）两个子主题，仅覆盖主题色与按钮默认样式 [spec:ui-foundation#双端主题共用取值、仅换主题色]
+- [x] 2.2 处置 Manifest 里 12 处 `Theme.AppCompat.*` 覆盖：删除 `AndroidManifest.xml:42-45` 指向不存在类的 `DtInfoActivity` 声明，其余 11 个在用 Activity 改挂医生端/患者端主题；4 个底部导航选中态 selector 改引用两端主色 [spec:ui-foundation#双端主题共用取值、仅换主题色]
+- [x] 2.3 显式声明 Material 组件库（版本目录加 `material = "1.12.0"` 与对应库条目，构建文件加 `implementation(libs.material)`）；同组移除 Compose：删 `buildFeatures` 里的 `compose = true`、整个 `composeOptions` 块、8 条 Compose 依赖声明、版本目录里 9 条 Compose 库条目与 4 个 Compose 版本条目，并删 `MainActivity.kt`、`ui/theme/{Color,Type,Theme}.kt` 与 Manifest 的 `MainActivity` 声明；主题层面只做一步可编译的修正：删掉 `Theme.WinsRehab` 里指向坏样式的 `buttonStyle` 默认值（改由 Material 默认按钮样式承接）。坏样式本体 `MyRoundButton`（样式体是裸文本）与挂在另一主题家族的 `MyCheckBox`（`parent="Theme.AppCompat.Light"` 是主题不是样式）本组**不能删**——它们仍被 5 处按钮与 2 处 `android:theme` 引用着，删了 AAPT 直接失败；改由第 5 组替换 `activity_dt_log.xml:144,158`、`activity_pt_log.xml:146,160` 与两处 `android:theme`（:132、:133），第 10 组替换 `activity_psychology.xml:43`，最后由 10.5 收尾删除这两个样式定义 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
+- [x] 2.4 测试：主题断言（两端主色不同且取自取值表、每个已声明的界面都解析到双端主题之一、勾选与按钮样式可正常解析）＋检索断言（`grep -r "androidx.compose\|setContent\|@Composable\|WinsRehabTheme" app/src` 零命中、Manifest 中引用 `Theme.AppCompat.*` 的 activity 数为 0、activity 声明为 11 条）[spec:ui-foundation#双端主题共用取值、仅换主题色]
+- [x] 2.5 质量门：编译、单元测试、主题断言测试、Lint 通过 [infra]
 
 ## 3. 基础控件组件（按钮 / 输入框 / 卡片 / 状态徽标）
 
