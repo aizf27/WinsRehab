@@ -3,7 +3,7 @@ package com.example.winsrehab.ui.main.patient.main
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-// RehabFormatter：柱高、百分比、今天标记、占位
+// RehabFormatter：柱高、百分比、今天标记（占位与三态文案已上收到 UiTexts，见 UiTextsTest）
 class RehabFormatterTest {
 
     @Test
@@ -41,7 +41,6 @@ class RehabFormatterTest {
     fun textFormats() {
         assertEquals("1/2 项已完成", RehabFormatter.progressCountText(1, 2))
         assertEquals("完成率: 50%", RehabFormatter.progressPercentText(1, 2))
-        assertEquals("--", RehabFormatter.placeholderText())
         assertEquals("1/2", RehabFormatter.weekCountText(WeekBarData("2026-11-09", 1, 2, false)))
     }
 }

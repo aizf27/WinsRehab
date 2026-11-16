@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 信息行：左侧标签 + 右侧值，值为空时由页面写入 UiTexts.placeholderText()，不出现空值留白 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/infoRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/space_12"
+    android:paddingBottom="@dimen/space_12">
+
+    <TextView
+        android:id="@+id/tvInfoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
+        tools:text="手机号" />
+
+    <TextView
+        android:id="@+id/tvInfoValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_12"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:maxLines="2"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface"
+        tools:text="--" />
+</LinearLayout>

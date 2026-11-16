@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 空态：说明「当前没有数据」+ 可选引导动作，文案由 UiTexts.emptyText() 写入，动作按钮默认隐藏、页面按需显示 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateEmpty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/space_24">
+
+    <TextView
+        android:id="@+id/tvStateEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
+        tools:text="今天还没有训练任务" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStateEmptyAction"
+        style="@style/Widget.WinsRehab.Button.Secondary.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16"
+        android:visibility="gone"
+        tools:text="去创建" />
+</LinearLayout>

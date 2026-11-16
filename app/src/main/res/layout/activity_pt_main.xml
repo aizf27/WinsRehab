@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 患者端主壳：与医生端同构，导航样式统一来自 Widget.WinsRehab.BottomNav -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/patient_main_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/surface">
+    android:background="@color/surface"
+    android:orientation="vertical">
 
-
-
-    <!-- Fragment容器 -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_container"
         android:layout_width="match_parent"
@@ -20,16 +18,13 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/pt_bot_nav" />
 
-    <!-- 底部导航栏 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
+        style="@style/Widget.WinsRehab.BottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/surface"
         app:itemIconTint="@color/pt_bottom_nav_icon_selector"
         app:itemTextColor="@color/pt_bottom_nav_text_selector"
-        app:itemRippleColor="@color/brand_patient_primary"
         app:menu="@menu/pt_nav_menu" />
 
 </LinearLayout>
-

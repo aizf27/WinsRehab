@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.data.model.TaskInstanceWithTask
 import com.example.winsrehab.databinding.FragmentPtRehabBinding
+import com.example.winsrehab.ui.common.UiTexts
 import com.example.winsrehab.ui.main.patient.adapter.TaskInstanceAdapter
 import kotlinx.coroutines.launch
 
@@ -88,7 +89,7 @@ class pt_rehabFragment : Fragment() {
         binding.loadingView.visibility = View.GONE
         binding.errorView.visibility = View.GONE
         binding.rvTodayTasks.visibility = View.VISIBLE
-        binding.tvEmpty.text = RehabFormatter.emptyText()
+        binding.tvEmpty.text = UiTexts.emptyText()
         binding.tvEmpty.visibility = if (state.todayTasks.isEmpty()) View.VISIBLE else View.GONE
 
         adapter.submitList(state.todayTasks)
@@ -120,11 +121,11 @@ class pt_rehabFragment : Fragment() {
 
     private fun renderStatCards(state: RehabUiState.Content) {
         binding.statCard1.tvStatLabel.text = "累计训练"
-        binding.statCard1.tvStatValue.text = RehabFormatter.placeholderText()
+        binding.statCard1.tvStatValue.text = UiTexts.placeholderText()
         binding.statCard2.tvStatLabel.text = "本周完成"
         binding.statCard2.tvStatValue.text = "${state.weekCompleted}/${state.weekTotal}"
         binding.statCard3.tvStatLabel.text = "连续打卡"
-        binding.statCard3.tvStatValue.text = RehabFormatter.placeholderText()
+        binding.statCard3.tvStatValue.text = UiTexts.placeholderText()
     }
 
     private fun showError(message: String) {
@@ -132,7 +133,7 @@ class pt_rehabFragment : Fragment() {
         binding.rvTodayTasks.visibility = View.GONE
         binding.tvEmpty.visibility = View.GONE
         binding.errorView.visibility = View.VISIBLE
-        binding.tvError.text = RehabFormatter.errorText(message)
+        binding.tvError.text = UiTexts.errorText(message)
     }
 
     private fun showTaskDialog(item: TaskInstanceWithTask) {

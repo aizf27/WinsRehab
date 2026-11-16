@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 加载态：居中转圈 + 一句加载提示，提示文案由 UiTexts.loadingText() 在页面运行时写入 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateLoading"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/space_24">
+
+    <ProgressBar
+        android:id="@+id/progressStateLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary" />
+
+    <TextView
+        android:id="@+id/tvStateLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_12"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
+        tools:text="加载中…" />
+</LinearLayout>

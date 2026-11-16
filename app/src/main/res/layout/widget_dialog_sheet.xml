@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 底部弹层内容骨架：标题 + 内容容器，操作行由页面 inflate 后塞进 sheetContent -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/space_16">
+
+    <TextView
+        android:id="@+id/tvSheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_16"
+        android:paddingTop="@dimen/space_16"
+        android:paddingEnd="@dimen/space_16"
+        android:paddingBottom="@dimen/space_8"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+        android:textColor="@color/on_surface"
+        android:textStyle="bold"
+        tools:text="选择操作" />
+
+    <FrameLayout
+        android:id="@+id/sheetContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

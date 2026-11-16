@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 共享顶部栏：返回按钮 + 标题；根页把返回按钮设为 gone，标题仍在 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topBar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/surface"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/btnTopBarBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="返回"
+        android:padding="@dimen/space_12"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="@color/on_surface" />
+
+    <TextView
+        android:id="@+id/tvTopBarTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_4"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+        android:textColor="@color/on_surface"
+        android:textStyle="bold"
+        tools:text="患者申请" />
+</LinearLayout>

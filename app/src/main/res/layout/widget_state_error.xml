@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 错误态：失败原因（UiTexts.errorText()）+ 重试入口，重试后由页面重新进入加载态 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateError"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/space_24">
+
+    <TextView
+        android:id="@+id/tvStateError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/danger"
+        tools:text="加载失败：网络异常" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStateRetry"
+        style="@style/Widget.WinsRehab.Button.Secondary.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16"
+        tools:text="重试" />
+</LinearLayout>
