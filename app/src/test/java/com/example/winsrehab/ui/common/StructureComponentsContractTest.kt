@@ -86,6 +86,9 @@ class StructureComponentsContractTest {
         assertEquals("@color/on_surface", items["android:textColor"])
         assertEquals("bold", items["android:textStyle"])
         assertEquals("@dimen/space_12", items["android:layout_marginBottom"])
+        // 这 8 处引用只写 style + text，宽高必须由样式提供，否则运行时 inflate 直接崩
+        assertEquals("wrap_content", items["android:layout_width"])
+        assertEquals("wrap_content", items["android:layout_height"])
         assertFalse("旧 SectionTitle 必须已从 themes.xml 删除", read("values/themes.xml").contains("name=\"SectionTitle\""))
         listOf("layout/fragment_dt_home.xml", "layout/fragment_dt_info_.xml", "layout/fragment_pt_info.xml").forEach { layout ->
             val raw = read(layout)

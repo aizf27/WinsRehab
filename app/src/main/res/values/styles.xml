@@ -157,8 +157,10 @@
     </style>
 
     <!-- ========== 第 4 组：分区标题与信息行 ========== -->
-    <!-- 分区标题：16sp 粗体 + on_surface，8 处旧 SectionTitle 引用统一改用本样式 -->
+    <!-- 分区标题：16sp 粗体 + on_surface；宽高随内容，使用方只写 style 与文字即可 -->
     <style name="Widget.WinsRehab.SectionTitle" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Title16</item>
         <item name="android:textColor">@color/on_surface</item>
         <item name="android:textStyle">bold</item>
