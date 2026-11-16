@@ -3,20 +3,17 @@ package com.example.winsrehab.ui.main.doctor.home
 import android.os.Bundle
 import android.util.Log
 
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 
 import com.example.winsrehab.R
 import com.example.winsrehab.databinding.ActivityDtHomeBinding
-import com.example.winsrehab.ui.main.doctor.adapter.PatientAdapter
 
+// 医生端宿主页：只负责导航图、底部导航与工号传递，不再为传患者数建适配器
 class DtHomeActivity : AppCompatActivity() {
     lateinit var binding: ActivityDtHomeBinding
-    private val viewModel: DtHomeVM by viewModels()
     var doctorCode: String = ""
-    var ptCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,27 +57,16 @@ class DtHomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.dt_info_Fragment -> {
+                    // 患者数由「我的」页面自行观察，这里只传工号
                     val bundle = Bundle().apply {
                         putString("doctorCode", doctorCode)
-                        putInt("totalCount", ptCount)
                     }
-                    Log.d("DtHomeActivity", "Navigating to dt_info_Fragment with doctorCode: $doctorCode, ptCount: $ptCount")
+                    Log.d("DtHomeActivity", "Navigating to dt_info_Fragment with doctorCode: $doctorCode")
                     navController.navigate(R.id.dt_info_Fragment, bundle, navOptions)
                     true
                 }
                 else -> false
             }
         }
-
-        //观察患者数据变化，更新患者总数
-        val adapter = PatientAdapter()
-        viewModel.patients.observe(this) { list ->
-            adapter.submitList(list)
-            ptCount = list.size
-            Log.d("DtHomeActivity", "PtCount updated: $ptCount")
-        }
-
-        //加载患者数据
-        viewModel.loadPatients(doctorCode)
     }
 }

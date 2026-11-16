@@ -84,4 +84,27 @@
     <string name="toast_confirm_success">已确认患者绑定</string>
     <string name="toast_reject_success">已拒绝患者申请</string>
     <string name="toast_operation_failed">操作失败，请重试</string>
+
+    <!-- 医生首页 -->
+    <string name="doctor_home_title">医生工作台</string>
+    <string name="doctor_home_greeting_morning">早上好</string>
+    <string name="doctor_home_greeting_noon">中午好</string>
+    <string name="doctor_home_greeting_afternoon">下午好</string>
+    <string name="doctor_home_greeting_evening">晚上好</string>
+    <string name="doctor_home_pending_notice">您有 %1$d 个新患者申请</string>
+    <string name="doctor_home_pending_brief">今天有 %1$d 个患者申请待处理</string>
+    <string name="doctor_home_view_more">查看 &gt;</string>
+    <string name="doctor_home_section_functions">核心功能</string>
+    <string name="doctor_home_section_applications">最新患者申请</string>
+    <string name="doctor_home_stat_patients">管理患者</string>
+    <string name="doctor_home_stat_review">待审核</string>
+    <string name="doctor_home_stat_pending">待处理</string>
+    <string name="doctor_home_manage_patients">管理患者</string>
+    <string name="doctor_home_manage_patients_subtitle">%1$d 位患者</string>
+    <string name="doctor_home_review_video">审核视频</string>
+    <string name="doctor_home_create_plan">制定计划</string>
+    <string name="doctor_home_create_plan_subtitle">查看计划</string>
+    <string name="doctor_home_feedback">患者反馈</string>
+    <string name="doctor_home_coming_soon">即将开放</string>
+    <string name="doctor_home_applications_empty">暂无新的患者申请</string>
 </resources>
