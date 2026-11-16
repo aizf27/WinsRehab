@@ -1,7 +1,9 @@
-package com.example.winsrehab.ui.main.doctor.plan
+﻿package com.example.winsrehab.ui.main.doctor.plan
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -45,10 +47,25 @@ class CreateRehabPlanActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        // 返回按钮
-        binding.btnBack.setOnClickListener {
+        // 顶部栏：标题 + 返回，统一组件
+        binding.topBar.tvTopBarTitle.text = "创建康复计划"
+        binding.topBar.btnTopBarBack.setOnClickListener {
             finish()
         }
+
+        // 三个输入项统一走 TextField：标签 + 必填标记 + 就地错误提示位
+        binding.fieldPlanName.setLabel("计划名称")
+        binding.fieldPlanName.setRequired(true)
+        binding.fieldPlanName.setHint("如：上肢功能康复计划")
+
+        binding.fieldPlanGoal.setLabel("康复目标")
+        binding.fieldPlanGoal.setRequired(true)
+        binding.fieldPlanGoal.setHint("如：恢复手臂抬举功能至90度")
+
+        binding.fieldPlanDuration.setLabel("预计周期（天）")
+        binding.fieldPlanDuration.setRequired(true)
+        binding.fieldPlanDuration.setHint("如：30")
+        binding.fieldPlanDuration.editText().inputType = InputType.TYPE_CLASS_NUMBER
 
         // 任务列表
         taskAdapter = TrainingTaskAdapter { task ->
@@ -105,7 +122,9 @@ class CreateRehabPlanActivity : AppCompatActivity() {
                 Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show()
                 finish()
             }.onFailure { e ->
-                Toast.makeText(this, "保存失败：${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "保存计划失败: ${e.message}")
+                showFormError(e.message.orEmpty())
+                // 校验失败统一走底部错误提示位，不再用 Toast 一条条弹
             }
         }
     }
@@ -265,13 +284,30 @@ class CreateRehabPlanActivity : AppCompatActivity() {
             .show()
     }
 
+    // 组装输入值交给 VM；校验判定全在 VM，页面只负责展示
     private fun savePlan(isDraft: Boolean) {
-        val planName = binding.etPlanName.text.toString().trim()
-        val goal = binding.etPlanGoal.text.toString().trim()
-        val durationStr = binding.etPlanDuration.text.toString().trim()
+        showFormError(null)
+        val planName = binding.fieldPlanName.text().trim()
+        val goal = binding.fieldPlanGoal.text().trim()
+        val durationStr = binding.fieldPlanDuration.text().trim()
         val durationDays = durationStr.toIntOrNull() ?: 0
 
         viewModel.savePlan(planName, goal, selectedStartDate, durationDays, isDraft)
+    }
+
+    // 表单错误统一展示位：null 即隐藏，日期区间问题也走这里
+    private fun showFormError(message: String?) {
+        if (message.isNullOrBlank()) {
+            binding.tvFormError.text = null
+            binding.tvFormError.visibility = View.GONE
+            return
+        }
+        binding.tvFormError.text = message
+        binding.tvFormError.visibility = View.VISIBLE
+    }
+
+    private companion object {
+        const val TAG = "CreateRehabPlan"
     }
 }
 

@@ -3,17 +3,13 @@ package com.example.winsrehab.ui.main.doctor.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.data.entity.RehabPlan
+import com.example.winsrehab.databinding.ItemPatientPlanGroupBinding
 
-/**
- * 患者计划分组适配器 - 按患者分组显示康复计划
- */
+// 患者计划分组适配器：按患者分组，组内计划可展开，头部可进创建计划页
 class PatientPlanGroupAdapter(
     private val onCreatePlanClick: (Patient) -> Unit,
     private val onPlanClick: (RehabPlan) -> Unit
@@ -34,62 +30,49 @@ class PatientPlanGroupAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_patient_plan_group, parent, false)
-        return ViewHolder(view)
+        val binding = ItemPatientPlanGroupBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
-        holder.bind(item)
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvPatientName: TextView = itemView.findViewById(R.id.tv_patient_name)
-        private val tvPlanCount: TextView = itemView.findViewById(R.id.tv_plan_count)
-        private val btnCreatePlan: ImageView = itemView.findViewById(R.id.btn_create_plan)
-        private val ivExpand: ImageView = itemView.findViewById(R.id.iv_expand)
-        private val rvPlans: RecyclerView = itemView.findViewById(R.id.rv_plans)
-        private val patientHeader: View = itemView.findViewById(R.id.patient_header)
+    inner class ViewHolder(
+        private val binding: ItemPatientPlanGroupBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val planAdapter = RehabPlanAdapter { plan ->
-            onPlanClick(plan)
-        }
+        // 组内复用计划条目适配器
+        private val planAdapter = RehabPlanAdapter { plan -> onPlanClick(plan) }
 
         init {
-            rvPlans.layoutManager = LinearLayoutManager(itemView.context)
-            rvPlans.adapter = planAdapter
+            binding.rvPlans.layoutManager = LinearLayoutManager(binding.root.context)
+            binding.rvPlans.adapter = planAdapter
         }
 
         fun bind(item: PatientPlanGroup) {
-            tvPatientName.text = item.patient.name
-            tvPlanCount.text = "${item.plans.size}个康复计划"
+            binding.tvPatientName.text = item.patient.name
+            binding.tvPlanCount.text = "${item.plans.size}个康复计划"
 
-            // 设置展开/收起状态
-            if (item.isExpanded) {
-                rvPlans.visibility = View.VISIBLE
-                ivExpand.rotation = 90f
-                planAdapter.submitList(item.plans)
-            } else {
-                rvPlans.visibility = View.GONE
-                ivExpand.rotation = 0f
-            }
+            // 展开状态直接映射到组内列表与箭头朝向
+            binding.rvPlans.visibility = if (item.isExpanded) View.VISIBLE else View.GONE
+            binding.ivExpand.rotation = if (item.isExpanded) 90f else 0f
+            if (item.isExpanded) planAdapter.submitList(item.plans)
 
-            // 点击头部展开/收起
-            patientHeader.setOnClickListener {
+            // 点头部展开 / 收起
+            binding.patientHeader.setOnClickListener {
                 item.isExpanded = !item.isExpanded
                 notifyItemChanged(adapterPosition)
             }
 
-            // 点击创建计划按钮
-            btnCreatePlan.setOnClickListener {
+            // 分组头部的「+」直接给该患者建计划
+            binding.btnCreatePlan.setOnClickListener {
                 onCreatePlanClick(item.patient)
             }
         }
     }
 }
-
-
-

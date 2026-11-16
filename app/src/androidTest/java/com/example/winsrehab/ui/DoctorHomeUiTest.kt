@@ -140,7 +140,7 @@ class DoctorHomeUiTest {
             onView(withId(R.id.cardCreatePlan)).perform(click())
             waitForView(R.id.rv_patient_plans)
             waitForAdapterCount(R.id.rv_patient_plans, 1)
-            onView(withId(R.id.empty_layout)).check(
+            onView(withId(R.id.statePlansEmpty)).check(
                 matches(withEffectiveVisibility(Visibility.GONE))
             )
         } finally {
