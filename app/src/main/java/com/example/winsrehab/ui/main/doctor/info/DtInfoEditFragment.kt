@@ -1,4 +1,4 @@
-﻿package com.example.winsrehab.ui.main.doctor.info
+package com.example.winsrehab.ui.main.doctor.info
 
 import android.os.Bundle
 import android.text.InputType
@@ -102,6 +102,8 @@ class DtInfoEditFragment : Fragment() {
     private fun bindRow(row: WidgetInfoRowBinding, label: String, onClick: () -> Unit) {
         row.tvInfoLabel.text = label
         row.tvInfoValue.text = UiTexts.placeholderText()
+        // 可编辑行给出箭头提示，点整行弹编辑框
+        row.ivInfoChevron.visibility = View.VISIBLE
 
         val outValue = TypedValue()
         requireContext().theme.resolveAttribute(

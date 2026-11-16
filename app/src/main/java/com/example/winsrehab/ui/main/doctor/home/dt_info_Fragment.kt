@@ -68,18 +68,28 @@ class dt_info_Fragment : Fragment() {
         viewModel.loadDoctorInfo(code)
     }
 
-    // 键值区改统一信息行：只有标签，值由 fillUI 写入，缺值统一显示占位符
+    // 键值区改统一信息行：图标 + 标签，值由 fillUI 写入，缺值统一显示占位符
     private fun setupInfoRows() {
-        binding.rowLicense.tvInfoLabel.text = "医师资格证"
-        binding.rowHospital.tvInfoLabel.text = "所属医院"
-        binding.rowTitle.tvInfoLabel.text = "职称"
-        binding.rowPatientCount.tvInfoLabel.text = "管理患者数"
-        binding.rowPhone.tvInfoLabel.text = "手机号码"
-        binding.rowEmail.tvInfoLabel.text = "电子邮箱"
+        bindInfoRow(binding.rowLicense, "医师资格证", R.drawable.ic_id_card)
+        bindInfoRow(binding.rowHospital, "所属医院", R.drawable.ic_briefcase)
+        bindInfoRow(binding.rowTitle, "职称", R.drawable.ic_award)
+        bindInfoRow(binding.rowPatientCount, "管理患者数", R.drawable.ic_users)
+        bindInfoRow(binding.rowPhone, "手机号码", R.drawable.ic_phone)
+        bindInfoRow(binding.rowEmail, "电子邮箱", R.drawable.ic_email)
 
         // 设置区仍是带图标的动作行，图标色跟随医生端品牌色
         setupActionRow(binding.rowReport, R.drawable.ic_file_text, "我的报告")
         setupActionRow(binding.rowSettings, R.drawable.ic_settings, "系统设置")
+    }
+
+    // 键值行：图标 + 标签，图标色跟医生端品牌蓝，值区留给 fillUI
+    private fun bindInfoRow(rowBinding: WidgetInfoRowBinding, label: String, iconRes: Int) {
+        rowBinding.ivInfoIcon.setImageResource(iconRes)
+        rowBinding.ivInfoIcon.setColorFilter(
+            ContextCompat.getColor(requireContext(), R.color.brand_doctor_primary)
+        )
+        rowBinding.ivInfoIcon.visibility = View.VISIBLE
+        rowBinding.tvInfoLabel.text = label
     }
 
     // 动作行：图标 + 标题，右侧值区收起，点整行后续接动作
