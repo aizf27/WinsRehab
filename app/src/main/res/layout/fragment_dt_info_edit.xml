@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/surface_variant">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,14 +14,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#FFFFFF"
-            android:elevation="2dp">
+            android:background="@color/surface"
+            android:elevation="@dimen/elevation_1">
 
             <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/space_16"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -30,14 +30,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#1D4ED8" />
+                app:tint="@color/brand_doctor_primary_dark" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="编辑个人信息"
-                android:textColor="#1D4ED8"
-                android:textSize="20sp"
+                android:textColor="@color/brand_doctor_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,14 +47,13 @@
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/space_16"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="8dp"
+                android:padding="@dimen/space_8"
                 android:text="保存"
-                android:textColor="#1D4ED8"
-                android:textSize="16sp"
+                android:textColor="@color/brand_doctor_primary_dark" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -67,8 +65,8 @@
             android:id="@+id/layoutAvatar"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="16dp"
-            android:background="#FFFFFF"
+            android:layout_marginTop="@dimen/space_16"
+            android:background="@color/surface"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground">
@@ -76,10 +74,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/space_16"
                 android:text="头像"
-                android:textColor="#1F2937"
-                android:textSize="14sp"
+                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -89,9 +86,9 @@
                 android:id="@+id/cvAvatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:layout_marginEnd="48dp"
-                app:cardCornerRadius="32dp"
-                app:cardElevation="0dp"
+                android:layout_marginEnd="@dimen/row_trailing_reserve"
+                app:cardCornerRadius="@dimen/radius_16"
+                app:cardElevation="@dimen/elevation_0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -107,20 +104,20 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/space_16"
                 android:src="@drawable/ic_chevron_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="#9CA3AF" />
+                app:tint="@color/on_surface_tertiary" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 第二组：基本信息 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#FFFFFF"
+            android:layout_marginTop="@dimen/space_16"
+            android:background="@color/surface"
             android:orientation="vertical">
 
             <!-- 姓名 -->
@@ -135,10 +132,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="姓名"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -147,10 +143,9 @@
                     android:id="@+id/tvName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -158,19 +153,19 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 性别 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -184,10 +179,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="性别"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -196,10 +190,9 @@
                     android:id="@+id/tvGender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -207,19 +200,19 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 年龄 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -233,10 +226,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="年龄"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -245,10 +237,9 @@
                     android:id="@+id/tvAge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -256,12 +247,12 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
@@ -269,8 +260,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#FFFFFF"
+            android:layout_marginTop="@dimen/space_16"
+            android:background="@color/surface"
             android:orientation="vertical">
 
             <!-- 科室 -->
@@ -285,10 +276,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="科室"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -297,10 +287,9 @@
                     android:id="@+id/tvDepartment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -308,27 +297,27 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 职称 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -342,10 +331,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="职称"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -354,10 +342,9 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -365,19 +352,19 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 所属医院 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -391,10 +378,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="所属医院"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -403,14 +389,13 @@
                     android:id="@+id/tvHospital"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginStart="@dimen/space_16"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvHospitalLabel"
@@ -420,10 +405,9 @@
                     android:id="@+id/tvHospitalLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="所属医院"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -432,19 +416,19 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 医师资格证号 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -458,10 +442,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="医师资格证号"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -470,14 +453,13 @@
                     android:id="@+id/tvLicenseNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginStart="@dimen/space_16"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvLicenseNumberLabel"
@@ -487,10 +469,9 @@
                     android:id="@+id/tvLicenseNumberLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="医师资格证号"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -499,19 +480,19 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 工号（只读） -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -521,10 +502,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="医生工号"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -533,10 +513,9 @@
                     android:id="@+id/tvDoctorCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:text="系统分配"
-                    android:textColor="#9CA3AF"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_tertiary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -549,8 +528,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#FFFFFF"
+            android:layout_marginTop="@dimen/space_16"
+            android:background="@color/surface"
             android:orientation="vertical">
 
             <!-- 手机号码 -->
@@ -565,10 +544,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="手机号码"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -577,10 +555,9 @@
                     android:id="@+id/tvPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -588,19 +565,19 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:background="#E0E0E0" />
+                android:layout_marginStart="@dimen/space_16"
+                android:background="@color/divider" />
 
             <!-- 电子邮箱 -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -614,10 +591,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="电子邮箱"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -626,14 +602,13 @@
                     android:id="@+id/tvEmail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="48dp"
+                    android:layout_marginStart="@dimen/space_16"
+                    android:layout_marginEnd="@dimen/row_trailing_reserve"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
                     android:text="未设置"
-                    android:textColor="#6B7280"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tvEmailLabel"
@@ -643,10 +618,9 @@
                     android:id="@+id/tvEmailLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/space_16"
                     android:text="电子邮箱"
-                    android:textColor="#1F2937"
-                    android:textSize="14sp"
+                    android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -655,12 +629,12 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/space_16"
                     android:src="@drawable/ic_chevron_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#9CA3AF" />
+                    app:tint="@color/on_surface_tertiary" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 

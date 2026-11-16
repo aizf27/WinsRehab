@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 图标圆底默认色：主色浅底，使用处可用 backgroundTint 换档 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="@color/blue_100"/> <!-- 默认颜色，代码中可修改tint -->
+    <solid android:color="@color/primary_container"/>
 </shape>

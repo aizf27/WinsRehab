@@ -7,61 +7,56 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/bg_rounded_white_card"
-    android:padding="24dp">
+    android:padding="@dimen/space_24">
 
     <!-- 标题 -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="添加训练任务"
-        android:textSize="20sp"
+        android:text="添加训练任务" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
         android:textStyle="bold"
-        android:textColor="#1F2937"
+        android:textColor="@color/on_surface"
         android:gravity="center"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="@dimen/space_24"/>
 
     <!-- 任务名称 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="任务名称"
-        android:textSize="14sp"
-        android:textColor="#4B5563"
+        android:text="任务名称" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
         android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/et_task_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:background="@drawable/bg_input_field"
-        android:padding="12dp"
-        android:hint="如：肩关节外展训练"
-        android:textSize="14sp"
-        android:textColor="#1F2937"
-        android:textColorHint="#9CA3AF"/>
+        android:padding="@dimen/space_12"
+        android:hint="如：肩关节外展训练" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface"
+        android:textColorHint="@color/on_surface_tertiary"/>
 
     <!-- 任务描述 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="任务描述"
-        android:textSize="14sp"
-        android:textColor="#4B5563"
+        android:layout_marginTop="@dimen/space_16"
+        android:text="任务描述" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
         android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/et_task_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:background="@drawable/bg_input_field"
-        android:padding="12dp"
-        android:hint="详细描述训练动作和要求"
-        android:textSize="14sp"
-        android:textColor="#1F2937"
-        android:textColorHint="#9CA3AF"
+        android:padding="@dimen/space_12"
+        android:hint="详细描述训练动作和要求" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface"
+        android:textColorHint="@color/on_surface_tertiary"
         android:minLines="3"
         android:gravity="top"/>
 
@@ -69,81 +64,74 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="任务类型"
-        android:textSize="14sp"
-        android:textColor="#4B5563"
+        android:layout_marginTop="@dimen/space_16"
+        android:text="任务类型" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
         android:textStyle="bold"/>
 
     <Spinner
         android:id="@+id/spinner_task_type"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:background="@drawable/bg_input_field"
-        android:paddingHorizontal="12dp"/>
+        android:paddingHorizontal="@dimen/space_12"/>
 
     <!-- 建议时长 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="建议时长（分钟）"
-        android:textSize="14sp"
-        android:textColor="#4B5563"
+        android:layout_marginTop="@dimen/space_16"
+        android:text="建议时长（分钟）" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
         android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/et_task_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:background="@drawable/bg_input_field"
-        android:padding="12dp"
+        android:padding="@dimen/space_12"
         android:hint="如：30"
-        android:inputType="number"
-        android:textSize="14sp"
-        android:textColor="#1F2937"
-        android:textColorHint="#9CA3AF"/>
+        android:inputType="number" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface"
+        android:textColorHint="@color/on_surface_tertiary"/>
 
     <!-- 执行频率 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="执行频率"
-        android:textSize="14sp"
-        android:textColor="#4B5563"
+        android:layout_marginTop="@dimen/space_16"
+        android:text="执行频率" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
         android:textStyle="bold"/>
 
     <RadioGroup
         android:id="@+id/rg_frequency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/rb_daily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="每天"
-            android:textSize="14sp"
+            android:text="每天" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
             android:checked="true"/>
 
         <RadioButton
             android:id="@+id/rb_weekly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="每周特定天"
-            android:textSize="14sp"/>
+            android:text="每周特定天" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"/>
 
         <RadioButton
             android:id="@+id/rb_interval"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="间隔天数"
-            android:textSize="14sp"/>
+            android:text="间隔天数" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"/>
     </RadioGroup>
 
     <!-- 频率详情容器 -->
@@ -151,7 +139,7 @@
         android:id="@+id/layout_frequency_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -166,10 +154,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="选择星期几（可多选）"
-                android:textSize="12sp"
-                android:textColor="#6B7280"
-                android:layout_marginBottom="8dp"/>
+                android:text="选择星期几（可多选）" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                android:textColor="@color/on_surface_secondary"
+                android:layout_marginBottom="@dimen/space_8"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,32 +168,28 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="一"
-                    android:textSize="12sp"/>
+                    android:text="一" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
                 <CheckBox
                     android:id="@+id/cb_tuesday"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="二"
-                    android:textSize="12sp"/>
+                    android:text="二" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
                 <CheckBox
                     android:id="@+id/cb_wednesday"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="三"
-                    android:textSize="12sp"/>
+                    android:text="三" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
                 <CheckBox
                     android:id="@+id/cb_thursday"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="四"
-                    android:textSize="12sp"/>
+                    android:text="四" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
             </LinearLayout>
 
             <LinearLayout
@@ -219,24 +202,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="五"
-                    android:textSize="12sp"/>
+                    android:text="五" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
                 <CheckBox
                     android:id="@+id/cb_saturday"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="六"
-                    android:textSize="12sp"/>
+                    android:text="六" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
                 <CheckBox
                     android:id="@+id/cb_sunday"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="日"
-                    android:textSize="12sp"/>
+                    android:text="日" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
 
                 <View
                     android:layout_width="0dp"
@@ -257,30 +237,27 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="每隔"
-                android:textSize="14sp"
-                android:textColor="#4B5563"/>
+                android:text="每隔" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                android:textColor="@color/on_surface_secondary"/>
 
             <EditText
                 android:id="@+id/et_interval_days"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
+                android:layout_marginHorizontal="@dimen/space_8"
                 android:background="@drawable/bg_input_field"
-                android:padding="8dp"
+                android:padding="@dimen/space_8"
                 android:hint="2"
-                android:inputType="number"
-                android:textSize="14sp"
+                android:inputType="number" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
                 android:gravity="center"
-                android:textColor="#1F2937"
-                android:textColorHint="#9CA3AF"/>
+                android:textColor="@color/on_surface"
+                android:textColorHint="@color/on_surface_tertiary"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="天执行一次"
-                android:textSize="14sp"
-                android:textColor="#4B5563"/>
+                android:text="天执行一次" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                android:textColor="@color/on_surface_secondary"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -288,17 +265,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="优先级"
-        android:textSize="14sp"
-        android:textColor="#4B5563"
+        android:layout_marginTop="@dimen/space_16"
+        android:text="优先级" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+        android:textColor="@color/on_surface_secondary"
         android:textStyle="bold"/>
 
     <RadioGroup
         android:id="@+id/rg_priority"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/space_8"
         android:orientation="horizontal">
 
         <RadioButton
@@ -306,8 +282,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="普通"
-            android:textSize="14sp"
+            android:text="普通" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
             android:checked="true"/>
 
         <RadioButton
@@ -315,15 +290,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="重要"
-            android:textSize="14sp"/>
+            android:text="重要" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"/>
     </RadioGroup>
 
     <!-- 操作按钮 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/space_24"
         android:orientation="horizontal">
 
         <Button
@@ -331,10 +305,9 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:text="取消"
-            android:textSize="16sp"
-            android:textColor="#6B7280"
+            android:layout_marginEnd="@dimen/space_8"
+            android:text="取消" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+            android:textColor="@color/on_surface_secondary"
             android:background="@drawable/bg_button_secondary"/>
 
         <Button
@@ -342,10 +315,9 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="确认添加"
-            android:textSize="16sp"
-            android:textColor="#FFFFFF"
+            android:layout_marginStart="@dimen/space_8"
+            android:text="确认添加" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+            android:textColor="@color/on_primary"
             android:background="@drawable/bg_button_primary"
             android:textStyle="bold"/>
     </LinearLayout>

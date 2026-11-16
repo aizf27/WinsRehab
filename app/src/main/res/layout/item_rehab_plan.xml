@@ -5,9 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
+    android:layout_margin="@dimen/space_8"
+    app:cardCornerRadius="@dimen/radius_16"
+    app:cardElevation="@dimen/elevation_1"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -21,8 +21,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_gradient_warm"
-            android:padding="16dp"
+            android:background="@drawable/bg_brand_gradient"
+            android:padding="@dimen/space_16"
             android:orientation="vertical">
 
             <!-- 计划名称 -->
@@ -30,28 +30,25 @@
                 android:id="@+id/tv_plan_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="康复计划名称"
-                android:textSize="18sp"
+                android:text="康复计划名称" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                 android:textStyle="bold"
-                android:textColor="#FFFFFF"/>
+                android:textColor="@color/on_primary"/>
 
             <!-- 康复目标 -->
             <TextView
                 android:id="@+id/tv_plan_goal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="康复目标"
-                android:textSize="14sp"
-                android:textColor="#FFFFFF"
-                android:alpha="0.9"/>
+                android:layout_marginTop="@dimen/space_4"
+                android:text="康复目标" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                android:textColor="@color/on_primary"/>
         </LinearLayout>
 
         <!-- 计划详情 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/space_16"
             android:orientation="vertical">
 
             <!-- 状态和进度 -->
@@ -65,12 +62,12 @@
                     android:id="@+id/tv_plan_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="进行中"
-                    android:textSize="12sp"
-                    android:textColor="#FFFFFF"
-                    android:background="@drawable/bg_badge_purple"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"/>
+                    android:text="进行中" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_primary"
+                    android:background="@drawable/bg_chip"
+                    android:backgroundTint="@color/status_pending"
+                    android:paddingHorizontal="@dimen/space_12"
+                    android:paddingVertical="@dimen/space_4"/>
 
                 <View
                     android:layout_width="0dp"
@@ -81,9 +78,8 @@
                     android:id="@+id/tv_plan_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="进度 0%"
-                    android:textSize="13sp"
-                    android:textColor="#FF8A65"
+                    android:text="进度 0%" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/warning"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -91,46 +87,44 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/space_12"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="#9CA3AF"/>
+                    app:tint="@color/on_surface_tertiary"/>
 
                 <TextView
                     android:id="@+id/tv_plan_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="2024-01-01 至 2024-03-01"
-                    android:textSize="13sp"
-                    android:textColor="#6B7280"/>
+                    android:layout_marginStart="@dimen/space_4"
+                    android:text="2024-01-01 至 2024-03-01" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface_secondary"/>
             </LinearLayout>
 
             <!-- 任务数量 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/space_8"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_task"
-                    app:tint="#9CA3AF"/>
+                    app:tint="@color/on_surface_tertiary"/>
 
                 <TextView
                     android:id="@+id/tv_task_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="包含 5 个训练任务"
-                    android:textSize="13sp"
-                    android:textColor="#6B7280"/>
+                    android:layout_marginStart="@dimen/space_4"
+                    android:text="包含 5 个训练任务" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface_secondary"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

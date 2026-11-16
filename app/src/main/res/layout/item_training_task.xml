@@ -5,15 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    android:layout_margin="@dimen/space_4"
+    app:cardCornerRadius="@dimen/radius_12"
+    app:cardElevation="@dimen/elevation_1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/space_16">
 
         <!-- 任务标题行 -->
         <LinearLayout
@@ -27,19 +27,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="任务名称"
-                android:textSize="16sp"
+                android:text="任务名称" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                 android:textStyle="bold"
-                android:textColor="#1F2937"/>
+                android:textColor="@color/on_surface"/>
 
             <ImageView
                 android:id="@+id/btn_delete_task"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_delete"
-                android:padding="4dp"
+                android:padding="@dimen/space_4"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="#EF4444"/>
+                app:tint="@color/danger"/>
         </LinearLayout>
 
         <!-- 任务描述 -->
@@ -47,16 +46,15 @@
             android:id="@+id/tv_task_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="任务描述"
-            android:textSize="14sp"
-            android:textColor="#6B7280"/>
+            android:layout_marginTop="@dimen/space_8"
+            android:text="任务描述" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+            android:textColor="@color/on_surface_secondary"/>
 
         <!-- 任务详情 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/space_12"
             android:orientation="horizontal">
 
             <!-- 时长 -->
@@ -71,16 +69,15 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_time"
-                    app:tint="#FF8A65"/>
+                    app:tint="@color/warning"/>
 
                 <TextView
                     android:id="@+id/tv_task_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="30分钟"
-                    android:textSize="12sp"
-                    android:textColor="#4B5563"/>
+                    android:layout_marginStart="@dimen/space_4"
+                    android:text="30分钟" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface_secondary"/>
             </LinearLayout>
 
             <!-- 频率 -->
@@ -95,16 +92,15 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_calendar"
-                    app:tint="#FF8A65"/>
+                    app:tint="@color/warning"/>
 
                 <TextView
                     android:id="@+id/tv_task_frequency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="每天"
-                    android:textSize="12sp"
-                    android:textColor="#4B5563"/>
+                    android:layout_marginStart="@dimen/space_4"
+                    android:text="每天" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface_secondary"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

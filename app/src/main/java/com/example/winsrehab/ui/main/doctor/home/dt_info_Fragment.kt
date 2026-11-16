@@ -153,7 +153,7 @@ class dt_info_Fragment : Fragment() {
         rowBinding.apply {
             rowIcon.setImageResource(iconRes)
             // 设置医生端的蓝色主题
-            rowIcon.setColorFilter(android.graphics.Color.parseColor("#2563EB"))
+            rowIcon.setColorFilter(androidx.core.content.ContextCompat.getColor(requireContext(), R.color.brand_doctor_primary))
             rowTitle.text = title
         }
     }

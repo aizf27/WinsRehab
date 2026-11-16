@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
+            android:padding="@dimen/space_24"
             android:gravity="center_horizontal">
 
             <!-- 顶部标题：医生登录 -->
@@ -43,10 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/space_32"
                 android:text="@string/title_dotlog"
-                android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Display24"
                 android:textStyle="bold" />
 
             <TextView
@@ -54,16 +53,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="@string/dotlog_Inspirational_words"
-                android:textSize="16sp"
+                android:text="@string/dotlog_Inspirational_words" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                 android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginTop="8dp"/>
+                android:textColor="@color/on_surface"
+                android:layout_marginTop="@dimen/space_8"/>
 
             <FrameLayout
                 android:layout_width="200dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/space_24"
                 android:layout_gravity="left">
 
                 <!-- 图片 -->
@@ -82,8 +80,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:text="@string/dotlog_theme"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
+                    android:background="@drawable/bg_chip"
+                    android:backgroundTint="@color/on_surface"
+                    android:paddingHorizontal="@dimen/space_8"
+                    android:paddingVertical="@dimen/space_4"
+                    android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
                     android:textStyle="bold" />
             </FrameLayout>
             <!-- 输入框容器 -->
@@ -93,21 +94,20 @@
 
                 android:orientation="vertical"
 
-                android:layout_marginTop="32dp">
+                android:layout_marginTop="@dimen/space_32">
 
                 <!-- 工号输入 -->
                 <EditText
                     android:id="@+id/etDoctorId"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/space_8"
                     android:hint="工号"
                     android:drawableStart="@drawable/baseline_account_box_24"
-                    android:drawablePadding="12dp"
+                    android:drawablePadding="@dimen/space_12"
                     android:background="@drawable/shape_edittext_bg"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textSize="16sp"/>
+                    android:paddingStart="@dimen/space_12"
+                    android:paddingEnd="@dimen/space_12" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"/>
 
                 <!-- 密码输入 -->
                 <EditText
@@ -116,19 +116,20 @@
                     android:layout_height="50dp"
                     android:hint="密码"
                     android:drawableStart="@drawable/baseline_lock_24"
-                    android:drawablePadding="12dp"
+                    android:drawablePadding="@dimen/space_12"
                     android:background="@drawable/shape_edittext_bg"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:inputType="textPassword"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"/>
+                    android:paddingStart="@dimen/space_12"
+                    android:paddingEnd="@dimen/space_12"
+                    android:inputType="textPassword" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    android:layout_marginTop="@dimen/space_16"/>
                 <CheckBox
                     android:id="@+id/cbRememberPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="记住密码"
-                    android:layout_marginTop="1dp"
+                    android:textColor="@color/on_surface"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                    android:layout_marginTop="@dimen/space_4"
                     android:theme="@style/MyCheckBox"
                     />
 
@@ -140,21 +141,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="登录"
-                android:backgroundTint="@color/blue_deep"
+                android:backgroundTint="@color/brand_doctor_primary"
                 style="@style/MyRoundButton"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_marginTop="24dp"/>
+                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                android:layout_marginTop="@dimen/space_24"/>
 
             <Button
                 android:id="@+id/btnDoctorRegister"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:text="注册"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/gray"
+                android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                android:layout_marginTop="@dimen/space_16"
+                android:backgroundTint="@color/outline"
                 style="@style/MyRoundButton"/>
         </LinearLayout>
     </ScrollView>

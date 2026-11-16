@@ -53,13 +53,8 @@ android {
     }
 
     buildFeatures {
-        compose = true
         viewBinding = true
         buildConfig = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
     }
 }
 
@@ -106,16 +101,8 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.gson)
 
-    // Jetpack Compose（UI 相关）
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-
-    // 调试/预览工具
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    // Material 组件库（显式声明，不再依赖 navigation-ui-ktx 的传递版本）
+    implementation(libs.material)
 
     // 单元测试
     testImplementation(libs.junit)
@@ -123,7 +110,6 @@ dependencies {
     // 仿真测试（Android Instrumentation Tests）
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
 }
 
 

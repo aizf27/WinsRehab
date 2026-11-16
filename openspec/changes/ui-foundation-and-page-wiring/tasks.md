@@ -4,26 +4,79 @@
 > 每组可独立实施：组内全部完成后代码可编译、可启动、本组测试通过。
 > 每个源文件在本文档中只出现一次，避免跨组并行修改同一文件。
 
+---
+
+## 0. 执行规则（开工前必读）
+
+> 本文件是**唯一执行清单**。`design.md` 是唯一技术手册（只查对应 D 段）；`clarify.md`、`proposal.md`、`.review/issues.md`、三份 `specs/` 已冻结，不再更新、不再依据。
+> **不再走 openspec 编排流程**（无 implement/review 步骤、无必做项申报、无子代理）。每组：开工说明 5 行 → 直接实施 → 自检 → 一次中文 commit。
+
+### 0.1 三条硬红线（不可越）
+
+- **零 DDL**：不改数据库 schema、实体字段、DAO 查询语义。
+- **零业务规则变更**：`TaskStatus` / `PlanStatus` / `VideoReviewStatus` / `UploadStatus` / `BindingStatus` 的取值与流转一个字都不动。
+- **删除必须与使用点同组同提交**：Compose 与模板页、坏样式与其引用点、字符串与其最后引用布局。这是唯一会让中途编译崩的操作类型。
+
+### 0.2 执行边界（每组的目录 / 包白名单）
+
+- **组 1**：`res/{values,layout,color,drawable}`；包 `ui/**`、`test/**/ui/**`
+- **组 2**：`app/src/main`（含 AndroidManifest）、`res/{values,color}`、`gradle/`；包 `com.example.winsrehab` 根、`ui/**`、`test/**`
+- **组 3**：`res/{layout,values,drawable}`；包 `ui/common/**`、`ui/main/patient/adapter/**`、`test/**/ui/common/**`
+- **组 4**：同上目录；包 `ui/common/**`、`ui/main/patient/main/**`（RehabFormatter 拆分）
+- **组 5**：`res/{layout,values,navigation}`、`app/src/androidTest`；包 `selectLog`、`doctor/login`、`patient/login`、`patient/binding`、`doctor/application`、`doctor/home`、`doctor/plan`、`ui/common`
+- **组 6**：`res/{navigation,layout,values}`、`app/src/androidTest`；包 `doctor/home`、`doctor/plan`、`doctor/adapter`、`ui/common`
+- **组 7**：`res/{layout,values}`、`app/src/androidTest`；包 `doctor/home`、`doctor/adapter`、`patient/info`、`ui/common`
+- **组 8**：`res/{layout,navigation,values}`、`app/src/androidTest`；包 `doctor/home`、`doctor/info`、`doctor/plan`、`doctor/adapter`、`ui/common`
+- **组 9**：`res/{layout,navigation,values}`、`app/src/androidTest`；包 `patient/main`、`patient/adapter`、`patient/info`、`ui/common`
+- **组 10**：`app/src/main`、`res/**`；包 `patient/psychology`、`patient/Video`、`com.example.winsrehab` 根、`patient/adapter`、`app/src/androidTest`
+
+越界必须先说明理由并取得同意，不得默默改边界外文件。
+
+### 0.3 人工审查前的自检（按顺序，能省则省）
+
+- **L0 编译**（必做）：`gradlew assembleDebug`
+- **L1 检索断言**（必做，每组 2–4 条）：用 grep 证明「本组该消失的东西真的消失了」，断言与结果写进 commit 正文
+- **L2 单测**（必做）：`gradlew testDebugUnitTest --rerun-tasks`。**不加 `--rerun-tasks` 会出现假绿**（测试不把 `res` 当输入，改资源后直接 UP-TO-DATE）
+- **L3 按需**：lint（对照基线 4 条 error 判新增）、手工起模拟器看页面
+- **不做**：必做项申报、覆盖率、e2e、深扫
+
+### 0.4 提交约定
+
+每组一次中文 commit，正文包含：改动文件（按页面归类）＋ L0/L1/L2 结果 ＋ 「人工只需看哪几处」。
+
+### 0.5 新会话如何承接
+
+新会话上下文不继承。开工前依次读：**本文件顶部 0 节** → `HANDOVER.md`（进度与坑） → `design.md` 对应 D 段。读完即可直接实施当前组，无需重建上下文。
+
+### 0.6 收口与合并约定
+
+- 在 worktree（`.worktree/ui-foundation-and-page-wiring/ws`，分支 `change/ui-foundation-and-page-wiring`）实施，一组一次提交。
+- **每组完成后把 change 分支合并回 `dev_week1`（`--no-ff`，提交信息写「合并组 N」）**，保证主仓库 `D:\Android\MyProject\WinsRehab` 随时可打开 Android Studio 直接运行到最新进度。主仓库是用户在真机/模拟器上跑的那份，不要让它落后。
+- 合并后确认两棵树 `git status` 均干净；主仓库合并后跑一次 `gradlew assembleDebug` 确认可编译。
+- 真机看不到变化时先确认跑的是哪份代码：主仓库最新提交应包含最近一组；装包用主仓库或 worktree 的 `app/build/outputs/apk/debug/app-debug.apk`，不要用 Android Studio 旧输出。
+
+---
+
 ## 1. 界面取值表
 
 > 依赖：无（本组是全部后续组的底座）。
 > 本组完成后项目处于「取值表已就位、页面仍用旧写法」的中间态，属预期，不做半程验收。
 
-- [ ] 1.1 建立约 24 个语义色（品牌色、表面色、文本色、分隔线、状态色、禁用色），把现有 40 个旧色名的消费方改到语义色上 [spec:ui-foundation#界面取值表是界面唯一取值来源]
-- [ ] 1.2 建立间距（4dp 基准：4/8/12/16/24/32）、圆角（8/12/16）、阴影（0/1）三组档位取值，替换布局里写死的高度与外边距 [spec:ui-foundation#界面取值表是界面唯一取值来源]
-- [ ] 1.3 建立 6 档文本外观（11/12/14/16/20/24），布局中的字号改为引用文本外观，消除裸字号 [spec:ui-foundation#界面取值表是界面唯一取值来源]
-- [ ] 1.4 测试：取值表断言（语义色全部由取值表定义、字号只来自 6 档、间距只取档位值），并检索确认无新增裸字号与裸色值 [spec:ui-foundation#界面取值表是界面唯一取值来源]
-- [ ] 1.5 质量门：`:app:assembleDebug`、`:app:testDebugUnitTest`、`:app:lintDebug` 通过 [infra]
+- [x] 1.1 建立约 24 个语义色（品牌色、表面色、文本色、分隔线、状态色、禁用色），把现有 40 个旧色名的消费方改到语义色上 [spec:ui-foundation#界面取值表是界面唯一取值来源]
+- [x] 1.2 建立间距（4dp 基准：4/8/12/16/24/32）、圆角（8/12/16）、阴影（0/1）三组档位取值，替换布局里写死的高度与外边距 [spec:ui-foundation#界面取值表是界面唯一取值来源]
+- [x] 1.3 建立 6 档文本外观（11/12/14/16/20/24），布局中的字号改为引用文本外观，消除裸字号 [spec:ui-foundation#界面取值表是界面唯一取值来源]
+- [x] 1.4 测试：取值表断言（语义色全部由取值表定义、字号只来自 6 档、间距只取档位值），并检索确认无新增裸字号与裸色值 [spec:ui-foundation#界面取值表是界面唯一取值来源]
+- [x] 1.5 质量门：`:app:assembleDebug`、`:app:testDebugUnitTest`、`:app:lintDebug` 通过 [infra]
 
 ## 2. 双端主题与依赖收敛
 
 > 依赖：第 1 组（取值表）。本组结束后双端主题生效，是所有页面改造的前提。
 
-- [ ] 2.1 建立 Material 基础主题（parent 换 `Theme.MaterialComponents.Light.NoActionBar`，**锁定浅色**，不随系统深色），派生医生端（蓝）与患者端（绿）两个子主题，仅覆盖主题色与按钮默认样式 [spec:ui-foundation#双端主题共用取值、仅换主题色]
-- [ ] 2.2 处置 Manifest 里 12 处 `Theme.AppCompat.*` 覆盖：删除 `AndroidManifest.xml:42-45` 指向不存在类的 `DtInfoActivity` 声明，其余 11 个在用 Activity 改挂医生端/患者端主题；4 个底部导航选中态 selector 改引用两端主色 [spec:ui-foundation#双端主题共用取值、仅换主题色]
-- [ ] 2.3 显式声明 Material 组件库（版本目录加 `material = "1.12.0"` 与对应库条目，构建文件加 `implementation(libs.material)`）；同组移除 Compose：删 `buildFeatures` 里的 `compose = true`、整个 `composeOptions` 块、8 条 Compose 依赖声明、版本目录里 9 条 Compose 库条目与 4 个 Compose 版本条目，并删 `MainActivity.kt`、`ui/theme/{Color,Type,Theme}.kt` 与 Manifest 的 `MainActivity` 声明；主题层面只做一步可编译的修正：删掉 `Theme.WinsRehab` 里指向坏样式的 `buttonStyle` 默认值（改由 Material 默认按钮样式承接）。坏样式本体 `MyRoundButton`（样式体是裸文本）与挂在另一主题家族的 `MyCheckBox`（`parent="Theme.AppCompat.Light"` 是主题不是样式）本组**不能删**——它们仍被 5 处按钮与 2 处 `android:theme` 引用着，删了 AAPT 直接失败；改由第 5 组替换 `activity_dt_log.xml:144,158`、`activity_pt_log.xml:146,160` 与两处 `android:theme`（:132、:133），第 10 组替换 `activity_psychology.xml:43`，最后由 10.5 收尾删除这两个样式定义 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
-- [ ] 2.4 测试：主题断言（两端主色不同且取自取值表、每个已声明的界面都解析到双端主题之一、勾选与按钮样式可正常解析）＋检索断言（`grep -r "androidx.compose\|setContent\|@Composable\|WinsRehabTheme" app/src` 零命中、Manifest 中引用 `Theme.AppCompat.*` 的 activity 数为 0、activity 声明为 11 条）[spec:ui-foundation#双端主题共用取值、仅换主题色]
-- [ ] 2.5 质量门：编译、单元测试、主题断言测试、Lint 通过 [infra]
+- [x] 2.1 建立 Material 基础主题（parent 换 `Theme.MaterialComponents.Light.NoActionBar`，**锁定浅色**，不随系统深色），派生医生端（蓝）与患者端（绿）两个子主题，仅覆盖主题色与按钮默认样式 [spec:ui-foundation#双端主题共用取值、仅换主题色]
+- [x] 2.2 处置 Manifest 里 12 处 `Theme.AppCompat.*` 覆盖：删除 `AndroidManifest.xml:42-45` 指向不存在类的 `DtInfoActivity` 声明，其余 11 个在用 Activity 改挂医生端/患者端主题；4 个底部导航选中态 selector 改引用两端主色 [spec:ui-foundation#双端主题共用取值、仅换主题色]
+- [x] 2.3 显式声明 Material 组件库（版本目录加 `material = "1.12.0"` 与对应库条目，构建文件加 `implementation(libs.material)`）；同组移除 Compose：删 `buildFeatures` 里的 `compose = true`、整个 `composeOptions` 块、8 条 Compose 依赖声明、版本目录里 9 条 Compose 库条目与 4 个 Compose 版本条目，并删 `MainActivity.kt`、`ui/theme/{Color,Type,Theme}.kt` 与 Manifest 的 `MainActivity` 声明；主题层面只做一步可编译的修正：删掉 `Theme.WinsRehab` 里指向坏样式的 `buttonStyle` 默认值（改由 Material 默认按钮样式承接）。坏样式本体 `MyRoundButton`（样式体是裸文本）与挂在另一主题家族的 `MyCheckBox`（`parent="Theme.AppCompat.Light"` 是主题不是样式）本组**不能删**——它们仍被 5 处按钮与 2 处 `android:theme` 引用着，删了 AAPT 直接失败；改由第 5 组替换 `activity_dt_log.xml:144,158`、`activity_pt_log.xml:146,160` 与两处 `android:theme`（:132、:133），第 10 组替换 `activity_psychology.xml:43`，最后由 10.5 收尾删除这两个样式定义 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
+- [x] 2.4 测试：主题断言（两端主色不同且取自取值表、每个已声明的界面都解析到双端主题之一、勾选与按钮样式可正常解析）＋检索断言（`grep -r "androidx.compose\|setContent\|@Composable\|WinsRehabTheme" app/src` 零命中、Manifest 中引用 `Theme.AppCompat.*` 的 activity 数为 0、activity 声明为 11 条）[spec:ui-foundation#双端主题共用取值、仅换主题色]
+- [x] 2.5 质量门：编译、单元测试、主题断言测试、Lint 通过 [infra]
 
 ## 3. 基础控件组件（按钮 / 输入框 / 卡片 / 状态徽标）
 

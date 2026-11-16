@@ -11,7 +11,7 @@
     <!--        android:id="@+id/imageLogo"-->
     <!--        android:layout_width="120dp"-->
     <!--        android:layout_height="120dp"-->
-    <!--        android:layout_marginTop="60dp"-->
+    <!--        android:layout_marginTop="@dimen/space_32"-->
     <!--        android:layout_gravity="center"-->
     <!--        android:src="@drawable/ic_launcher_foreground"-->
     <!--        />-->
@@ -19,27 +19,25 @@
         android:id="@+id/textWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome To You!"
-        android:textSize="20sp"
+        android:text="Welcome To You!" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
         android:layout_gravity="center"
-        android:layout_marginTop="160dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/space_32"
+        android:layout_marginBottom="@dimen/space_8"
         />
     <TextView
         android:id="@+id/textSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select the login method"
-        android:textSize="20sp"
+        android:text="Select the login method" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="@dimen/space_8"
+        android:layout_marginBottom="@dimen/space_16"
         />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/space_16"
         android:orientation="horizontal"
         android:layout_gravity="center"
 
@@ -50,7 +48,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/space_8"
             android:background="@drawable/shape_logmap"
             android:scaleType="centerInside"
             android:src="@drawable/img_dtlog"
@@ -62,7 +60,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/space_8"
             android:background="@drawable/shape_logmap"
             android:scaleType="centerInside"
             android:src="@drawable/img_userlog"
@@ -79,20 +77,18 @@
             android:id="@+id/textDtLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Doctor Log "
-            android:textSize="20sp"
+            android:text="Doctor Log " android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
             android:layout_gravity="center"
-            android:layout_margin="30dp"
+            android:layout_margin="@dimen/space_32"
 
             />
         <TextView
             android:id="@+id/PtLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Patient Log "
-            android:textSize="20sp"
+            android:text="Patient Log " android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
             android:layout_gravity="center"
-            android:layout_margin="30dp"
+            android:layout_margin="@dimen/space_32"
             />
     </LinearLayout>
 

@@ -58,7 +58,7 @@ class TaskInstanceAdapter(
         holder.imgStatus.setColorFilter(
             ContextCompat.getColor(
                 context,
-                if (visual == TaskVisual.COMPLETED) R.color.green_600 else R.color.gray_300
+                if (visual == TaskVisual.COMPLETED) R.color.status_completed else R.color.on_surface_tertiary
             )
         )
 

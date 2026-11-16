@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 圆形浅底：信息档（青），配 success 图标 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="#CCFBF1"/>
+    <solid android:color="@color/info_container"/>
 </shape>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 背景填充 -->
-    <solid android:color="#ffff" />
-    <!--    圆角-->
-    <corners android:radius="5000dp" />
-    <!--    边框颜色和宽度-->
-    <stroke android:width="1dp" android:color="#FFFFFF" />
+<!-- 登录入口圆底：正圆用 shape=oval 表达，不占用圆角档位 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/surface"/>
+    <stroke android:width="1dp" android:color="@color/outline"/>
 </shape>
