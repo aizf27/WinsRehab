@@ -143,16 +143,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_license"/>
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_license"/>
                     <View style="@style/Divider"/>
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_hospital"/>
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_hospital"/>
                     <View style="@style/Divider"/>
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_title"/>
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_title"/>
                     <View style="@style/Divider"/>
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_patient_count"/>
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_patient_count"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -168,10 +168,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_phone"/>
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_phone"/>
                     <View style="@style/Divider"/>
 
-                    <include layout="@layout/item_info_row" android:id="@+id/row_email"/>
+                    <include layout="@layout/widget_info_row" android:id="@+id/row_email"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -208,7 +208,7 @@
                         <TextView
                             android:id="@+id/tvMonthlyPlans"
                             android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="0" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold"/>
+                            android:text="--" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="康复计划" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
                     </LinearLayout>
@@ -231,7 +231,7 @@
                         <TextView
                             android:id="@+id/tvSatisfaction"
                             android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:text="0%" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold"/>
+                            android:text="--" android:textColor="@color/primary" android:textAppearance="@style/TextAppearance.WinsRehab.Display24" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                             android:text="综合评分" android:textColor="@color/on_surface_secondary" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"/>
                     </LinearLayout>

@@ -114,4 +114,12 @@
     <string name="patient_card_progress_value">%1$d%%</string>
     <string name="patient_card_avatar_desc">患者头像</string>
     <string name="patient_card_alert_desc">异常提醒</string>
+
+    <!-- 信息编辑弹窗的统一字段错误文案 -->
+    <string name="error_field_empty">%1$s不能为空</string>
+    <string name="error_field_too_long">%1$s长度不能超过%2$d个字符</string>
+    <string name="error_age_invalid">请输入有效的年龄（1-120）</string>
+    <string name="error_phone_invalid">请输入有效的手机号码</string>
+    <!-- 康复计划列表空态：患者已绑定但还没有任何计划 -->
+    <string name="doctor_plan_list_empty">还没有可查看的康复计划</string>
 </resources>

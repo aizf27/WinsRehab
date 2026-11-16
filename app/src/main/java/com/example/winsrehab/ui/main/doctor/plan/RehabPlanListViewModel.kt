@@ -29,6 +29,10 @@ class RehabPlanListViewModel(application: Application) : AndroidViewModel(applic
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    // 加载失败原因：非空时页面切错误态，空表示本次加载没报错
+    private val _loadError = MutableLiveData<String?>()
+    val loadError: LiveData<String?> = _loadError
+
     /**
      * 加载医生的所有患者及其康复计划
      */
@@ -36,6 +40,7 @@ class RehabPlanListViewModel(application: Application) : AndroidViewModel(applic
         viewModelScope.launch {
             try {
                 _isLoading.value = true
+                _loadError.value = null
 
                 // 获取医生的所有患者
                 val patients = patientRepository.getPatientsByDoctorOnce(doctorCode)
@@ -53,7 +58,8 @@ class RehabPlanListViewModel(application: Application) : AndroidViewModel(applic
                 _patientPlanGroups.value = groups
             } catch (e: Exception) {
                 e.printStackTrace()
-                _patientPlanGroups.value = emptyList()
+                // 查询失败只上报原因，列表内容保持上一次结果
+                _loadError.value = e.message ?: "查询计划失败"
             } finally {
                 _isLoading.value = false
             }
