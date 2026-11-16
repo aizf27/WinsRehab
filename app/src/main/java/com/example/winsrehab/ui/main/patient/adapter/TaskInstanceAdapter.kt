@@ -2,14 +2,12 @@ package com.example.winsrehab.ui.main.patient.adapter
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.winsrehab.R
+import com.example.winsrehab.databinding.ItemTaskInstanceBinding
 import com.example.winsrehab.data.model.TaskInstanceWithTask
 import com.example.winsrehab.ui.common.StatusBadge
 import com.example.winsrehab.ui.common.TaskStatusStyle
@@ -30,38 +28,30 @@ class TaskInstanceAdapter(
             oldItem == newItem
     }
 
-    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
-        val statusStrip: View = view.findViewById(R.id.statusStrip)
-        val tvTaskName: TextView = view.findViewById(R.id.tvTaskName)
-        val tvDuration: TextView = view.findViewById(R.id.tvDuration)
-        val tvPriority: TextView = view.findViewById(R.id.tvPriority)
-        val tvStatusBadge: TextView = view.findViewById(R.id.tvStatusBadge)
-        val btnStart: MaterialButton = view.findViewById(R.id.btnStartTask)
-    }
+    inner class Holder(val binding: ItemTaskInstanceBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_instance, parent, false)
-        return Holder(view)
+        return Holder(ItemTaskInstanceBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = getItem(position)
-        val context = holder.itemView.context
+        val context = holder.binding.root.context
 
-        holder.tvTaskName.text = item.taskName
-        holder.tvDuration.text = "${item.suggestedDuration} 分钟"
-        holder.tvPriority.text = if (item.priority == "important") "重要" else "普通"
-        holder.tvPriority.visibility = if (item.priority == "important") View.VISIBLE else View.GONE
+        holder.binding.tvTaskName.text = item.taskName
+        holder.binding.tvDuration.text = "${item.suggestedDuration} 分钟"
+        holder.binding.tvPriority.text = if (item.priority == "important") "重要" else "普通"
+        holder.binding.tvPriority.visibility = if (item.priority == "important") android.view.View.VISIBLE else android.view.View.GONE
 
         // 状态条与徽标都只喂状态值，配色全部来自 ui/common 的同一张映射表
-        StatusBadge.bindTask(holder.tvStatusBadge, item.instance.status)
+        StatusBadge.bindTask(holder.binding.statusBadge.tvStatusBadge, item.instance.status)
         val visual = TaskStatusStyle.visualOf(item.instance.status)
-        holder.statusStrip.backgroundTintList =
+        holder.binding.statusStrip.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(context, TaskStatusStyle.colorOf(visual)))
 
         val actionable = TaskStatusStyle.isActionable(item.instance.status)
-        holder.btnStart.visibility = if (actionable) View.VISIBLE else View.GONE
-        holder.btnStart.setOnClickListener {
+        holder.binding.btnStartTask.visibility = if (actionable) android.view.View.VISIBLE else android.view.View.GONE
+        holder.binding.btnStartTask.setOnClickListener {
             if (actionable) onStartClick(item)
         }
     }

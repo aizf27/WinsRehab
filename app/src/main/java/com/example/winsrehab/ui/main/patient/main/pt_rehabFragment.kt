@@ -1,22 +1,21 @@
 package com.example.winsrehab.ui.main.patient.main
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.data.model.TaskInstanceWithTask
 import com.example.winsrehab.databinding.FragmentPtRehabBinding
-import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.common.UiTexts
 import com.example.winsrehab.ui.main.patient.adapter.TaskInstanceAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 /**
@@ -27,7 +26,7 @@ class pt_rehabFragment : Fragment() {
     private var _binding: FragmentPtRehabBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PtRehabViewModel by viewModels()
+    private val viewModel: PtRehabViewModel by activityViewModels()
     private lateinit var adapter: TaskInstanceAdapter
 
     override fun onCreateView(
@@ -44,8 +43,10 @@ class pt_rehabFragment : Fragment() {
         setupRecycler()
         binding.btnRetry.setOnClickListener { viewModel.retry() }
 
-        // BottomNav 切页不带 nav 参数，account 由 resolveAccount 回落宿主 Intent
-        viewModel.load(resolveAccount())
+        binding.btnStartRecord.isEnabled = false
+        binding.btnStartRecord.text = "即将开放"
+        binding.btnStopRecord.isEnabled = false
+        binding.btnStopRecord.text = "即将开放"
         observeState()
     }
 
@@ -54,10 +55,6 @@ class pt_rehabFragment : Fragment() {
         binding.rvTodayTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTodayTasks.adapter = adapter
     }
-
-    // 账号解析统一走 AccountArgs：先看导航参数，再回落宿主 Intent
-    private fun resolveAccount(): String =
-        AccountArgs.account(arguments, requireActivity().intent).orEmpty()
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -81,6 +78,9 @@ class pt_rehabFragment : Fragment() {
         binding.rvTodayTasks.visibility = View.GONE
         binding.tvEmpty.visibility = View.GONE
         binding.errorView.visibility = View.GONE
+        binding.tvProgressCount.text = UiTexts.placeholderText()
+        binding.tvProgressPercent.text = UiTexts.placeholderText()
+        binding.progressBarToday.progress = 0
     }
 
     private fun showContent(state: RehabUiState.Content) {
@@ -135,7 +135,7 @@ class pt_rehabFragment : Fragment() {
     }
 
     private fun showTaskDialog(item: TaskInstanceWithTask) {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(item.taskName)
             .setMessage("请选择本次操作")
             .setPositiveButton("完成") { _, _ -> viewModel.completeTask(item.instance.instanceId) }

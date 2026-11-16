@@ -1,46 +1,64 @@
 package com.example.winsrehab.ui.main.patient.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.winsrehab.MyApp
 import com.example.winsrehab.data.model.RehabWeekData
 import com.example.winsrehab.data.model.TaskStatus
 import com.example.winsrehab.data.repository.TaskExecutionRepository
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 /**
  * 患者康复页 ViewModel：只经 Repository 取数，动作入口也在这里
  */
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class PtRehabViewModel : ViewModel() {
 
     private val repository = TaskExecutionRepository(MyApp.instance.database)
 
-    private val _uiState = MutableStateFlow<RehabUiState>(RehabUiState.Loading)
-    val uiState: StateFlow<RehabUiState> = _uiState.asStateFlow()
-
-    private var patientId: String = ""
-    private var observeJob: Job? = null
+    private val patientId = MutableStateFlow<String?>(null)
+    private val refreshVersion = MutableStateFlow(0)
+    val uiState = combine(patientId, refreshVersion) { id, _ -> id }
+        .flatMapLatest { id ->
+            if (id.isNullOrBlank()) {
+                flowOf(RehabUiState.Error("\u60A3\u8005\u4FE1\u606F\u7F3A\u5931"))
+            } else {
+                repository.observeRehabWeek(id)
+                    .map<RehabWeekData, RehabUiState> { buildContent(it) }
+                    .catch { emit(RehabUiState.Error(it.message ?: "\u52A0\u8F7D\u5931\u8D25")) }
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), RehabUiState.Loading)
 
     // 由 Fragment 解析 account 后调用；空值直接进 Error 态，避免用空 id 查出「合法空态」
     fun load(patientId: String) {
-        this.patientId = patientId
-        observe()
+        if (patientId.isBlank()) {
+            this.patientId.value = null
+        } else if (this.patientId.value != patientId) {
+            this.patientId.value = patientId
+        }
     }
 
-    fun retry() = observe()
+    fun retry() {
+        refreshVersion.value++
+    }
 
     fun completeTask(instanceId: Long) {
         viewModelScope.launch {
             try {
                 repository.completeTask(instanceId)
             } catch (e: Exception) {
-                _uiState.value = RehabUiState.Error(e.message ?: "操作失败")
+                Log.e("PtRehabViewModel", "complete task failed: $instanceId", e)
             }
         }
     }
@@ -50,22 +68,8 @@ class PtRehabViewModel : ViewModel() {
             try {
                 repository.skipTask(instanceId)
             } catch (e: Exception) {
-                _uiState.value = RehabUiState.Error(e.message ?: "操作失败")
+                Log.e("PtRehabViewModel", "skip task failed: $instanceId", e)
             }
-        }
-    }
-
-    private fun observe() {
-        observeJob?.cancel()
-        if (patientId.isEmpty()) {
-            _uiState.value = RehabUiState.Error("患者信息缺失")
-            return
-        }
-        observeJob = viewModelScope.launch {
-            _uiState.value = RehabUiState.Loading
-            repository.observeRehabWeek(patientId)
-                .catch { e -> _uiState.value = RehabUiState.Error(e.message ?: "加载失败") }
-                .collect { data -> _uiState.value = buildContent(data) }
         }
     }
 

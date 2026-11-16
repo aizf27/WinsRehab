@@ -79,6 +79,7 @@
 
             <!-- 状态徽标：待完成/已完成/已跳过/待审核/已驳回 -->
             <include
+                android:id="@+id/statusBadge"
                 layout="@layout/widget_status_badge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

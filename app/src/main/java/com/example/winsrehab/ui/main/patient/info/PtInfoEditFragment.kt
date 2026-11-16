@@ -1,18 +1,22 @@
 package com.example.winsrehab.ui.main.patient.info
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
+import android.widget.FrameLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.winsrehab.databinding.FragmentPtInfoEditBinding
+import com.example.winsrehab.databinding.WidgetInfoRowBinding
+import com.example.winsrehab.ui.common.AccountArgs
+import com.example.winsrehab.ui.common.TextField
+import com.example.winsrehab.ui.common.UiTexts
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * 患者信息编辑页面
@@ -25,12 +29,11 @@ class PtInfoEditFragment : Fragment() {
     private val binding get() = _binding!!
     
     private val viewModel: PtInfoVM by activityViewModels()
-    private val args by navArgs<PtInfoEditFragmentArgs>()
-    private var account: String = ""
+    private var account: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        account = args.account
+        account = AccountArgs.account(arguments, requireActivity().intent)
     }
 
     override fun onCreateView(
@@ -44,9 +47,15 @@ class PtInfoEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.topBar.tvTopBarTitle.text = "编辑个人信息"
+        setupRows()
         
-        // 加载患者数据
-        viewModel.loadPatient(account)
+        // 缺少账号时不查询空串，保留明确错误文本
+        account?.let { viewModel.loadPatient(it) } ?: run {
+            binding.layoutName.tvInfoValue.text = UiTexts.errorText("患者信息缺失")
+            binding.btnSave.isEnabled = false
+        }
         
         // 观察数据变化
         observeData()
@@ -62,26 +71,26 @@ class PtInfoEditFragment : Fragment() {
         viewModel.patient.observe(viewLifecycleOwner) { patient ->
             patient?.let {
                 // 更新基本信息
-                binding.tvName.text = it.name.takeIf { name -> name != "未设置" } ?: "未设置"
-                binding.tvGender.text = it.gender.takeIf { gender -> gender != "未设置" } ?: "未设置"
-                binding.tvAge.text = if (it.age > 0) "${it.age}岁" else "未设置"
-                binding.tvNickname.text = it.nickname.takeIf { nick -> nick != "未设置" } ?: "未设置"
-                binding.tvSignature.text = it.signature.takeIf { sig -> sig != "未设置" && sig != "这个人很懒，什么都没留下" } ?: "未设置"
+                setRowValue(binding.layoutName, it.name)
+                setRowValue(binding.layoutGender, it.gender)
+                setRowValue(binding.layoutAge, it.age.takeIf { age -> age > 0 }?.let { age -> "${age}岁" })
+                setRowValue(binding.layoutNickname, it.nickname)
+                setRowValue(binding.layoutSignature, it.signature.takeIf { sig -> sig != "这个人很懒，什么都没留下" })
                 
                 // 更新联系方式
-                binding.tvPhone.text = it.phone.takeIf { phone -> phone != "未设置" } ?: "未设置"
-                binding.tvEmail.text = it.email.takeIf { email -> email != "未设置" } ?: "未设置"
-                binding.tvDateOfBirth.text = it.dateOfBirth.takeIf { dob -> dob != "未设置" } ?: "未设置"
-                binding.tvAddress.text = it.address.takeIf { addr -> addr != "未设置" } ?: "未设置"
+                setRowValue(binding.layoutPhone, it.phone)
+                setRowValue(binding.layoutEmail, it.email)
+                setRowValue(binding.layoutDateOfBirth, it.dateOfBirth)
+                setRowValue(binding.layoutAddress, it.address)
                 
                 // 更新医生信息（只读）
                 // 主治医生显示医生名字
-                binding.tvDoctorName.text = it.doctorName.takeIf { name -> name != "未设置" } ?: "未绑定"
-                binding.tvDoctorCode.text = it.doctorCode.takeIf { code -> code != "未设置" } ?: "未绑定"
+                binding.rowDoctorName.tvInfoValue.text = it.doctorName.takeIf { name -> name != "未设置" } ?: "未绑定"
+                binding.rowDoctorCode.tvInfoValue.text = it.doctorCode.takeIf { code -> code != "未设置" } ?: "未绑定"
                 
                 // 更新康复信息（只读）
-                binding.tvDiagnosis.text = it.diagnosis.takeIf { diag -> diag != "未设置" } ?: "由医生填写"
-                binding.tvStage.text = it.rehabStage.takeIf { stage -> stage != "未设置" } ?: "由医生评估"
+                binding.rowDiagnosis.tvInfoValue.text = it.diagnosis.takeIf { diag -> diag != "未设置" } ?: "由医生填写"
+                binding.rowStage.tvInfoValue.text = it.rehabStage.takeIf { stage -> stage != "未设置" } ?: "由医生评估"
             }
         }
     }
@@ -91,7 +100,7 @@ class PtInfoEditFragment : Fragment() {
      */
     private fun setupClickListeners() {
         // 返回按钮
-        binding.btnBack.setOnClickListener {
+        binding.topBar.btnTopBarBack.setOnClickListener {
             findNavController().navigateUp()
         }
         
@@ -106,57 +115,57 @@ class PtInfoEditFragment : Fragment() {
         }
         
         // 姓名点击
-        binding.layoutName.setOnClickListener {
-            showEditDialog("姓名", binding.tvName.text.toString()) { newValue ->
-                binding.tvName.text = newValue
+        binding.layoutName.root.setOnClickListener {
+            showEditDialog(binding.layoutName, "姓名", "请输入姓名") {
+                setRowValue(binding.layoutName, it)
             }
         }
         
         // 性别点击
-        binding.layoutGender.setOnClickListener {
+        binding.layoutGender.root.setOnClickListener {
             showGenderDialog()
         }
         
         // 年龄点击
-        binding.layoutAge.setOnClickListener {
+        binding.layoutAge.root.setOnClickListener {
             showAgeDialog()
         }
         
         // 昵称点击
-        binding.layoutNickname.setOnClickListener {
-            showEditDialog("昵称", binding.tvNickname.text.toString(), maxLength = 20) { newValue ->
-                binding.tvNickname.text = newValue
+        binding.layoutNickname.root.setOnClickListener {
+            showEditDialog(binding.layoutNickname, "昵称", "请输入昵称") {
+                setRowValue(binding.layoutNickname, it)
             }
         }
         
         // 个性签名点击
-        binding.layoutSignature.setOnClickListener {
-            showEditDialog("个性签名", binding.tvSignature.text.toString(), maxLength = 100) { newValue ->
-                binding.tvSignature.text = newValue
+        binding.layoutSignature.root.setOnClickListener {
+            showEditDialog(binding.layoutSignature, "个性签名", "请输入个性签名", 100) {
+                setRowValue(binding.layoutSignature, it)
             }
         }
         
         // 手机号码点击
-        binding.layoutPhone.setOnClickListener {
+        binding.layoutPhone.root.setOnClickListener {
             showPhoneDialog()
         }
         
         // 电子邮箱点击
-        binding.layoutEmail.setOnClickListener {
-            showEditDialog("电子邮箱", binding.tvEmail.text.toString(), maxLength = 50) { newValue ->
-                binding.tvEmail.text = newValue
+        binding.layoutEmail.root.setOnClickListener {
+            showEditDialog(binding.layoutEmail, "电子邮箱", "请输入电子邮箱", 50) {
+                setRowValue(binding.layoutEmail, it)
             }
         }
         
         // 出生日期点击
-        binding.layoutDateOfBirth.setOnClickListener {
+        binding.layoutDateOfBirth.root.setOnClickListener {
             showDatePickerDialog()
         }
         
         // 地址点击
-        binding.layoutAddress.setOnClickListener {
-            showEditDialog("地址", binding.tvAddress.text.toString(), maxLength = 100) { newValue ->
-                binding.tvAddress.text = newValue
+        binding.layoutAddress.root.setOnClickListener {
+            showEditDialog(binding.layoutAddress, "地址", "请输入地址", 100) {
+                setRowValue(binding.layoutAddress, it)
             }
         }
     }
@@ -164,41 +173,99 @@ class PtInfoEditFragment : Fragment() {
     /**
      * 显示编辑对话框
      */
+    private fun setupRows() {
+        bindEditableRow(binding.layoutName, "姓名")
+        bindEditableRow(binding.layoutGender, "性别")
+        bindEditableRow(binding.layoutAge, "年龄")
+        bindEditableRow(binding.layoutNickname, "昵称")
+        bindEditableRow(binding.layoutSignature, "个性签名")
+        bindEditableRow(binding.layoutPhone, "手机号码")
+        bindEditableRow(binding.layoutEmail, "电子邮箱")
+        bindEditableRow(binding.layoutDateOfBirth, "出生日期")
+        bindEditableRow(binding.layoutAddress, "地址")
+        bindReadOnlyRow(binding.rowDoctorName, "主治医生")
+        bindReadOnlyRow(binding.rowDoctorCode, "医生工号")
+        bindReadOnlyRow(binding.rowDiagnosis, "诊断信息")
+        bindReadOnlyRow(binding.rowStage, "康复阶段")
+    }
+
+    private fun bindEditableRow(row: WidgetInfoRowBinding, label: String) {
+        row.tvInfoLabel.text = label
+        row.tvInfoValue.text = UiTexts.placeholderText()
+        row.ivInfoChevron.visibility = View.VISIBLE
+        row.root.isClickable = true
+        row.root.isFocusable = true
+    }
+
+    private fun bindReadOnlyRow(row: WidgetInfoRowBinding, label: String) {
+        row.tvInfoLabel.text = label
+        row.tvInfoValue.text = UiTexts.placeholderText()
+    }
+
+    private fun rowValue(row: WidgetInfoRowBinding): String {
+        val value = row.tvInfoValue.text?.toString().orEmpty()
+        return value.takeIf { it.isNotBlank() && it != UiTexts.placeholderText() } ?: "未设置"
+    }
+
+    private fun setRowValue(row: WidgetInfoRowBinding, value: String?) {
+        row.tvInfoValue.text = value
+            ?.takeIf { it.isNotBlank() && it != "未设置" }
+            ?: UiTexts.placeholderText()
+    }
+
+    // 通用文本输入：统一 TextField 与 Material 对话框，错误留在字段下方
     private fun showEditDialog(
+        row: WidgetInfoRowBinding,
         title: String,
-        currentValue: String,
+        hint: String,
         maxLength: Int = 20,
+        inputType: Int = InputType.TYPE_CLASS_TEXT,
+        validator: ((String) -> String?)? = null,
+        normalize: (String) -> String = { it },
+        prefill: (String) -> String = { it },
         onConfirm: (String) -> Unit
     ) {
-        val editText = EditText(requireContext()).apply {
-            setText(if (currentValue == "未设置") "" else currentValue)
-            hint = "请输入$title"
-            maxLines = if (maxLength > 50) 3 else 1
-            inputType = if (maxLength > 50) {
+        val field = TextField(requireContext()).apply {
+            setLabel(title)
+            setRequired(true)
+            setHint(hint)
+            editText().maxLines = if (maxLength > 50) 3 else 1
+            editText().inputType = if (maxLength > 50) {
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
             } else {
-                InputType.TYPE_CLASS_TEXT
+                inputType
             }
-            setPadding(50, 30, 50, 30)
+            rowValue(row).takeIf { it != "未设置" }?.let { editText().setText(prefill(it)) }
         }
 
-        AlertDialog.Builder(requireContext())
+        val container = FrameLayout(requireContext()).apply {
+            val pad = resources.getDimensionPixelSize(com.example.winsrehab.R.dimen.space_24)
+            setPadding(pad, pad / 2, pad, 0)
+            addView(field)
+        }
+        val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("编辑$title")
-            .setView(editText)
-            .setPositiveButton("确定") { _, _ ->
-                val newValue = editText.text.toString().trim()
-                if (newValue.isEmpty()) {
-                    Toast.makeText(requireContext(), "${title}不能为空", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                if (newValue.length > maxLength) {
-                    Toast.makeText(requireContext(), "${title}长度不能超过${maxLength}个字符", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                onConfirm(newValue)
-            }
+            .setView(container)
+            .setPositiveButton("确定", null)
             .setNegativeButton("取消", null)
-            .show()
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val newValue = field.text().trim()
+                val error = when {
+                    newValue.isEmpty() -> getString(com.example.winsrehab.R.string.error_field_empty, title)
+                    newValue.length > maxLength -> getString(com.example.winsrehab.R.string.error_field_too_long, title, maxLength)
+                    else -> validator?.invoke(newValue)
+                }
+                if (error != null) {
+                    field.setError(error)
+                    return@setOnClickListener
+                }
+                onConfirm(normalize(newValue))
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
     }
 
     /**
@@ -206,17 +273,17 @@ class PtInfoEditFragment : Fragment() {
      */
     private fun showGenderDialog() {
         val genders = arrayOf("男", "女")
-        val currentGender = binding.tvGender.text.toString()
+        val currentGender = rowValue(binding.layoutGender)
         val checkedItem = when (currentGender) {
             "男" -> 0
             "女" -> 1
             else -> -1
         }
 
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("选择性别")
             .setSingleChoiceItems(genders, checkedItem) { dialog, which ->
-                binding.tvGender.text = genders[which]
+                setRowValue(binding.layoutGender, genders[which])
                 dialog.dismiss()
             }
             .setNegativeButton("取消", null)
@@ -227,63 +294,34 @@ class PtInfoEditFragment : Fragment() {
      * 显示年龄输入对话框
      */
     private fun showAgeDialog() {
-        val editText = EditText(requireContext()).apply {
-            val currentAge = binding.tvAge.text.toString().replace("岁", "")
-            setText(if (currentAge == "未设置") "" else currentAge)
-            hint = "请输入年龄"
-            inputType = InputType.TYPE_CLASS_NUMBER
-            setPadding(50, 30, 50, 30)
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("编辑年龄")
-            .setView(editText)
-            .setPositiveButton("确定") { _, _ ->
-                val ageStr = editText.text.toString().trim()
-                if (ageStr.isEmpty()) {
-                    Toast.makeText(requireContext(), "年龄不能为空", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                val age = ageStr.toIntOrNull()
-                if (age == null || age < 1 || age > 120) {
-                    Toast.makeText(requireContext(), "请输入有效的年龄（1-120）", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                binding.tvAge.text = "${age}岁"
-            }
-            .setNegativeButton("取消", null)
-            .show()
+        showEditDialog(
+            binding.layoutAge,
+            "年龄",
+            "请输入年龄",
+            maxLength = 3,
+            inputType = InputType.TYPE_CLASS_NUMBER,
+            validator = { value ->
+                if (value.toIntOrNull() in 1..120) null else getString(com.example.winsrehab.R.string.error_age_invalid)
+            },
+            normalize = { "${it.toInt()}岁" },
+            prefill = { it.replace("岁", "") }
+        ) { setRowValue(binding.layoutAge, it) }
     }
 
     /**
      * 显示手机号输入对话框
      */
     private fun showPhoneDialog() {
-        val editText = EditText(requireContext()).apply {
-            val currentPhone = binding.tvPhone.text.toString()
-            setText(if (currentPhone == "未设置") "" else currentPhone)
-            hint = "请输入手机号码"
-            inputType = InputType.TYPE_CLASS_PHONE
-            setPadding(50, 30, 50, 30)
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("编辑手机号码")
-            .setView(editText)
-            .setPositiveButton("确定") { _, _ ->
-                val phone = editText.text.toString().trim()
-                if (phone.isEmpty()) {
-                    Toast.makeText(requireContext(), "手机号码不能为空", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                if (!phone.matches(Regex("^1[3-9]\\d{9}$"))) {
-                    Toast.makeText(requireContext(), "请输入有效的手机号码", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                }
-                binding.tvPhone.text = phone
+        showEditDialog(
+            binding.layoutPhone,
+            "手机号码",
+            "请输入手机号码",
+            maxLength = 11,
+            inputType = InputType.TYPE_CLASS_PHONE,
+            validator = { value ->
+                if (value.matches(Regex("^1[3-9]\\d{9}$"))) null else getString(com.example.winsrehab.R.string.error_phone_invalid)
             }
-            .setNegativeButton("取消", null)
-            .show()
+        ) { setRowValue(binding.layoutPhone, it) }
     }
 
     /**
@@ -291,7 +329,7 @@ class PtInfoEditFragment : Fragment() {
      */
     private fun showDatePickerDialog() {
         val calendar = java.util.Calendar.getInstance()
-        val currentDate = binding.tvDateOfBirth.text.toString()
+        val currentDate = rowValue(binding.layoutDateOfBirth)
         
         // 解析当前日期
         if (currentDate != "未设置") {
@@ -309,7 +347,7 @@ class PtInfoEditFragment : Fragment() {
             requireContext(),
             { _, year, month, dayOfMonth ->
                 val dateStr = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-                binding.tvDateOfBirth.text = dateStr
+                setRowValue(binding.layoutDateOfBirth, dateStr)
             },
             calendar.get(java.util.Calendar.YEAR),
             calendar.get(java.util.Calendar.MONTH),
@@ -327,15 +365,15 @@ class PtInfoEditFragment : Fragment() {
         }
 
         // 获取界面数据
-        val name = binding.tvName.text.toString()
-        val gender = binding.tvGender.text.toString()
-        val ageStr = binding.tvAge.text.toString().replace("岁", "")
-        val nickname = binding.tvNickname.text.toString()
-        val signature = binding.tvSignature.text.toString()
-        val phone = binding.tvPhone.text.toString()
-        val email = binding.tvEmail.text.toString()
-        val dateOfBirth = binding.tvDateOfBirth.text.toString()
-        val address = binding.tvAddress.text.toString()
+        val name = rowValue(binding.layoutName)
+        val gender = rowValue(binding.layoutGender)
+        val ageStr = rowValue(binding.layoutAge).replace("岁", "")
+        val nickname = rowValue(binding.layoutNickname)
+        val signature = rowValue(binding.layoutSignature)
+        val phone = rowValue(binding.layoutPhone)
+        val email = rowValue(binding.layoutEmail)
+        val dateOfBirth = rowValue(binding.layoutDateOfBirth)
+        val address = rowValue(binding.layoutAddress)
 
         // 验证必填项
         if (name == "未设置" || name.isBlank()) {
