@@ -3,15 +3,16 @@ package com.example.winsrehab.ui.main.doctor.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Patient
+import com.example.winsrehab.databinding.ItemKeyPatientBinding
+import com.example.winsrehab.ui.common.PatientStageStyle
+import com.example.winsrehab.ui.common.StatusBadge
 
+// 患者列表适配器：视图绑定装配真实字段，不再有写死的阶段与进度
 class PatientAdapter(
     private val onItemClick: (Patient) -> Unit = {}   // 点击回调，可选
 ) : ListAdapter<Patient, PatientAdapter.PatientViewHolder>(DiffCallback) {
@@ -20,45 +21,41 @@ class PatientAdapter(
     object DiffCallback : DiffUtil.ItemCallback<Patient>() {
         override fun areItemsTheSame(oldItem: Patient, newItem: Patient): Boolean =
             oldItem.patientId == newItem.patientId     //以主键 id 判断
+
         override fun areContentsTheSame(oldItem: Patient, newItem: Patient): Boolean =
             oldItem == newItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatientViewHolder {
-        //把XML布局转成view
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_key_patient, parent, false)
-        return PatientViewHolder(view)
+        val binding = ItemKeyPatientBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return PatientViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PatientViewHolder, position: Int) {
-        //装数据到view
         val patient = getItem(position)
-        holder.tvName.text = patient.name
-//        holder.tvStage.text = "康复阶段：" + (patient.stage ?: "")
-//        holder.progressTraining.progress = patient.progress
-//         holder.tvProgressValue.text = "${patient.progress}%"
-//        holder.tvAiResult.text = patient.aiResult ?: ""
-        holder.imgAvatar.setImageResource(R.drawable.img_tx)
-        holder.imgAiEval.setImageResource(R.drawable.img_ai)
-
-         holder.imgAlert.visibility =
-            if (patient.hasAlert) View.VISIBLE else View.GONE
-
-        holder.itemView.setOnClickListener {
-            onItemClick(patient)
-        }
+        holder.bind(patient)
+        holder.itemView.setOnClickListener { onItemClick(patient) }
     }
-        override fun getItemCount(): Int = currentList.size
-    class PatientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //只在创建时初始化 findViewById
-        val tvName: TextView = itemView.findViewById(R.id.tv_name)
-        val tvStage: TextView = itemView.findViewById(R.id.tv_stage)
-            val tvProgressValue: TextView = itemView.findViewById(R.id.tv_progress_value)
-        val tvAiResult: TextView = itemView.findViewById(R.id.tv_ai_result)
-        val progressTraining: ProgressBar = itemView.findViewById(R.id.progress_training)
-        val imgAlert: ImageView = itemView.findViewById(R.id.img_alert)
-        val imgAvatar: ImageView = itemView.findViewById(R.id.img_avatar)
-        val imgAiEval: ImageView = itemView.findViewById(R.id.img_ai_eval)
+
+    class PatientViewHolder(
+        private val binding: ItemKeyPatientBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        // 一次绑定六个真实字段：姓名、诊断、阶段徽标、进度、进度文案、异常提醒
+        fun bind(patient: Patient) {
+            binding.tvName.text = patient.name
+            binding.tvDiagnosis.text = patient.diagnosis
+            StatusBadge.bindStage(binding.badgeStage.tvStatusBadge, patient.rehabStage)
+            binding.progressTraining.progress = patient.overallProgress
+            binding.tvProgressValue.text = binding.root.context.getString(
+                R.string.patient_card_progress_value,
+                patient.overallProgress
+            )
+            binding.imgAlert.visibility = if (patient.hasAlert) View.VISIBLE else View.GONE
+        }
     }
 }
