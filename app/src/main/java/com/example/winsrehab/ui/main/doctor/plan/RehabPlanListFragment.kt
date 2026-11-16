@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.databinding.FragmentRehabPlanListBinding
+import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.main.doctor.adapter.PatientPlanGroupAdapter
 
 /**
@@ -24,7 +25,8 @@ class RehabPlanListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        doctorCode = arguments?.getString("doctorCode") ?: ""
+        // 工号解析走 AccountArgs：导航参数优先，宿主 Intent 兜底
+        doctorCode = AccountArgs.doctorCode(arguments, activity?.intent).orEmpty()
     }
 
     override fun onCreateView(

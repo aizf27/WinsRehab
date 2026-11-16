@@ -1,66 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 等待绑定页：同一页面按「等待中 / 已通过 / 被拒绝」三态切换徽标、文案与按钮 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="@dimen/space_32"
-    android:background="@color/surface_variant">
+    android:background="@color/surface"
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@android:drawable/ic_dialog_info"
-        app:tint="@color/warning"
-        android:layout_marginBottom="@dimen/space_24"/>
+    <!-- 顶部栏：标题固定为绑定医生，返回关闭本页 -->
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/widget_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="等待医生确认中..." android:textAppearance="@style/TextAppearance.WinsRehab.Display24"
-        android:textStyle="bold"
-        android:textColor="@color/on_surface"
-        android:layout_marginBottom="@dimen/space_16"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/space_32">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="已向医生发送绑定申请" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-        android:textColor="@color/on_surface_secondary"
-        android:layout_marginBottom="@dimen/space_8"/>
+        <!-- 状态图标：三态换图标与颜色，形状圆底保持统一 -->
+        <ImageView
+            android:id="@+id/ivStateIcon"
+            android:layout_width="@dimen/space_48"
+            android:layout_height="@dimen/space_48"
+            android:background="@drawable/bg_circle"
+            android:contentDescription="@null"
+            android:padding="@dimen/space_12"
+            android:src="@drawable/ic_heart_beat"
+            app:tint="@color/warning" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="请耐心等待医生确认" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-        android:textColor="@color/on_surface_secondary"
-        android:layout_marginBottom="@dimen/space_32"/>
+        <!-- 状态徽标：文字与配色由 StatusBadge 按绑定状态绑定 -->
+        <include
+            android:id="@+id/statusBadge"
+            layout="@layout/widget_status_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16" />
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_marginBottom="@dimen/space_32"/>
+        <TextView
+            android:id="@+id/tvStateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_12"
+            android:gravity="center"
+            android:text="@string/waiting_pending_title"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"
+            android:textColor="@color/on_surface"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnRefresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="刷新状态" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-        android:paddingHorizontal="@dimen/space_32"
-        android:paddingVertical="@dimen/space_12"/>
+        <TextView
+            android:id="@+id/tvStateDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_8"
+            android:gravity="center"
+            android:text="@string/waiting_pending_desc"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+            android:textColor="@color/on_surface_secondary" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="系统会每30秒自动刷新状态" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-        android:textColor="@color/on_surface_tertiary"
-        android:layout_marginTop="@dimen/space_16"/>
+        <!-- 仅等待中显示进度圈，避免已出结果还在转 -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_24"
+            android:indeterminate="true" />
 
+        <TextView
+            android:id="@+id/tvStateHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_12"
+            android:gravity="center"
+            android:text="@string/waiting_pending_hint"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+            android:textColor="@color/on_surface_tertiary" />
+
+        <!-- 主按钮：等待中是刷新、已通过是进入首页、被拒绝是重新申请 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPrimary"
+            style="@style/Widget.WinsRehab.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_32"
+            android:text="@string/action_refresh_status" />
+
+        <!-- 次按钮：回到登录页重新走一遍流程 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSecondary"
+            style="@style/Widget.WinsRehab.Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_12"
+            android:text="@string/action_back_to_login" />
+    </LinearLayout>
 </LinearLayout>
-
-
-
-
-

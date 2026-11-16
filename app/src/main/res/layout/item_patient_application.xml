@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- 患者申请条目：卡片承载患者信息 + 状态徽标 + 确认/拒绝两个按钮 -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.WinsRehab.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/space_12"
-    app:cardCornerRadius="@dimen/radius_8"
-    app:cardElevation="@dimen/elevation_1">
+    android:layout_marginBottom="@dimen/space_12">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,22 +13,26 @@
         android:orientation="vertical"
         android:padding="@dimen/space_16">
 
+        <!-- 患者信息行：头像 + 姓名 + 账号 + 申请时间 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_menu_myplaces"
-                app:tint="@color/info"
-                android:layout_marginEnd="@dimen/space_12"/>
+                android:layout_width="@dimen/space_48"
+                android:layout_height="@dimen/space_48"
+                android:background="@drawable/bg_avatar_circle"
+                android:contentDescription="@null"
+                android:padding="@dimen/space_12"
+                android:src="@drawable/ic_user"
+                app:tint="@color/on_surface_secondary" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_16"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -36,65 +40,63 @@
                     android:id="@+id/tvPatientName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="患者姓名" android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
-                    android:textStyle="bold"
-                    android:textColor="@color/on_surface"/>
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Title16"
+                    android:textColor="@color/on_surface"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvPatientAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="账号：13800138000" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-                    android:textColor="@color/on_surface_secondary"
-                    android:layout_marginTop="@dimen/space_4"/>
+                    android:layout_marginTop="@dimen/space_4"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                    android:textColor="@color/on_surface_secondary" />
 
                 <TextView
                     android:id="@+id/tvApplyTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="申请时间：2小时前" android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
-                    android:textColor="@color/on_surface_tertiary"
-                    android:layout_marginTop="@dimen/space_4"/>
-
+                    android:layout_marginTop="@dimen/space_4"
+                    android:textAppearance="@style/TextAppearance.WinsRehab.Body12"
+                    android:textColor="@color/on_surface_tertiary" />
             </LinearLayout>
-
         </LinearLayout>
 
+        <!-- 状态徽标 + 操作按钮：待确认的申请才允许确认或拒绝 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/space_16"
-            android:gravity="end">
+            android:layout_marginTop="@dimen/space_12"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <Button
+            <include
+                android:id="@+id/statusBadge"
+                layout="@layout/widget_status_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnReject"
+                style="@style/Widget.WinsRehab.Button.Secondary.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="拒绝"
-                android:backgroundTint="@color/danger"
-                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-                android:layout_marginEnd="@dimen/space_8"
+                android:text="@string/action_reject" />
 
-                />
-
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnConfirm"
+                style="@style/Widget.WinsRehab.Button.Primary.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="确认"
-                android:backgroundTint="@color/brand_patient_primary_dark"
-                android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-
-                />
-
+                android:layout_marginStart="@dimen/space_8"
+                android:text="@string/action_confirm" />
         </LinearLayout>
-
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
-
-
-
-
-
+</com.google.android.material.card.MaterialCardView>

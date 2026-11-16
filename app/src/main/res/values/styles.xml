@@ -178,11 +178,17 @@
         <item name="cornerSize">@dimen/radius_16</item>
     </style>
 
+    <!-- 对话框标题：父样式负责宽度高度与省略号，字号仍走 Title16 档 -->
+    <style name="Widget.WinsRehab.DialogTitle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textAppearance">@style/TextAppearance.WinsRehab.Title16</item>
+        <item name="android:textColor">@color/on_surface</item>
+    </style>
+
     <!-- 对话框主题覆盖：MaterialAlertDialogBuilder 自动套用，圆角/标题/正文/按钮一处生效 -->
     <style name="ThemeOverlay.WinsRehab.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="alertDialogStyle">@style/Widget.WinsRehab.Dialog</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.WinsRehab.Dialog</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.WinsRehab.Title16</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/Widget.WinsRehab.DialogTitle</item>
         <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.WinsRehab.Body14</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.WinsRehab.Button.Text</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.WinsRehab.Button.Text</item>

@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import com.example.winsrehab.R
+import com.example.winsrehab.data.model.BindingStatus
 
 // 状态徽标装配器：把 TaskStatusStyle 的纯映射贴到视图上；未登记状态只在这里落日志
 object StatusBadge {
@@ -34,6 +36,40 @@ object StatusBadge {
             TaskStatusStyle.planLabelColorOf(visual),
             TaskStatusStyle.planContainerColorOf(visual)
         )
+    }
+
+    // 绑定状态徽标：等待确认 / 已通过 / 已拒绝 / 未绑定，配色沿用容器档
+    fun bindBinding(badge: TextView, status: String) {
+        when (status) {
+            BindingStatus.PENDING -> apply(
+                badge,
+                badge.context.getString(R.string.binding_state_pending),
+                R.color.warning,
+                R.color.warning_container
+            )
+            BindingStatus.ACTIVE -> apply(
+                badge,
+                badge.context.getString(R.string.binding_state_approved),
+                R.color.brand_patient_primary_deep,
+                R.color.success_container
+            )
+            BindingStatus.REJECTED -> apply(
+                badge,
+                badge.context.getString(R.string.binding_state_rejected),
+                R.color.warning,
+                R.color.notice_container
+            )
+            else -> {
+                // 兜底按「未绑定」渲染，未登记取值只在这里落日志
+                Log.e(TAG, "未登记的绑定状态，按未绑定渲染: $status")
+                apply(
+                    badge,
+                    badge.context.getString(R.string.binding_state_unbound),
+                    R.color.on_surface_secondary,
+                    R.color.surface_variant
+                )
+            }
+        }
     }
 
     // 三件事：写文案、设文字色、设容器底色；徽标始终可见（状态一定有值）

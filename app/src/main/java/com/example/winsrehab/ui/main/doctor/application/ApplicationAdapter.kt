@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.DoctorTask
+import com.example.winsrehab.data.model.BindingStatus
 import com.example.winsrehab.databinding.ItemPatientApplicationBinding
+import com.example.winsrehab.ui.common.StatusBadge
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -32,14 +35,19 @@ class ApplicationAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         
         fun bind(task: DoctorTask) {
+            val context = binding.root.context
             binding.tvPatientName.text = task.patientName
-            binding.tvPatientAccount.text = "账号：${task.patientAccount}"
-            binding.tvApplyTime.text = "申请时间：${formatTime(task.createdAt)}"
-            
+            binding.tvPatientAccount.text =
+                context.getString(R.string.patient_application_account, task.patientAccount)
+            binding.tvApplyTime.text =
+                context.getString(R.string.patient_application_time, formatTime(task.createdAt))
+            // 列表里只有待医生处理的申请，徽标固定按「等待确认」渲染
+            StatusBadge.bindBinding(binding.statusBadge.tvStatusBadge, BindingStatus.PENDING)
+
             binding.btnReject.setOnClickListener {
                 onReject(task)
             }
-            
+
             binding.btnConfirm.setOnClickListener {
                 onConfirm(task)
             }

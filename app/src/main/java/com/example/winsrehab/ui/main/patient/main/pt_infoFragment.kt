@@ -10,10 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.Patient
 import com.example.winsrehab.databinding.FragmentPtInfoBinding
+import com.example.winsrehab.ui.common.AccountArgs
 import com.example.winsrehab.ui.main.patient.info.PtInfoVM
 
 class pt_infoFragment : Fragment() {
@@ -22,13 +22,12 @@ class pt_infoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: PtInfoVM by activityViewModels()
-    private val args by navArgs<pt_infoFragmentArgs>()
     private var account: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         account = resolveAccount()
-        Log.d("pt_infoFragment", "account: $account")
+        Log.i("pt_infoFragment", "account: $account")
     }
 
     override fun onCreateView(
@@ -191,15 +190,11 @@ class pt_infoFragment : Fragment() {
         // binding.btnLogout.setOnClickListener { }
     }
 
-    /**
-     * BottomNav 未传递 account 时，从宿主 Activity 的 Intent 兜底获取
-     */
+    // 账号解析统一走 AccountArgs：导航参数优先，宿主 Intent 兜底
     private fun resolveAccount(): String {
-        val navAccount = args.account ?: ""
-        val intentAccount = requireActivity().intent.getStringExtra("account") ?: ""
-        Log.d("pt_infoFragment", "args.account=$navAccount, intent.account=$intentAccount")
-        if (navAccount.isNotEmpty()) return navAccount
-        return intentAccount
+        val resolved = AccountArgs.account(arguments, requireActivity().intent).orEmpty()
+        Log.i("pt_infoFragment", "解析到账号: account=$resolved")
+        return resolved
     }
 
     override fun onResume() {
