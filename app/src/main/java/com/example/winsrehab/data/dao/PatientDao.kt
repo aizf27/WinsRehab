@@ -32,4 +32,33 @@ interface PatientDao {
     @Query("SELECT * FROM patient WHERE patientId = :patientId")
     suspend fun getPatientById(patientId: String): Patient?
 
+    // 查出「绑在占位医生上」的患者：工号为空、未设置或旧版本占位工号，但绑定状态不是未绑定
+    @Query(
+        """
+        SELECT * FROM patient
+        WHERE bindingStatus != :unboundStatus
+          AND (
+            doctorCode IS NULL
+            OR TRIM(doctorCode) = ''
+            OR doctorCode = :unsetValue
+            OR doctorCode = :placeholderCode
+          )
+        """
+    )
+    suspend fun getPatientsBoundToPlaceholder(
+        unboundStatus: String,
+        unsetValue: String,
+        placeholderCode: String
+    ): List<Patient>
+
+    // 把单个患者的绑定关系复位为未绑定，让他重新走一遍绑定申请
+    @Query(
+        """
+        UPDATE patient
+        SET doctorCode = :unsetValue, doctorName = :unsetValue, bindingStatus = :unboundStatus
+        WHERE patientId = :patientId
+        """
+    )
+    suspend fun resetBinding(patientId: String, unsetValue: String, unboundStatus: String)
+
 }
