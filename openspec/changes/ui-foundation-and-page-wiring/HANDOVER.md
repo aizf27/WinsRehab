@@ -55,3 +55,17 @@
 - **openspec 编排流程已停用**：后续组不再走 implement / quality_review / 必做项申报 / 子代理审查。`tasks.md` 顶部新增的「0. 执行规则」是唯一流程依据（三条红线、10 组执行边界、L0–L3 自检、提交约定）。
 - 规划文档定位：`tasks.md` = 唯一清单，`design.md` = 唯一技术手册（只查 D 段），`clarify.md` / `proposal.md` / `.review/issues.md` / 三份 `specs/` 全部冻结不再依据。
 - 上面「未收口的一件事」一节已作废，仅作历史留痕。
+
+## 更新（2026-11-16）：组 2 收口与主仓库合并
+
+- **任务组 2 完成**，提交 `4708ec9`（锁浅色 Material 基础主题 + 医生端/患者端两个 overlay、删 Compose 构建项与模板页、删 `DtInfoActivity` 幽灵声明、material 显式 1.12.0、`ThemeAndDependencyTest` 5 条守卫）。L0/L1/L2 全过：activity 声明 11 条、`Theme.AppCompat.*` 计数 0、Compose 零残留、64 用例全绿。
+- **主仓库已合并组 1 + 组 2**：`dev_week1` 现在包含全部已交付代码，`D:\Android\MyProject\WinsRehab` 可直接用 Android Studio 运行到最新进度（`--no-ff` 合并，见 tasks.md 0.6）。
+- **组 2 视觉上几乎无变化是预期**：它只换主题地基与依赖。肉眼判据只有「状态栏白底深色图标」和「未显式上色控件的 `?attr/colorPrimary` 色相」。真正的视觉变化从组 3/4 开始。
+- **真机「没变化」最常见的两个原因**：① 跑的是主仓库旧代码（本次已合并修掉）；② 装的是 Android Studio 旧输出，而不是 `app/build/outputs/apk/debug/app-debug.apk`。判断方法：看状态栏是否为白底深色图标。
+- **模拟器全屏黑屏（非代码问题）**：2026-11-16 出现过一次——窗口 `mDrawState=HAS_DRAWN` 但 `Surface: shown=false`、`mShownAlpha=0.0`，即 WindowManager 把窗口显示透明度按在 0，布局/点击/日志全部正常却整屏黑。`adb reboot` 即恢复；用快照恢复的模拟器容易复发，建议冷启动（`-no-snapshot-load`）。
+
+## 下一步：组 3 基础控件组件
+
+新会话承接顺序：`tasks.md` 顶部 0 节 → 本文件 → `design.md` D3（基础控件）与 D4（状态徽标）。
+
+组 3 交付：主/次/危险/文字四类按钮（含尺寸与禁用态）、统一输入框（标签/必填/错误/辅助文本）、卡片的三种形态、状态徽标（任务五态 + 计划四态，以 `TaskStatusStyle` 为基座整体迁入 `ui/common`，不新建第二套映射，同步改 `TaskInstanceAdapter` 三处调用点与测试路径）。

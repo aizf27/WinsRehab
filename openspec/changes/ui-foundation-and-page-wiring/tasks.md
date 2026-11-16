@@ -48,6 +48,13 @@
 
 新会话上下文不继承。开工前依次读：**本文件顶部 0 节** → `HANDOVER.md`（进度与坑） → `design.md` 对应 D 段。读完即可直接实施当前组，无需重建上下文。
 
+### 0.6 收口与合并约定
+
+- 在 worktree（`.worktree/ui-foundation-and-page-wiring/ws`，分支 `change/ui-foundation-and-page-wiring`）实施，一组一次提交。
+- **每组完成后把 change 分支合并回 `dev_week1`（`--no-ff`，提交信息写「合并组 N」）**，保证主仓库 `D:\Android\MyProject\WinsRehab` 随时可打开 Android Studio 直接运行到最新进度。主仓库是用户在真机/模拟器上跑的那份，不要让它落后。
+- 合并后确认两棵树 `git status` 均干净；主仓库合并后跑一次 `gradlew assembleDebug` 确认可编译。
+- 真机看不到变化时先确认跑的是哪份代码：主仓库最新提交应包含最近一组；装包用主仓库或 worktree 的 `app/build/outputs/apk/debug/app-debug.apk`，不要用 Android Studio 旧输出。
+
 ---
 
 ## 1. 界面取值表
