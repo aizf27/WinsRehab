@@ -9,7 +9,9 @@
 - **无进行中变更**。`ui-foundation-and-page-wiring`（UI 基建 + 页面接线）已归档，归档件在 `openspec/changes/archive/2026-11-18-ui-foundation-and-page-wiring/`，主 spec 已同步（新建 `ui-foundation`、`ui-page-wiring`）
 - 分支 `change/ui-foundation-and-page-wiring` 与 worktree `.worktree/ui-foundation-and-page-wiring/ws` 已删除；组 1–10 全部 `--no-ff` 合回 `dev_week1`
 - 下一步按 [docs/开发计划.md](docs/开发计划.md) 推进：视频录制（CameraX）+ 任务关联、医生审核（播放/通过/驳回/评语）、反馈与通知、计划调整 UI、放松中心（五子棋/Media3）
-- 遗留风险：`app/src/androidTest` 下 17 个界面用例只做过源码编译与打包，**从未在真机/模拟器执行**，有设备时先跑 `gradlew :app:connectedDebugAndroidTest`
+- 界面自动化已在 Pixel_4_XL 模拟器跑通：27 个用例（17 界面 + 10 非界面）全绿，耗时约 116 秒
+- 遗留风险：机器负载高时偶发「登录后等 `doctorHomeRoot` 超时」，属等待时间不够而非逻辑错误，重跑即可；跑前先唤醒模拟器
+- 复跑：`./gradlew.bat :app:connectedDebugAndroidTest "-Pandroid.injected.device.serial=emulator-5554"`（PowerShell 必须给参数加引号，否则会被拆开）
 - 流程：**不走 openspec 编排**，不再派子代理审查。每个功能点 = 直接改 → 自检（L0 编译 / L1 检索断言 / L2 单测 `--rerun-tasks` / 按需 lint）→ 一次中文 commit
 
 ---
@@ -98,7 +100,7 @@ Entity（10 张表）
   - 语义色/间距/圆角/阴影/文本外观取值表，双端主题（医生蓝、患者绿），统一按钮、输入框、卡片、状态徽标、信息行、顶部栏、三态与占位
   - 双端导航图重构、跨页面参数统一解析、18 个界面可达性接线、死布局/图片/字符串/样式清理
   - 患者首页与康复中心共用同一 `PtRehabViewModel` 周数据，今日完成数与完成率同源
-  - 质量门：编译通过、单元测试 105 用例全绿、Lint 0 error；界面自动化 17 用例仅编译通过（无设备未执行）
+  - 质量门：编译通过、单元测试 105 用例全绿、Lint 0 error；界面自动化 27 用例在模拟器全绿（收尾4 修正匹配器后）
 - ✅ 用户系统：登录注册、医患绑定、信息管理
 - ✅ 主界面框架：双端底部导航
 - ✅ 康复计划数据层：4 个 Entity + DAO + Repository，数据库 v7（W1D1 升 v8）
