@@ -16,7 +16,7 @@ class PtInfoVM: ViewModel() {
         MyApp.instance.database.doctorDao()
     }
     private val mode = MutableLiveData<String>()
-    val patient = MutableLiveData<Patient>()
+    val patient = MutableLiveData<Patient?>()
 
     fun loadPatient(account: String) {
         viewModelScope.launch {
