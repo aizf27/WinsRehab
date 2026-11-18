@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WinsRehab</string>
+    <string name="action_back">返回</string>
+    <string name="action_send">发送</string>
+    <string name="action_play">播放</string>
+    <string name="action_pause">暂停</string>
+    <string name="page_psychology_title">心理助手</string>
+    <string name="psychology_message_hint">说说你的心情吧</string>
+    <string name="psychology_empty">说说现在的感受，我会陪你梳理。</string>
+    <string name="page_training_videos_title">示范视频库</string>
+    <string name="training_videos_empty">当前分类还没有示范视频</string>
+    <string name="page_video_player_title">视频播放</string>
+    <string name="video_path_missing">未找到播放文件</string>
+    <string name="video_path_invalid">视频路径无效</string>
+    <string name="video_playback_failed">视频播放失败</string>
 
     <!-- 启动选择页 -->
     <string name="select_log_title">欢迎使用 WinsRehab</string>

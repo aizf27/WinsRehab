@@ -10,9 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.winsrehab.databinding.ActivityTrainingVideoBinding
+import com.example.winsrehab.ui.common.UiTexts
 import com.example.winsrehab.ui.main.patient.adapter.DemoVideoAdapter
 
-class TrainingVideoActivity: AppCompatActivity() {
+class TrainingVideoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTrainingVideoBinding
     private lateinit var viewModel: TrainingVideoViewModel
     private lateinit var adapter: DemoVideoAdapter
@@ -21,39 +22,56 @@ class TrainingVideoActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTrainingVideoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.topBar.tvTopBarTitle.setText(com.example.winsrehab.R.string.page_training_videos_title)
+        binding.topBar.btnTopBarBack.setOnClickListener { finish() }
+        binding.stateVideosLoading.tvStateLoading.text = UiTexts.loadingText()
+        binding.stateVideosEmpty.tvStateEmpty.setText(com.example.winsrehab.R.string.training_videos_empty)
+        binding.stateVideosError.btnStateRetry.text = UiTexts.retryText()
 
-        //初始化 ViewModel
         viewModel = ViewModelProvider(this)[TrainingVideoViewModel::class.java]
-
+        binding.stateVideosError.btnStateRetry.setOnClickListener { viewModel.retry() }
         adapter = DemoVideoAdapter(emptyList()) { video ->
-            val intent = Intent(this, VideoPlayerActivity::class.java).apply {
+            startActivity(Intent(this, VideoPlayerActivity::class.java).apply {
                 putExtra("url", video.videoPath)
                 putExtra("title", video.title)
-            }
-            startActivity(intent)
+            })
         }
-
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
-        //？？补课
-        //分类 Spinner
         val categories = arrayOf("全部", "肩部", "腿部", "全身")
-        binding.spinnerCategory.adapter = ArrayAdapter(
-            this, R.layout.simple_spinner_item, categories
-        ).apply {
+        binding.spinnerCategory.adapter = ArrayAdapter(this, R.layout.simple_spinner_item, categories).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
-
         binding.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                viewModel.setCategory(categories[pos])
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                viewModel.setCategory(categories[position])
             }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
 
-        //观察数据变化
-        viewModel.videos.observe(this) { adapter.submitList(it) }
+            override fun onNothingSelected(parent: AdapterView<*>) = Unit
+        }
+        viewModel.videos.observe(this) { videos ->
+            adapter.submitList(videos)
+            showVideos(videos.isEmpty())
+        }
+        viewModel.loadError.observe(this) { reason ->
+            if (reason != null) showError(reason)
+        }
+        binding.stateVideosLoading.root.visibility = View.VISIBLE
     }
 
+    private fun showVideos(empty: Boolean) {
+        binding.stateVideosLoading.root.visibility = View.GONE
+        binding.stateVideosError.root.visibility = View.GONE
+        binding.stateVideosEmpty.root.visibility = if (empty) View.VISIBLE else View.GONE
+        binding.recyclerView.visibility = if (empty) View.GONE else View.VISIBLE
+    }
+
+    private fun showError(reason: String) {
+        binding.stateVideosLoading.root.visibility = View.GONE
+        binding.stateVideosEmpty.root.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.stateVideosError.tvStateError.text = UiTexts.errorText(reason)
+        binding.stateVideosError.root.visibility = View.VISIBLE
+    }
 }

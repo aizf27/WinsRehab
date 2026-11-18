@@ -16,6 +16,7 @@ class DemoVideoAdapter(
         fun bind(video: DemoVideo) {
             binding.tvTitle.text = video.title
             binding.tvDescription.text = video.description
+            binding.root.contentDescription = "${video.title}，${video.description}"
             binding.root.setOnClickListener { onItemClick(video) }
         }
     }

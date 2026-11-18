@@ -123,7 +123,7 @@
                         android:text="@string/action_remember_password"
                         android:textColor="@color/on_surface"
                         android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-                        android:theme="@style/MyCheckBox" />
+                        android:buttonTint="?attr/colorPrimary" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDoctorLogin"

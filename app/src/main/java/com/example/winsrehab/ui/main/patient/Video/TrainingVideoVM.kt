@@ -9,6 +9,8 @@ import com.example.winsrehab.data.entity.DemoVideo
 class TrainingVideoViewModel : ViewModel() {
 
     private val categoryLive = MutableLiveData<String>("全部")
+    private val _loadError = MutableLiveData<String?>(null)
+    val loadError: LiveData<String?> = _loadError
 
     //本地静态视频列表
     private val allVideos = listOf(
@@ -48,6 +50,16 @@ class TrainingVideoViewModel : ViewModel() {
     }
 
     fun setCategory(category: String) {
-        categoryLive.value = category
+        if (category == "全部" || allVideos.any { it.category == category }) {
+            _loadError.value = null
+            categoryLive.value = category
+        } else {
+            _loadError.value = "视频分类无效"
+        }
+    }
+
+    fun retry() {
+        _loadError.value = null
+        categoryLive.value = categoryLive.value ?: "全部"
     }
 }

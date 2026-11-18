@@ -1,48 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/space_16">
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_32"
-        android:text="心理聊天助手"
-        android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Headline20"/>
+    android:background="@color/surface_variant"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/space_8"
-        android:id="@+id/rvChat"
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/widget_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never"
-        android:scrollbars="vertical"/>
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/space_16"
+            android:paddingTop="@dimen/space_8"
+            android:paddingEnd="@dimen/space_16"
+            android:paddingBottom="@dimen/space_16"
+            android:scrollbars="vertical"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/stateChatLoading"
+            layout="@layout/widget_state_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/stateChatEmpty"
+            layout="@layout/widget_state_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/stateChatError"
+            layout="@layout/widget_state_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_16"
+        android:paddingTop="@dimen/space_8"
+        android:paddingEnd="@dimen/space_16"
+        android:paddingBottom="@dimen/space_8">
 
-        <EditText
-            android:id="@+id/etMessage"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMessage"
+            style="@style/Widget.WinsRehab.TextInputLayout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="@color/on_surface" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-            android:hint="说说你的心情吧"/>
+            android:layout_weight="1"
+            android:hint="@string/psychology_message_hint"
+            android:textAppearance="@style/TextAppearance.WinsRehab.Body14">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
+                android:textColor="@color/on_surface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSend"
+            style="@style/Widget.WinsRehab.Button.Primary.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/brand_patient_primary_dark"
-            style="@style/MyRoundButton"
-            android:textColor="@color/on_primary" android:textAppearance="@style/TextAppearance.WinsRehab.Body14"
-            android:text="发送"/>
+            android:layout_marginStart="@dimen/space_8"
+            android:text="@string/action_send" />
     </LinearLayout>
-
 </LinearLayout>

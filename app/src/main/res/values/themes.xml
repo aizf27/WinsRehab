@@ -59,16 +59,6 @@
         <item name="winsButtonPrimaryTint">@color/btn_primary_bg_doctor</item>
     </style>
 
-    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/outline</item>
-        <item name="colorControlActivated">@color/on_surface</item>
-    </style>
-
-    <style name="MyRoundButton">MyRoundButton
-        <item name="android:background">@drawable/shape_btn_round</item>
-
-    </style>
-
         <!-- 白色卡片容器样式 -->
         <style name="InfoCardStyle">
             <item name="android:layout_width">match_parent</item>

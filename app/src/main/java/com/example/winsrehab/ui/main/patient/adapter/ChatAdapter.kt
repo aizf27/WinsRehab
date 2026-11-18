@@ -2,69 +2,48 @@ package com.example.winsrehab.ui.main.patient.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.winsrehab.R
 import com.example.winsrehab.data.entity.ChatMessage
+import com.example.winsrehab.databinding.ItemChatAiBinding
+import com.example.winsrehab.databinding.ItemChatUserBinding
 
-class ChatAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val chatList: MutableList<ChatMessage> = mutableListOf()
+class ChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var messages: List<ChatMessage> = emptyList()
 
-    fun addMessage(message: ChatMessage) {
-        chatList.add(message)
-        notifyItemInserted(chatList.size - 1)
-    }
-    companion object {
-        const val type_user = 0
-        const val type_bai = 1
+    fun submitList(newMessages: List<ChatMessage>) {
+        messages = newMessages
+        notifyDataSetChanged()
     }
 
-    //创建视图,绑item
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-
-            type_user -> UserViewHolder(inflater, parent)
-            type_bai -> BaiViewHolder(inflater, parent)
+            TYPE_USER -> UserViewHolder(ItemChatUserBinding.inflate(inflater, parent, false))
+            TYPE_AI -> AiViewHolder(ItemChatAiBinding.inflate(inflater, parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
-    class UserViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-        RecyclerView.ViewHolder(inflater.inflate(R.layout.item_chat_user, parent, false)){
-        val tvMessage = itemView.findViewById<TextView>(R.id.tvMessage)
-        }
-    class BaiViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-        RecyclerView.ViewHolder(inflater.inflate(R.layout.item_chat_ai, parent, false)){
-            val tvMessage = itemView.findViewById<TextView>(R.id.tvMessage)
-        }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (chatList[position].type) {
-            ChatMessage.MessageType.User -> type_user
-            ChatMessage.MessageType.AI -> type_bai
+    override fun getItemViewType(position: Int): Int = when (messages[position].type) {
+        ChatMessage.MessageType.User -> TYPE_USER
+        ChatMessage.MessageType.AI -> TYPE_AI
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is UserViewHolder -> holder.binding.tvMessage.text = messages[position].content
+            is AiViewHolder -> holder.binding.tvMessage.text = messages[position].content
         }
     }
-    //绑定数据
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int
-    ) {
-        val context=chatList[ position].content
-        when(holder){
-            is UserViewHolder->holder.tvMessage.text=context
-            is BaiViewHolder->holder.tvMessage.text=context
-        }
+
+    override fun getItemCount(): Int = messages.size
+
+    class UserViewHolder(val binding: ItemChatUserBinding) : RecyclerView.ViewHolder(binding.root)
+
+    class AiViewHolder(val binding: ItemChatAiBinding) : RecyclerView.ViewHolder(binding.root)
+
+    private companion object {
+        const val TYPE_USER = 0
+        const val TYPE_AI = 1
     }
-    //获取数据个数
-    override fun getItemCount(): Int = chatList.size
-
-
-
-
-
-
-
 }
