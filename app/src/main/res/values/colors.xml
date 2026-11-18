@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 界面唯一取色处：只保留语义名，改一处即全站生效 -->
-    <!-- 对比度三档判定（口径见 openspec/changes/ui-foundation-and-page-wiring/design.md D1）：
+    <!-- 对比度三档判定：
          A 档 ≥4.5:1 —— 可承载白字白图标，也可作任意字号文字；
          B 档 3.0–4.5:1 —— 只能作 ≥18sp 或 ≥14sp bold 的大字，或深底上的文字、图标与装饰填充；
          C 档 <3.0:1 —— 禁作任何文字与其底，只作描边、分隔线、遮罩与纯装饰。
