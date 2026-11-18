@@ -134,9 +134,9 @@ class DoctorPagesUiTest {
         waitForView(R.id.doctorHomeRoot)
     }
 
+    // 底栏有大小两个同文案 TextView，统一走共享动作按菜单项选中
     private fun clickBottomTab(title: String) {
-        onView(allOf(withText(title), isDescendantOfA(withId(R.id.bottom_nav))))
-            .perform(click())
+        clickBottomTabItem(title)
     }
 
     private fun waitForSelectedTab(itemId: Int) {
