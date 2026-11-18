@@ -55,6 +55,13 @@
 - 合并后确认两棵树 `git status` 均干净；主仓库合并后跑一次 `gradlew assembleDebug` 确认可编译。
 - 真机看不到变化时先确认跑的是哪份代码：主仓库最新提交应包含最近一组；装包用主仓库或 worktree 的 `app/build/outputs/apk/debug/app-debug.apk`，不要用 Android Studio 旧输出。
 
+### 0.7 收尾结论（2026-11-18，组 1–10 全部完成）
+
+- **质量门**：`assembleDebug` + `assembleDebugAndroidTest` 通过；单元测试 105 用例全绿（`--rerun-tasks`）；`lintDebug` 0 error / 284 warning（基线 3 条 `PtInfoVM.kt` 空安全错误已顺手修掉）。详细结果见 10.7。
+- **界面测试风险**：`app/src/androidTest` 下 6 个测试类共 17 个用例只做到源码编译与打包通过，**从未在真机/模拟器执行**（本机环境不可用）。这 17 个用例的风险是「编译对、运行未知」，需要在有设备的环境执行 `gradlew :app:connectedDebugAndroidTest` 才算真正验收。
+- **收尾范围**：10.6 原 3 条独立冒烟 + 本轮补的 4 条（等待绑定页、患者申请页、医生信息编辑页、患者信息编辑页），其余页面由路径测试顺带进入。
+- **归档**：本 change 已归档到 `openspec/changes/archive/`，主 spec 由 delta 同步（新建 `ui-foundation`、`ui-page-wiring`，`patient-rehab` 追加 1 条）。
+
 ---
 
 ## 1. 界面取值表
@@ -174,4 +181,4 @@
 - [x] 10.4 按 Lint 未引用资源输出逐条确认并删除无引用图片，删除后编译通过 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
 - [x] 10.5 删除死布局（`item_core_function.xml`、`item_today_task.xml`）与模板字符串（`hello_blank_fragment` + 两条英文占位，删字符串前确认第 5 组已移除 `activity_dt_log.xml:57,84` 的引用）；此时 `MyRoundButton` 与 `MyCheckBox` 的最后一个使用点也应已消失，删除这两个样式定义并确认 `styles.xml`/`themes.xml` 无残留引用；`DtInfoActivity` 与 `MainActivity` 的开销已在第 2 组处理，本组不再重复 [spec:ui-foundation#界面资产不得保留零引用资源与未使用框架开关]
 - [x] 10.6 测试：界面冒烟自动化——18 个界面各自的最短可达路径均能进入且不崩溃（每页断言其顶部栏标题或页面标志性元素可见）[spec:ui-page-wiring#每个已实现页面必须至少有一个可达入口]
-- [ ] 10.7 质量门：全量编译、全部单元测试、5 条关键路径界面测试与冒烟测试全绿、Lint 通过 [infra]
+- [x] 10.7 质量门：全量编译、全部单元测试、5 条关键路径界面测试与冒烟测试全绿、Lint 通过 [infra] —— 收尾复验：`assembleDebug` 与 `assembleDebugAndroidTest` 通过；`testDebugUnitTest --rerun-tasks` 105 用例全绿；`lintDebug` 0 error（284 warning，无 `NullSafeMutableLiveData`，`PtInfoVM.kt` 已改可空类型）；界面自动化 17 用例（6 个测试类，含本轮补的 4 条冒烟）**仅源码编译通过，实机/模拟器环境不可用未执行**，复跑命令 `gradlew :app:connectedDebugAndroidTest`

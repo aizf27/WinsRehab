@@ -6,12 +6,11 @@
 
 ## 进行中的变更（新会话先看这里）
 
-- 变更名：`ui-foundation-and-page-wiring`（UI 基建 + 页面接线）
-- 分支：`change/ui-foundation-and-page-wiring`；worktree：`.worktree/ui-foundation-and-page-wiring/ws`
-- 进度与规则：读该 worktree 内 `openspec/changes/ui-foundation-and-page-wiring/tasks.md` 顶部「## 0. 执行规则」
-- 技术细节：同目录 `design.md` 的 D1–D8 段
-- 当前：第 1–8 组已完成；下一步第 9 组（患者端页面改造与同源数字接线，4 页）
-- 流程：**不走 openspec 编排**，不再派子代理审查。每组 = 开工说明 → 直接改 → 自检（L0 编译 / L1 检索断言 / L2 单测 `--rerun-tasks`）→ 一次中文 commit
+- **无进行中变更**。`ui-foundation-and-page-wiring`（UI 基建 + 页面接线）已归档，归档件在 `openspec/changes/archive/2026-11-18-ui-foundation-and-page-wiring/`，主 spec 已同步（新建 `ui-foundation`、`ui-page-wiring`）
+- 分支 `change/ui-foundation-and-page-wiring` 与 worktree `.worktree/ui-foundation-and-page-wiring/ws` 已删除；组 1–10 全部 `--no-ff` 合回 `dev_week1`
+- 下一步按 [docs/开发计划.md](docs/开发计划.md) 推进：视频录制（CameraX）+ 任务关联、医生审核（播放/通过/驳回/评语）、反馈与通知、计划调整 UI、放松中心（五子棋/Media3）
+- 遗留风险：`app/src/androidTest` 下 17 个界面用例只做过源码编译与打包，**从未在真机/模拟器执行**，有设备时先跑 `gradlew :app:connectedDebugAndroidTest`
+- 流程：**不走 openspec 编排**，不再派子代理审查。每个功能点 = 直接改 → 自检（L0 编译 / L1 检索断言 / L2 单测 `--rerun-tasks` / 按需 lint）→ 一次中文 commit
 
 ---
 
@@ -92,9 +91,14 @@ Entity（10 张表）
 
 ---
 
-## 当前状态（2026-11-10）
+## 当前状态（2026-11-18）
 
-### 已完成（约 48%）
+### 已完成（约 60%）
+- ✅ **UI 基建与页面接线**（2026-11-18，10 组全部完成并归档）
+  - 语义色/间距/圆角/阴影/文本外观取值表，双端主题（医生蓝、患者绿），统一按钮、输入框、卡片、状态徽标、信息行、顶部栏、三态与占位
+  - 双端导航图重构、跨页面参数统一解析、18 个界面可达性接线、死布局/图片/字符串/样式清理
+  - 患者首页与康复中心共用同一 `PtRehabViewModel` 周数据，今日完成数与完成率同源
+  - 质量门：编译通过、单元测试 105 用例全绿、Lint 0 error；界面自动化 17 用例仅编译通过（无设备未执行）
 - ✅ 用户系统：登录注册、医患绑定、信息管理
 - ✅ 主界面框架：双端底部导航
 - ✅ 康复计划数据层：4 个 Entity + DAO + Repository，数据库 v7（W1D1 升 v8）
@@ -113,8 +117,8 @@ Entity（10 张表）
 - ✅ AI 心理助手（DeepSeek）
 - ✅ 示范视频库（列表、播放）
 
-### 待实现（约 52%）
-- 🚧 患者端今日任务列表、完成/跳过
+### 待实现（约 40%）
+- 🚧 患者端任务完成/跳过交互与状态流转（今日任务列表已接真实数据，录制入口暂置灰）
 - 🚧 视频录制（CameraX）、任务关联
 - 🚧 医生审核（播放、通过/驳回、评语）
 - 🚧 反馈、通知、计划调整 UI
@@ -225,4 +229,4 @@ Patient 表中的 `todayTasksCompleted`、`weeklyCompletionRate` 等统计字段
 
 ---
 
-**最后更新**：2026-11-10
+**最后更新**：2026-11-18
