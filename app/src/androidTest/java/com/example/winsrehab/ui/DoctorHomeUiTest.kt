@@ -69,7 +69,8 @@ class DoctorHomeUiTest {
             loginAsDoctor()
 
             // 横幅与欢迎卡摘要都来自待办查询：至少有我们刚插入的一条申请
-            waitForTextContains("新患者申请")
+            // 文案里带待办数量，按控件 id 等待，避免命中「最新患者申请」分区标题
+            waitForView(R.id.tvNotification)
             onView(withId(R.id.layoutNotification)).check(matches(isDisplayed()))
 
             // 往下滚一屏，四宫格与待办列表才有足够可见面积接受点击
@@ -172,10 +173,9 @@ class DoctorHomeUiTest {
         waitForView(R.id.doctorHomeRoot)
     }
 
+    // 底栏有大小两个同文案 TextView，统一走共享动作按菜单项选中
     private fun clickBottomTab(title: String) {
-        onView(
-            allOf(withText(title), isDescendantOfA(withId(R.id.bottom_nav)))
-        ).perform(click())
+        clickBottomTabItem(title)
     }
 
     // 底部导航的选中态只能从控件自身取，用自定义 matcher 断言

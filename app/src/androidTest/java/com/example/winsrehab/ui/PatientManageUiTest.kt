@@ -32,6 +32,7 @@ import com.example.winsrehab.ui.main.selectLog.SelectLogActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 import org.junit.After
@@ -62,7 +63,8 @@ class PatientManageUiTest {
         try {
             loginAsDoctor()
             // 待办区与横幅先有数据，才能取到非零基线
-            waitForTextContains("新患者申请")
+            // 横幅文案带数量，按控件 id 等待，避免命中「最新患者申请」分区标题
+            waitForView(R.id.tvNotification)
 
             val pendingBefore = intText(R.id.tvPendingCount)
             val patientsBefore = intText(R.id.tvPatientCount)
@@ -77,9 +79,14 @@ class PatientManageUiTest {
 
             // 该条申请从申请列表消失
             waitUntil(10_000L, "申请条目已消失") {
-                onView(
-                    allOf(withText(PENDING_NAME), isDescendantOfA(withId(R.id.recyclerView)))
-                ).check(doesNotExist())
+                // 列表清空后会被整体隐藏，旧行可能还挂在树里，所以断言不再显示而不是不存在
+                try {
+                    onView(
+                        allOf(withText(PENDING_NAME), isDescendantOfA(withId(R.id.recyclerView)))
+                    ).check(matches(not(isDisplayed())))
+                } catch (e: NoMatchingViewException) {
+                    // 视图已经从树里移除也算消失
+                }
             }
 
             pressBack()
@@ -152,10 +159,9 @@ class PatientManageUiTest {
         waitForView(R.id.doctorHomeRoot)
     }
 
+    // 底栏有大小两个同文案 TextView，统一走共享动作按菜单项选中
     private fun clickBottomTab(title: String) {
-        onView(
-            allOf(withText(title), isDescendantOfA(withId(R.id.bottom_nav)))
-        ).perform(click())
+        clickBottomTabItem(title)
     }
 
     private fun waitForSelectedTab(itemId: Int) {

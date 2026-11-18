@@ -82,7 +82,8 @@ class ExtraPagesSmokeTest {
             waitForView(R.id.doctorHomeRoot)
             clickBottomTab(TAB_ME)
             waitForView(R.id.tvDoctorName)
-            onView(withId(R.id.btnSave)).perform(scrollTo(), click())
+            waitForView(R.id.btnSave)
+            onView(withId(R.id.btnSave)).perform(click())
 
             waitForView(R.id.layoutDepartment)
         } finally {
@@ -102,7 +103,8 @@ class ExtraPagesSmokeTest {
             waitForView(R.id.patient_main_root)
             clickBottomTab(TAB_PERSONAL)
             waitForView(R.id.tvPatientName)
-            onView(withId(R.id.btnEdit)).perform(scrollTo(), click())
+            waitForView(R.id.btnEdit)
+            onView(withId(R.id.btnEdit)).perform(click())
 
             waitForView(R.id.layoutNickname)
         } finally {
@@ -117,9 +119,9 @@ class ExtraPagesSmokeTest {
     }
 
     // 底部导航切页：按 tab 文案点，tab 一定在底栏容器里
+    // 底栏有大小两个同文案 TextView，统一走共享动作按菜单项选中
     private fun clickBottomTab(title: String) {
-        onView(allOf(withText(title), isDescendantOfA(withId(R.id.bottom_nav))))
-            .perform(click())
+        clickBottomTabItem(title)
     }
 
     // 异步加载页统一轮询等控件出现，超时带上最后一次失败原因
